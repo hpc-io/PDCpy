@@ -1,0 +1,4 @@
+pdc_server.exe
+*.so
+build/**
+pdc_tmp/**
