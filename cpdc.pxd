@@ -76,13 +76,16 @@ cdef extern from "pdc_cont.h":
     pdcid_t PDCcont_open(const char *cont_name, pdcid_t pdc_id)
     pdcid_t PDCcont_open_col(const char *cont_name, pdcid_t pdc_id)
     perr_t PDCcont_close(pdcid_t cont_id)
-    pdc_cont_info *PDCcont_get_info(const char *cont_name)
+    #pdc_cont_info *PDCcont_get_info(const char *cont_name)
     perr_t PDCcont_persist(pdcid_t cont_id)
     perr_t PDCprop_set_cont_lifetime(pdcid_t cont_create_prop, pdc_lifetime_t cont_lifetime)
     pdcid_t PDCcont_get_id(const char *cont_name, pdcid_t pdc_id)
+
+    #low priority, but straightforward to implement
     cont_handle *PDCcont_iter_start()
     pbool_t PDCcont_iter_null(cont_handle *chandle)
     pdc_cont_info *PDCcont_iter_get_info(cont_handle *chandle)
+    
     perr_t PDCcont_del(pdcid_t cont_id)
     perr_t PDCcont_put_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids)
     perr_t PDCcont_del_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids)
@@ -124,9 +127,10 @@ cdef extern from "pdc_obj.h":
     perr_t PDCprop_set_obj_dims(pdcid_t obj_prop, PDC_int_t ndim, uint64_t *dims)
     perr_t PDCprop_set_obj_type(pdcid_t obj_prop, pdc_var_type_t type)
     #probably obselete:
-    perr_t PDCprop_set_obj_buf(pdcid_t obj_prop, void *buf)
-    void **PDCobj_buf_retrieve(pdcid_t obj_id)
+    #perr_t PDCprop_set_obj_buf(pdcid_t obj_prop, void *buf)
+    #void **PDCobj_buf_retrieve(pdcid_t obj_id)
 
+    #low priority, but straightforward to implement:
     obj_handle *PDCobj_iter_start(pdcid_t cont_id)
     pbool_t PDCobj_iter_null(obj_handle *ohandle)
     obj_handle *PDCobj_iter_next(obj_handle *ohandle, pdcid_t cont_id)
@@ -142,13 +146,15 @@ cdef extern from "pdc_obj.h":
     perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)
     perr_t PDCobj_del_tag(pdcid_t obj_id, char *tag_name)
 
-cdef extern from "pdc_analysis.h":
-    pdcid_t PDCobj_data_iter_create(pdcid_t obj_id, pdcid_t reg_id)
-    pdcid_t PDCobj_data_block_iterator_create(pdcid_t obj_id, pdcid_t reg_id, int contig_blocks)
-    size_t PDCobj_data_getSliceCount(pdcid_t iter)
-    size_t PDCobj_data_getNextBlock(pdcid_t iter, void **nextBlock, size_t *dims)
-    perr_t PDCobj_analysis_register(char *func, pdcid_t iterIn, pdcid_t iterOut)
-    int PDCiter_get_nextId()
+#low priority:
+
+#cdef extern from "pdc_analysis.h":
+#    pdcid_t PDCobj_data_iter_create(pdcid_t obj_id, pdcid_t reg_id)
+#    pdcid_t PDCobj_data_block_iterator_create(pdcid_t obj_id, pdcid_t reg_id, int contig_blocks)
+#    size_t PDCobj_data_getSliceCount(pdcid_t iter)
+#    size_t PDCobj_data_getNextBlock(pdcid_t iter, void **nextBlock, size_t *dims)
+#    perr_t PDCobj_analysis_register(char *func, pdcid_t iterIn, pdcid_t iterOut)
+#    int PDCiter_get_nextId()
 
 #nothing from "pdc_dt_conv.h", "pdc_hist_pkg.h" included because it is never mentioned in the examples or tests
 
@@ -166,17 +172,11 @@ cdef extern from "pdc_prop.h":
     pdcid_t PDCprop_create(pdc_prop_type_t type, pdcid_t pdc_id)
     perr_t PDCprop_close(pdcid_t id)
     pdcid_t PDCprop_obj_dup(pdcid_t prop_id)
-    #This function returns a private struct, is it private?
-    _pdc_cont_prop *PDCcont_prop_get_info(pdcid_t prop_id)
-    pdc_obj_prop *PDCobj_prop_get_info(pdcid_t prop_id)
     perr_t PDCprop_update(pdcid_t obj_id, pdcid_t prop_id)
-    perr_t PDCtag_delete(pdcid_t obj_id, char *tag_name)
-    perr_t PDCtag_get(pdcid_t obj_id, char *tag_name, void *tag_value)
 
 cdef extern from "pdc_region.h":
     struct pdc_region_info:
         pdcid_t               local_id
-        #struct _pdc_obj_info *obj
         size_t                ndim
         uint64_t *            offset
         uint64_t *            size
@@ -191,7 +191,6 @@ cdef extern from "pdc_region.h":
         pdc_access_t   access_type
         pdc_var_type_t mem_type
         char *         buf
-        #char *         new_buf
 
         int       local_region_ndim
         uint64_t *local_region_offset
@@ -219,13 +218,6 @@ cdef extern from "pdc_region.h":
     perr_t PDCregion_transfer_wait(pdcid_t transfer_request_id)
     perr_t PDCregion_transfer_wait_all(pdcid_t *transfer_request_id, size_t size)
     perr_t PDCregion_transfer_close(pdcid_t transfer_request_id)
-    perr_t PDCbuf_obj_map(void *buf, pdc_var_type_t local_type, pdcid_t local_reg, pdcid_t remote_obj, pdcid_t remote_reg)
-    pdc_region_info *PDCregion_get_info(pdcid_t reg_id)
-    perr_t PDCbuf_obj_unmap(pdcid_t remote_obj_id, pdcid_t remote_reg_id)
-    #probably not needed:
-    #perr_t PDCreg_obtain_lock(pdcid_t obj_id, pdcid_t reg_id, pdc_access_t access_type, pdc_lock_mode_t lock_mode)
-    #perr_t PDCreg_release_lock(pdcid_t obj_id, pdcid_t reg_id, pdc_access_t access_type)
-
 
 cdef extern from "pdc_query.h":
     cdef enum pdc_prop_name_t:
@@ -293,32 +285,29 @@ cdef extern from "pdc_query.h":
     perr_t PDCquery_get_selection(pdc_query_t *query, pdc_selection_t *sel)
     perr_t PDCquery_get_nhits(pdc_query_t *query, uint64_t *n)
     perr_t PDCquery_get_data(pdcid_t obj_id, pdc_selection_t *sel, void *obj_data)
-    
-    #currently a no-op:
-    #perr_t PDCquery_get_histogram(pdcid_t obj_id)
+
 
     perr_t PDCquery_get_sel_data(pdc_query_t *query, pdc_selection_t *sel, void *data)
     void PDCselection_free(pdc_selection_t *sel)
     void PDCquery_free(pdc_query_t *query)
     void PDCquery_free_all(pdc_query_t *query) #?
     void PDCquery_print(pdc_query_t *query)
-    void PDCselection_print(pdc_selection_t *sel)
-    void PDCselection_print_all(pdc_selection_t *sel)
 
-cdef extern from "pdc_transform.h":
-    ctypedef enum pdc_obj_transform_t:
-        PDC_TESTING       = 0
-        PDC_FILE_IO       = 1
-        PDC_DATA_MAP      = 2
-        PDC_PRE_ANALYSIS  = 4
-        PDC_POST_ANALYSIS = 8
-    
-    ctypedef enum pdc_data_movement_t:
-        DATA_IN = 1
-        DATA_OUT = 2
-        DATA_RELOCATION = 4
-    
-    #These functions will have to be changed significantly to be able to accept python functions as arguments
-    #They will need to accept a function pointer directly and an arbitrary void* argument to pass to the function
-    perr_t PDCobj_transform_register(char *func, pdcid_t obj_id, int current_state, int next_state, pdc_obj_transform_t op_type, pdc_data_movement_t when) #?
-    perr_t PDCbuf_map_transform_register(char *func, void *buf, pdcid_t src_region_id, pdcid_t dest_object_id, pdcid_t dest_region_id, int current_state, int next_state, pdc_data_movement_t when) #?
+#low priority:
+#cdef extern from "pdc_transform.h":
+#    ctypedef enum pdc_obj_transform_t:
+#        PDC_TESTING       = 0
+#        PDC_FILE_IO       = 1
+#        PDC_DATA_MAP      = 2
+#        PDC_PRE_ANALYSIS  = 4
+#        PDC_POST_ANALYSIS = 8
+#    
+#    ctypedef enum pdc_data_movement_t:
+#        DATA_IN = 1
+#        DATA_OUT = 2
+#        DATA_RELOCATION = 4
+#    
+#    #These functions will have to be changed significantly to be able to accept python functions as arguments
+#    #They will need to accept a function pointer directly and an arbitrary void* argument to pass to the function
+#    perr_t PDCobj_transform_register(char *func, pdcid_t obj_id, int current_state, int next_state, pdc_obj_transform_t op_type, pdc_data_movement_t when) #?
+#    perr_t PDCbuf_map_transform_register(char *func, void *buf, pdcid_t src_region_id, pdcid_t dest_object_id, pdcid_t dest_region_id, int current_state, int next_state, pdc_data_movement_t when) #?
