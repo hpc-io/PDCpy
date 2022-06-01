@@ -29,6 +29,14 @@ cdef extern from "pdc_public.h":
         PDC_INT16    = 10
         PDC_INT8     = 11
         NCLASSES     = 12
+    
+    ctypedef struct pdc_histogram_t:
+        pdc_var_type_t dtype
+        int            nbin
+        double         incr
+        double *       range
+        uint64_t *     bin
+
 
 cdef extern from "pdc_prop.h":
     ctypedef struct pdc_obj_prop:
@@ -36,6 +44,14 @@ cdef extern from "pdc_prop.h":
         size_t         ndim
         uint64_t *     dims
         pdc_var_type_t type
+
+cdef extern from "pdc_prop_pkg.h":
+    #returned by PDCcont_prop_get_info
+    ctypedef struct _pdc_cont_prop:
+        #probably internal:
+        #struct _pdc_class *pdc
+        pdcid_t            cont_prop_id
+        pdc_lifetime_t     cont_life
 
 
 cdef extern from "pdc.h":
@@ -54,10 +70,11 @@ cdef extern from "pdc_cont.h":
         char *   name
         pdcid_t  local_id
         uint64_t meta_id
+    
     pdcid_t PDCcont_create(const char *cont_name, pdcid_t cont_create_prop)
-    pdcid_t PDCcont_create_col(const char *cont_name, pdcid_t cont_prop_id) #?
+    pdcid_t PDCcont_create_col(const char *cont_name, pdcid_t cont_prop_id)
     pdcid_t PDCcont_open(const char *cont_name, pdcid_t pdc_id)
-    pdcid_t PDCcont_open_col(const char *cont_name, pdcid_t pdc_id) #?
+    pdcid_t PDCcont_open_col(const char *cont_name, pdcid_t pdc_id)
     perr_t PDCcont_close(pdcid_t cont_id)
     pdc_cont_info *PDCcont_get_info(const char *cont_name)
     perr_t PDCcont_persist(pdcid_t cont_id)
@@ -67,7 +84,7 @@ cdef extern from "pdc_cont.h":
     pbool_t PDCcont_iter_null(cont_handle *chandle)
     pdc_cont_info *PDCcont_iter_get_info(cont_handle *chandle)
     perr_t PDCcont_del(pdcid_t cont_id)
-    perr_t PDCcont_put_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids) #does this change the container an object is in?
+    perr_t PDCcont_put_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids)
     perr_t PDCcont_del_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids)
     perr_t PDCcont_put_tag(pdcid_t cont_id, char *tag_name, void *tag_value, psize_t value_size)
     perr_t PDCcont_get_tag(pdcid_t cont_id, char *tag_name, void **tag_value, psize_t *value_size)
@@ -84,6 +101,10 @@ cdef extern from "pdc_obj.h":
         pdcid_t      local_id
         int          server_id
         pdc_obj_prop *obj_pt
+    ctypedef enum pdc_access_t:
+        PDC_NA = 0
+        PDC_READ = 1
+        PDC_WRITE = 2
 
     pdcid_t PDCobj_create(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop)
     pdcid_t PDCobj_open(const char *obj_name, pdcid_t pdc_id)
@@ -97,16 +118,22 @@ cdef extern from "pdc_obj.h":
     perr_t PDCprop_set_obj_data_loc(pdcid_t obj_prop, char *app_name) #?
     perr_t PDCprop_set_obj_app_name(pdcid_t obj_prop, char *app_name)
     perr_t PDCprop_set_obj_time_step(pdcid_t obj_prop, uint32_t time_step)
+    #should this be deprecated in favor of the kvtags system?
     perr_t PDCprop_set_obj_tags(pdcid_t obj_prop, char *tags)
+    
     perr_t PDCprop_set_obj_dims(pdcid_t obj_prop, PDC_int_t ndim, uint64_t *dims)
     perr_t PDCprop_set_obj_type(pdcid_t obj_prop, pdc_var_type_t type)
-    perr_t PDCprop_set_obj_buf(pdcid_t obj_prop, void *buf) #?
-    void **PDCobj_buf_retrieve(pdcid_t obj_id) #?
+    #probably obselete:
+    perr_t PDCprop_set_obj_buf(pdcid_t obj_prop, void *buf)
+    void **PDCobj_buf_retrieve(pdcid_t obj_id)
+
     obj_handle *PDCobj_iter_start(pdcid_t cont_id)
     pbool_t PDCobj_iter_null(obj_handle *ohandle)
     obj_handle *PDCobj_iter_next(obj_handle *ohandle, pdcid_t cont_id)
     pdc_obj_info *PDCobj_iter_get_info(obj_handle *ohandle)
-    obj_handle *PDCview_iter_start(pdcid_t view_id) #Aren't queries over the contents of objects?
+
+    #not implemented:
+    #obj_handle *PDCview_iter_start(pdcid_t view_id)
 
     pdcid_t PDCobj_put_data(const char *obj_name, void *data, uint64_t size, pdcid_t cont_id)
     perr_t PDCobj_get_data(pdcid_t obj_id, void *data, uint64_t size)
@@ -114,3 +141,184 @@ cdef extern from "pdc_obj.h":
     perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, psize_t value_size)
     perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)
     perr_t PDCobj_del_tag(pdcid_t obj_id, char *tag_name)
+
+cdef extern from "pdc_analysis.h":
+    pdcid_t PDCobj_data_iter_create(pdcid_t obj_id, pdcid_t reg_id)
+    pdcid_t PDCobj_data_block_iterator_create(pdcid_t obj_id, pdcid_t reg_id, int contig_blocks)
+    size_t PDCobj_data_getSliceCount(pdcid_t iter)
+    size_t PDCobj_data_getNextBlock(pdcid_t iter, void **nextBlock, size_t *dims)
+    perr_t PDCobj_analysis_register(char *func, pdcid_t iterIn, pdcid_t iterOut)
+    int PDCiter_get_nextId()
+
+#nothing from "pdc_dt_conv.h", "pdc_hist_pkg.h" included because it is never mentioned in the examples or tests
+
+cdef extern from "pdc_prop.h":
+    ctypedef struct pdc_obj_prop:
+        pdcid_t        obj_prop_id
+        size_t         ndim
+        uint64_t *     dims
+        pdc_var_type_t type
+    
+    ctypedef enum pdc_prop_type_t:
+        PDC_CONT_CREATE = 0
+        PDC_OBJ_CREATE
+    
+    pdcid_t PDCprop_create(pdc_prop_type_t type, pdcid_t pdc_id)
+    perr_t PDCprop_close(pdcid_t id)
+    pdcid_t PDCprop_obj_dup(pdcid_t prop_id)
+    #This function returns a private struct, is it private?
+    _pdc_cont_prop *PDCcont_prop_get_info(pdcid_t prop_id)
+    pdc_obj_prop *PDCobj_prop_get_info(pdcid_t prop_id)
+    perr_t PDCprop_update(pdcid_t obj_id, pdcid_t prop_id)
+    perr_t PDCtag_delete(pdcid_t obj_id, char *tag_name)
+    perr_t PDCtag_get(pdcid_t obj_id, char *tag_name, void *tag_value)
+
+cdef extern from "pdc_region.h":
+    struct pdc_region_info:
+        pdcid_t               local_id
+        #struct _pdc_obj_info *obj
+        size_t                ndim
+        uint64_t *            offset
+        uint64_t *            size
+        bint                  mapping
+        int                   registered_op
+        void *                buf
+        size_t                unit
+    
+    ctypedef struct pdc_transfer_request:
+        pdcid_t        obj_id
+        uint64_t       metadata_id
+        pdc_access_t   access_type
+        pdc_var_type_t mem_type
+        char *         buf
+        #char *         new_buf
+
+        int       local_region_ndim
+        uint64_t *local_region_offset
+        uint64_t *local_region_size
+
+        int       remote_region_ndim
+        uint64_t *remote_region_offset
+        uint64_t *remote_region_size
+
+        int       obj_ndim
+        uint64_t *obj_dims
+    
+    ctypedef enum pdc_transfer_status_t:
+        PDC_TRANSFER_STATUS_COMPLETE  = 0
+        PDC_TRANSFER_STATUS_PENDING   = 1
+        PDC_TRANSFER_STATUS_NOT_FOUND = 2
+    
+    pdcid_t PDCregion_create(psize_t ndims, uint64_t *offset, uint64_t *size)
+    perr_t PDCregion_close(pdcid_t region_id)
+    void PDCregion_free(pdc_region_info *region)
+    pdcid_t PDCregion_transfer_create(void *buf, pdc_access_t access_type, pdcid_t obj_id, pdcid_t local_reg, pdcid_t remote_reg)
+    perr_t PDCregion_transfer_start(pdcid_t transfer_request_id)
+    perr_t PDCregion_transfer_start_all(pdcid_t *transfer_request_id, size_t size)
+    perr_t PDCregion_transfer_status(pdcid_t transfer_request_id, pdc_transfer_status_t *completed)
+    perr_t PDCregion_transfer_wait(pdcid_t transfer_request_id)
+    perr_t PDCregion_transfer_wait_all(pdcid_t *transfer_request_id, size_t size)
+    perr_t PDCregion_transfer_close(pdcid_t transfer_request_id)
+    perr_t PDCbuf_obj_map(void *buf, pdc_var_type_t local_type, pdcid_t local_reg, pdcid_t remote_obj, pdcid_t remote_reg)
+    pdc_region_info *PDCregion_get_info(pdcid_t reg_id)
+    perr_t PDCbuf_obj_unmap(pdcid_t remote_obj_id, pdcid_t remote_reg_id)
+    #probably not needed:
+    #perr_t PDCreg_obtain_lock(pdcid_t obj_id, pdcid_t reg_id, pdc_access_t access_type, pdc_lock_mode_t lock_mode)
+    #perr_t PDCreg_release_lock(pdcid_t obj_id, pdcid_t reg_id, pdc_access_t access_type)
+
+
+cdef extern from "pdc_query.h":
+    cdef enum pdc_prop_name_t:
+        PDC_OBJ_NAME
+        PDC_CONT_NAME
+        PDC_APP_NAME
+        PDC_USER_ID
+
+    ctypedef enum pdc_query_op_t:
+        PDC_OP_NONE = 0
+        PDC_GT = 1
+        PDC_LT = 2
+        PDC_GTE = 3
+        PDC_LTE = 4
+        PDC_EQ = 5
+
+    ctypedef enum pdc_query_combine_op_t:
+        PDC_QUERY_NONE = 0
+        PDC_QUERY_AND = 1
+        PDC_QUERY_OR = 2
+
+    ctypedef enum pdc_query_get_op_t:
+        PDC_QUERY_GET_NONE  = 0
+        PDC_QUERY_GET_NHITS = 1
+        PDC_QUERY_GET_SEL   = 2
+        PDC_QUERY_GET_DATA  = 3
+
+    ctypedef struct pdc_selection_t:
+        pdcid_t   query_id
+        size_t    ndim
+        uint64_t  nhits
+        uint64_t *coords
+        uint64_t  coords_alloc
+
+    ctypedef struct pdc_query_constraint_t:
+        pdcid_t          obj_id
+        pdc_query_op_t   op
+        pdc_var_type_t   type
+        double           value
+        pdc_histogram_t *hist
+
+        int            is_range
+        pdc_query_op_t op2
+        double         value2
+
+        void *  storage_region_list_head
+        pdcid_t origin_server
+        int     n_sent
+        int     n_recv
+
+    ctypedef struct pdc_query_t:
+        pdc_query_constraint_t *constraint
+        pdc_query_t *    left
+        pdc_query_t *    right
+        pdc_query_combine_op_t  combine_op
+        pdc_region_info *region
+        void *                  region_constraint
+        pdc_selection_t *       sel
+
+    pdc_query_t *PDCquery_create(pdcid_t obj_id, pdc_query_op_t op, pdc_var_type_t type, void *value)
+    pdc_query_t *PDCquery_and(pdc_query_t *query1, pdc_query_t *query2)
+    pdc_query_t *PDCquery_or(pdc_query_t *query1, pdc_query_t *query2)
+    perr_t PDCobj_prop_query(pdcid_t cont_id, pdc_prop_name_t prop_name, void *prop_value, pdcid_t **out_ids, size_t *n_out)
+    perr_t PDCquery_sel_region(pdc_query_t *query, pdc_region_info *obj_region)
+    perr_t PDCquery_get_selection(pdc_query_t *query, pdc_selection_t *sel)
+    perr_t PDCquery_get_nhits(pdc_query_t *query, uint64_t *n)
+    perr_t PDCquery_get_data(pdcid_t obj_id, pdc_selection_t *sel, void *obj_data)
+    
+    #currently a no-op:
+    #perr_t PDCquery_get_histogram(pdcid_t obj_id)
+
+    perr_t PDCquery_get_sel_data(pdc_query_t *query, pdc_selection_t *sel, void *data)
+    void PDCselection_free(pdc_selection_t *sel)
+    void PDCquery_free(pdc_query_t *query)
+    void PDCquery_free_all(pdc_query_t *query) #?
+    void PDCquery_print(pdc_query_t *query)
+    void PDCselection_print(pdc_selection_t *sel)
+    void PDCselection_print_all(pdc_selection_t *sel)
+
+cdef extern from "pdc_transform.h":
+    ctypedef enum pdc_obj_transform_t:
+        PDC_TESTING       = 0
+        PDC_FILE_IO       = 1
+        PDC_DATA_MAP      = 2
+        PDC_PRE_ANALYSIS  = 4
+        PDC_POST_ANALYSIS = 8
+    
+    ctypedef enum pdc_data_movement_t:
+        DATA_IN = 1
+        DATA_OUT = 2
+        DATA_RELOCATION = 4
+    
+    #These functions will have to be changed significantly to be able to accept python functions as arguments
+    #They will need to accept a function pointer directly and an arbitrary void* argument to pass to the function
+    perr_t PDCobj_transform_register(char *func, pdcid_t obj_id, int current_state, int next_state, pdc_obj_transform_t op_type, pdc_data_movement_t when) #?
+    perr_t PDCbuf_map_transform_register(char *func, void *buf, pdcid_t src_region_id, pdcid_t dest_object_id, pdcid_t dest_region_id, int current_state, int next_state, pdc_data_movement_t when) #?

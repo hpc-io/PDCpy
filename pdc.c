@@ -5,11 +5,16 @@
     "distutils": {
         "depends": [
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_analysis.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_id_pkg.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_public.h"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_public.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_query.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_region.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_transform.h"
         ],
         "include_dirs": [
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api",
@@ -716,10 +721,15 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include <stdint.h>
 #include "pdc_public.h"
 #include "pdc_prop.h"
+#include "pdc_prop_pkg.h"
 #include "pdc.h"
 #include "pdc_id_pkg.h"
 #include "pdc_cont.h"
 #include "pdc_obj.h"
+#include "pdc_analysis.h"
+#include "pdc_region.h"
+#include "pdc_query.h"
+#include "pdc_transform.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
