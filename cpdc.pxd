@@ -37,23 +37,6 @@ cdef extern from "pdc_public.h":
         double *       range
         uint64_t *     bin
 
-
-cdef extern from "pdc_prop.h":
-    ctypedef struct pdc_obj_prop:
-        pdcid_t        obj_prop_id
-        size_t         ndim
-        uint64_t *     dims
-        pdc_var_type_t type
-
-cdef extern from "pdc_prop_pkg.h":
-    #returned by PDCcont_prop_get_info
-    ctypedef struct _pdc_cont_prop:
-        #probably internal:
-        #struct _pdc_class *pdc
-        pdcid_t            cont_prop_id
-        pdc_lifetime_t     cont_life
-
-
 cdef extern from "pdc.h":
     pdcid_t PDCinit(const char *pdc_name)
     perr_t PDCclose(pdcid_t pdcid)
@@ -62,7 +45,6 @@ cdef extern from "pdc_id_pkg.h":
     ctypedef struct _pdc_id_info:
         pdcid_t           id
         void *            obj_ptr
-        #next and prev pointers ommitted, as well as count variable
 
 cdef extern from "pdc_cont.h":
     ctypedef _pdc_id_info cont_handle
@@ -76,7 +58,6 @@ cdef extern from "pdc_cont.h":
     pdcid_t PDCcont_open(const char *cont_name, pdcid_t pdc_id)
     pdcid_t PDCcont_open_col(const char *cont_name, pdcid_t pdc_id)
     perr_t PDCcont_close(pdcid_t cont_id)
-    #pdc_cont_info *PDCcont_get_info(const char *cont_name)
     perr_t PDCcont_persist(pdcid_t cont_id)
     perr_t PDCprop_set_cont_lifetime(pdcid_t cont_create_prop, pdc_lifetime_t cont_lifetime)
     pdcid_t PDCcont_get_id(const char *cont_name, pdcid_t pdc_id)
@@ -93,8 +74,6 @@ cdef extern from "pdc_cont.h":
     perr_t PDCcont_get_tag(pdcid_t cont_id, char *tag_name, void **tag_value, psize_t *value_size)
     perr_t PDCcont_del_tag(pdcid_t cont_id, char *tag_name)
 
-    #not implemented:
-    #perr_t PDCcont_get_objids(pdcid_t cont_id, int *nobj, pdcid_t **obj_ids)
 
 cdef extern from "pdc_obj.h":
     ctypedef _pdc_id_info obj_handle
@@ -114,31 +93,18 @@ cdef extern from "pdc_obj.h":
     pdcid_t PDCobj_open_col(const char *obj_name, pdcid_t pdc_id)
     perr_t PDCobj_close(pdcid_t obj_id)
     pdc_obj_info *PDCobj_get_info(pdcid_t obj)
-    #not implemented:
-    #perr_t PDCobj_get_id(const char *tag_name, void *tag_value, int value_size, int *n_res, uint64_t **pdc_ids);
-    #perr_t PDCobj_get_name(const char *tag_name, void *tag_value, int value_size, int *n_res, char **obj_names);
     perr_t PDCprop_set_obj_user_id(pdcid_t obj_prop, uint32_t user_id)
     perr_t PDCprop_set_obj_data_loc(pdcid_t obj_prop, char *app_name) #?
     perr_t PDCprop_set_obj_app_name(pdcid_t obj_prop, char *app_name)
-    perr_t PDCprop_set_obj_time_step(pdcid_t obj_prop, uint32_t time_step)
-    #should this be deprecated in favor of the kvtags system?
-    perr_t PDCprop_set_obj_tags(pdcid_t obj_prop, char *tags)
-    
+    perr_t PDCprop_set_obj_time_step(pdcid_t obj_prop, uint32_t time_step)    
     perr_t PDCprop_set_obj_dims(pdcid_t obj_prop, PDC_int_t ndim, uint64_t *dims)
     perr_t PDCprop_set_obj_type(pdcid_t obj_prop, pdc_var_type_t type)
-    #probably obselete:
-    #perr_t PDCprop_set_obj_buf(pdcid_t obj_prop, void *buf)
-    #void **PDCobj_buf_retrieve(pdcid_t obj_id)
 
     #low priority, but straightforward to implement:
     obj_handle *PDCobj_iter_start(pdcid_t cont_id)
     pbool_t PDCobj_iter_null(obj_handle *ohandle)
     obj_handle *PDCobj_iter_next(obj_handle *ohandle, pdcid_t cont_id)
     pdc_obj_info *PDCobj_iter_get_info(obj_handle *ohandle)
-
-    #not implemented:
-    #obj_handle *PDCview_iter_start(pdcid_t view_id)
-
     pdcid_t PDCobj_put_data(const char *obj_name, void *data, uint64_t size, pdcid_t cont_id)
     perr_t PDCobj_get_data(pdcid_t obj_id, void *data, uint64_t size)
     perr_t PDCobj_del_data(pdcid_t obj_id)
