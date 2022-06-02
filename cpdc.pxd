@@ -1,4 +1,7 @@
-from libc.stdint cimport (uint8_t, uint16_t, uint32_t, uint64_t)
+from libc.stdint cimport uint32_t, uint64_t
+
+cdef extern from "mpi.h":
+    ctypedef int MPI_Comm
 
 cdef extern from "pdc_public.h":
     ctypedef int                perr_t
@@ -138,7 +141,6 @@ cdef extern from "pdc_prop.h":
     pdcid_t PDCprop_create(pdc_prop_type_t type, pdcid_t pdc_id)
     perr_t PDCprop_close(pdcid_t id)
     pdcid_t PDCprop_obj_dup(pdcid_t prop_id)
-    perr_t PDCprop_update(pdcid_t obj_id, pdcid_t prop_id)
 
 cdef extern from "pdc_region.h":
     struct pdc_region_info:
@@ -252,12 +254,15 @@ cdef extern from "pdc_query.h":
     perr_t PDCquery_get_nhits(pdc_query_t *query, uint64_t *n)
     perr_t PDCquery_get_data(pdcid_t obj_id, pdc_selection_t *sel, void *obj_data)
 
-
     perr_t PDCquery_get_sel_data(pdc_query_t *query, pdc_selection_t *sel, void *data)
     void PDCselection_free(pdc_selection_t *sel)
     void PDCquery_free(pdc_query_t *query)
     void PDCquery_free_all(pdc_query_t *query) #?
     void PDCquery_print(pdc_query_t *query)
+
+
+cdef extern from "pdc_mpi.h":
+    pdcid_t PDCobj_create_mpi(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop, int rank_id, MPI_Comm comm)
 
 #low priority:
 #cdef extern from "pdc_transform.h":
