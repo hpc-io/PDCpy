@@ -6,12 +6,13 @@
 Welcome to pdc python api's documentation!
 ==========================================
 
-.. autoclass:: pdc.Types
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
 
-
+.. automodule:: pdc
+   :members:
+   :undoc-members:
 
 Indices and tables
 ==================
