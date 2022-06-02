@@ -2,3 +2,4 @@ pdc_server.exe
 *.so
 build/**
 pdc_tmp/**
+docs/build/html/.buildinfo
