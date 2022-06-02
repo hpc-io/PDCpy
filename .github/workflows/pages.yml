@@ -8,7 +8,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Disable jekyll
-    - uses: "finnp/create-file-action@master"
+      uses: "finnp/create-file-action@master"
       env:
         FILE_NAME: ".jekyll"
         FILE_DATA: ""
