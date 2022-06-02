@@ -18,7 +18,7 @@ def _init(name:str):
         raise PDCError('Could not initialize PDC')
     _is_open = True
 
-if os.environ.get("PDC_PYTHON_NO_AUTO_INIT") != 1:
+if os.environ.get("PDC_PYTHON_NO_AUTO_INIT") != '1':
     _init("PDC")
 
 def _close():
