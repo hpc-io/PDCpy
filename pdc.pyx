@@ -1,9 +1,9 @@
 cimport cpdc
 from cpdc cimport uint32_t, pdc_var_type_t
-from typing import Union
 import atexit
-from typing import Iterable
+from typing import Union, Sequence
 from enum import IntEnum
+import os
 
 class PDCError(Exception):
     pass
@@ -18,7 +18,8 @@ def _init(name:str):
         raise PDCError('Could not initialize PDC')
     _is_open = True
 
-_init("PDC")
+if os.environ.get("PDC_PYTHON_NO_AUTO_INIT") != 1:
+    _init("PDC")
 
 def _close():
     global _is_open
@@ -49,7 +50,7 @@ class Types(IntEnum):
     INT8     = 11
 
 class ObjectProperties:
-    def __init__(self, properties:ObjectProperties=None, *, uint32_t user_id=0, data_loc:str='', app_name:str='', uint32_t time_step=0, dims:Sequence[int]=None, pdc_var_type_t type=Types.INT):
+    def __init__(self, properties:'ObjectProperties'=None, *, uint32_t user_id=0, data_loc:str='', app_name:str='', uint32_t time_step=0, dims:Sequence[int]=None, pdc_var_type_t type=Types.INT):
         pass
 
 

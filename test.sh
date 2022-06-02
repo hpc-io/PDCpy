@@ -1,2 +1,2 @@
-python3.8 setup.py build_ext --inplace
+./build.sh
 python3.8 pdc_init.py
