@@ -97,7 +97,6 @@ cdef extern from "pdc_obj.h":
     perr_t PDCobj_close(pdcid_t obj_id)
     pdc_obj_info *PDCobj_get_info(pdcid_t obj)
     perr_t PDCprop_set_obj_user_id(pdcid_t obj_prop, uint32_t user_id)
-    perr_t PDCprop_set_obj_data_loc(pdcid_t obj_prop, char *app_name) #?
     perr_t PDCprop_set_obj_app_name(pdcid_t obj_prop, char *app_name)
     perr_t PDCprop_set_obj_time_step(pdcid_t obj_prop, uint32_t time_step)    
     perr_t PDCprop_set_obj_dims(pdcid_t obj_prop, PDC_int_t ndim, uint64_t *dims)
@@ -109,7 +108,7 @@ cdef extern from "pdc_obj.h":
     obj_handle *PDCobj_iter_next(obj_handle *ohandle, pdcid_t cont_id)
     pdc_obj_info *PDCobj_iter_get_info(obj_handle *ohandle)
     pdcid_t PDCobj_put_data(const char *obj_name, void *data, uint64_t size, pdcid_t cont_id)
-    perr_t PDCobj_get_data(pdcid_t obj_id, void *data, uint64_t size)
+    perr_t PDCobj_get_data(pdcid_t obj_0id, void *data, uint64_t size)
     perr_t PDCobj_del_data(pdcid_t obj_id)
     perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, psize_t value_size)
     perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)

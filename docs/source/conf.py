@@ -17,10 +17,6 @@ import sys
 #module path
 sys.path.insert(0, os.path.abspath('../..'))
 
-#and the module calls PDCInit on import, so the server must be running to build the docs normally
-#this kludge tells the module to call PDCInit on import
-os.environ["PDC_PYTHON_NO_AUTO_INIT"]='1'
-
 # -- Project information -----------------------------------------------------
 
 project = 'pdc python api'
@@ -39,6 +35,8 @@ release = '0.1'
 extensions = [
     'sphinx.ext.autodoc'
 ]
+
+autoclass_content = "both"
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ['_templates']

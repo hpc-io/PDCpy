@@ -25,6 +25,6 @@ setup(
                           os.path.join(MERCURY_DIR, "include")],
             extra_compile_args = mpi_build_args,
             extra_link_args = mpi_link_args)], 
-            language_level='3'),
+            language_level='3str'),
     zip_safe=False,
 )
