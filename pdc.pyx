@@ -1,12 +1,16 @@
 cimport cpdc
-from cpdc cimport uint32_t, uint64_t, pdc_var_type_t, pdc_lifetime_t
+from cpdc cimport uint32_t, uint64_t, pdc_var_type_t, pdc_lifetime_t, pdc_access_t, pdc_query_combine_op_t, pdc_query_op_t
 import atexit
-from typing import Optional, Tuple
+from typing import Optional, Tuple, List, TypeVar, Generic
 from enum import Enum
 import os
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
 from functools import singledispatchmethod
 import builtins
+import numpy as np
+import numpy.typing as npt
+from abc import ABC, abstractmethod
+from weakref import finalize
 
 int32 = int
 uint32 = int
@@ -35,9 +39,13 @@ def init(name:str="PDC"):
     pdc_id = cpdc.PDCinit(name_bytes)
     if not pdc_id:
         raise PDCError('Could not initialize PDC')
+    
+    #hack to ensure close runs after all finalizers
+    #See: https://stackoverflow.com/questions/72622803/how-do-i-make-an-exit-handler-that-runs-after-all-weakref-finalizers-run
+    finalize(_close, _close, pdc_id)
     _is_open = True
 
-def _close():
+def _close(pdc_id):
     global _is_open
     if not _is_open:
         return
@@ -45,9 +53,6 @@ def _close():
     if err < 0:
         raise PDCError('Could not close PDC')
     _is_open = False
-
-atexit.register(_close)
-
 
 def ready() -> bool:
     '''
@@ -129,6 +134,20 @@ class Object:
     A PDC object
     '''
 
+    @property
+    def properties(self) -> 'Properties':
+        '''
+        The properties of this object.  read-only
+        '''
+        pass
+    
+    @property
+    def name(self) -> str:
+        '''
+        The name of this object. read-only
+        '''
+        pass
+
     class Properties:
         '''
         Contains most of the metadata associated with an object.
@@ -144,7 +163,7 @@ class Object:
 
         _dims_ptr:uint64
 
-        def __init__(self, dims:Tuple[int], type:Type=Type.INT, time_step:uint32=0, user_id:Optional[uint32]=None, app_name:str=''):
+        def __init__(self, dims:Tuple[int], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str=''):
             '''
             :param dims: A tuple containing dimensions of the object.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
             :type dims: Sequence[int]
@@ -205,16 +224,81 @@ class Object:
             cpdc.PDCprop_set_obj_type(self.prop_id, type.value)
         
         @property
-        def time_step(self):
+        def time_step(self) -> uint32:
             return self._time_step
         
         @time_step.setter
-        def time_step(self, time_step:uint32):
+        def time_step(self, uint32_t time_step:uint32):
             cdef uint32_t time_step_c = time_step
             cpdc.PDCprop_set_obj_time_step(self.prop_id, time_step_c)
         
+        @property
+        def user_id(self) -> uint32:
+            '''
+            the id of the user.
+            '''
+            pass
+        
+        @user_id.setter
+        def user_id(self, uint32_t id:uint32):
+            pass
+        
+        @property
+        def app_name(self) -> str:
+            '''
+            The name of the application
+            '''
+            pass
+        
+        @app_name.setter
+        def app_name(self, str name:str):
+            pass
+        
+        def copy(self) -> 'Properties':
+            '''
+            Returns a copy of this Properties object
+            '''
+            pass
+
         def __del__(self):
             self._free_dims()
+    
+    class TransferRequest:
+        '''
+        Represents a transfer request to either set a region's data or get it
+        This object can be awaited
+        '''
+
+        class RequestType(Enum):
+            '''
+            The type of transfer request
+            '''
+            GET = pdc_access_t.PDC_READ
+            SET = pdc_access_t.PDC_WRITE
+
+        def __await__(self):
+            yield None
+        
+        @property
+        def done(self) -> bool:
+            '''
+            True if this transfer request is completed
+            '''
+            return False
+        
+        @property
+        def type(self) -> RequestType:
+            '''
+            Get the type of request
+            '''
+            pass
+        
+        @property
+        def result(self) -> Optional[npt.NDArray]:
+            '''
+            If the request is done and the request type is RequestType.get, this is a numpy array containing the requested data.
+            '''
+            return None
     
     class Region:
         '''
@@ -247,10 +331,10 @@ class Object:
             '''
             pass
         
-        async def get(self):
+        def get(self) -> 'Object.TransferRequest':
             pass
         
-        async def set(self, data):
+        def set(self, data) -> 'Object.TransferRequest':
             pass
     
     @singledispatchmethod
@@ -273,16 +357,99 @@ class Object:
         #create from id instead
         pass
     
-    @property
-    def properties(self) -> Properties:
+    @staticmethod
+    def get(name:str) -> 'Object':
         '''
-        The properties of this object.  read-only
+        Get an existing object by name
+
+        If you have created multiple objects with the same name, this will return the one with time_step=0
+        If there are multiple objects with the same name and time_step, the tie is broken arbitrarily
+        '''
+        pass
+
+
+class Query(ABC):
+    class _CombineOp(Enum):
+        NONE = pdc_query_combine_op_t.PDC_QUERY_NONE
+        AND = pdc_query_combine_op_t.PDC_QUERY_AND
+        OR = pdc_query_combine_op_t.PDC_QUERY_OR
+    
+    @abstractmethod
+    def _combine(self: 'Query', other: 'Query', op:_CombineOp) -> 'Query':
+        pass
+    
+    def __and__(self, other: 'Query') -> 'Query':
+        return self.combine(other, Query._CombineOp.AND)
+    
+    def __or__(self, other: 'Query') -> 'Query':
+        return self.combine(other, Query._CombineOp.OR)
+
+Q = TypeVar('Q', bound=Query)
+
+class QueryComponent(ABC):
+    class _CompareOp(Enum):
+        OP_NONE = pdc_query_op_t.PDC_OP_NONE
+        GT = pdc_query_op_t.PDC_GT
+        LT = pdc_query_op_t.PDC_LT
+        GTE = pdc_query_op_t.PDC_GTE
+        LTE = pdc_query_op_t.PDC_LTE
+        EQ = pdc_query_op_t.PDC_EQ
+    
+    @abstractmethod
+    def _compare(self, other:object, op:_CompareOp) -> Q:
+        pass
+    
+    def __gt__(self, other:object) -> Query:
+        return self._compare(other, QueryComponent._CompareOp.GT)
+    
+    def __lt__(self, other:object) -> Query:
+        return self._compare(other, QueryComponent._CompareOp.LT)
+    
+    def __ge__(self, other:object) -> Query:
+        return self._compare(other, QueryComponent._CompareOp.GTE)
+    
+    def __le__(self, other:object) -> Query:
+        return self._compare(other, QueryComponent._CompareOp.LTE)
+    
+    def __eq__(self, other:object) -> Query:
+        return self._compare(other, QueryComponent._CompareOp.EQ)
+
+class DataQuery(Query):
+    class Result:
+        '''
+        Result of a DataQuery
+        '''
+
+    def _combine(self: Q, other:Q, op:Query._CombineOp) -> Q:
+        pass
+    
+    def get_num_hits() -> int:
+        '''
+        Get number of hits for this query (i.e. number of objects that match this query)
+        More efficient than len(query.get_result())
         '''
         pass
     
-    @property
-    def name(self) -> str:
+    def get_result() -> Result:
         '''
-        The name of this object. read-only
+        Get the result of this query
         '''
+        pass
+
+class MetaDataQuery(Query):
+    def _combine(self: Q, other:Q, op:Query._CombineOp) -> Q:
+        pass
+    
+    def get_result(self) -> List[Object]:
+        '''
+        Get list of objects matching this query
+        '''
+        pass
+
+class DataQueryComponent(QueryComponent):
+    def _compare(self, other:object, op:QueryComponent._CompareOp) -> DataQuery:
+        pass
+
+class MetaDataQueryComponent(QueryComponent):
+    def _compare(self, other:object, op:QueryComponent._CompareOp) -> MetaDataQuery:
         pass
