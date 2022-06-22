@@ -1,3 +1,4 @@
+from distutils import extension
 from setuptools import Extension, setup
 from Cython.Build import cythonize
 import os
@@ -19,12 +20,13 @@ mpi_link_args = os.popen('mpicc -link_info').read().strip().split()[1:]
 
 setup(
     name='Proactive Data Containers',
-    ext_modules=cythonize([Extension("pdc", ["pdc.pyx"], libraries=["pdc"], 
-            library_dirs=[os.path.join(PDC_DIR, "install", "bin")],
-            include_dirs=[os.path.join(PDC_DIR, "api"), os.path.join(PDC_DIR, "install", "api"), #install folder is needed because that's where pdc_config.h is placed
-                          os.path.join(MERCURY_DIR, "include")],
-            extra_compile_args = mpi_build_args,
-            extra_link_args = mpi_link_args)], 
-            language_level='3str'),
+    ext_modules=cythonize(Extension("*", ["pdc/*.pyx"],
+        libraries=["pdc"], 
+        library_dirs=[os.path.join(PDC_DIR, "install", "bin")],
+        include_dirs=[os.path.join(PDC_DIR, "api"), os.path.join(PDC_DIR, "install", "api"), #install folder is needed because that's where pdc_config.h is placed
+            os.path.join(MERCURY_DIR, "include")],
+        extra_compile_args=mpi_build_args,
+        extra_link_args=mpi_link_args
+    ), language_level='3str'),
     zip_safe=False,
 )

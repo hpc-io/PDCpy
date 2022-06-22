@@ -1,8 +1,3 @@
-.. pdc python api documentation master file, created by
-   sphinx-quickstart on Thu Jun  2 11:55:49 2022.
-   You can adapt this file completely to your liking, but it should at least
-   contain the root `toctree` directive.
-
 Welcome to pdc python api's documentation!
 ==========================================
 
@@ -10,9 +5,58 @@ Welcome to pdc python api's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-.. automodule:: pdc
+Main APIs
+=========
+
+Thoughout the documentation, you may see the following types used when an integer must be in a certain range:
+
+===========  =================
+type name    range
+===========  =================
+int32        -2**31 to 2**31-1
+uint32       0 to 2**32-1
+uint64       0 to 2**64-1
+===========  =================
+
+These bounds are checked at runtime and will result in an OverflowError if they are exceeded.
+
+.. automodule:: pdc.main
    :members:
    :undoc-members:
+
+Containers
+==========
+
+.. automodule:: pdc.container
+   :members:
+   :undoc-members:
+
+Objects
+=======
+
+.. automodule:: pdc.object
+   :members:
+   :undoc-members:
+
+Regions
+=======
+
+.. automodule:: pdc.region
+   :members:
+   :undoc-members:
+
+   .. property:: region
+   
+   	An object used to create regions.
+   	See :class:`Region` for details.
+
+Queries
+=======
+
+.. automodule:: pdc.query
+   :members:
+   :undoc-members:
+   :exclude-members: Query, QueryComponent
 
 Indices and tables
 ==================

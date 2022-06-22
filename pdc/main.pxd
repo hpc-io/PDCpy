@@ -1,0 +1,1 @@
+cdef void *malloc_or_memerr(size_t size)

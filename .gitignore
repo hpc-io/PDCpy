@@ -3,3 +3,4 @@ pdc_server.exe
 build/**
 pdc_tmp/**
 docs/build/html/.buildinfo
+**/__pycache__/**

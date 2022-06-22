@@ -57,9 +57,9 @@ cdef extern from "pdc_cont.h":
         uint64_t meta_id
     
     pdcid_t PDCcont_create(const char *cont_name, pdcid_t cont_create_prop)
-    pdcid_t PDCcont_create_col(const char *cont_name, pdcid_t cont_prop_id)
+    #pdcid_t PDCcont_create_col(const char *cont_name, pdcid_t cont_prop_id)
     pdcid_t PDCcont_open(const char *cont_name, pdcid_t pdc_id)
-    pdcid_t PDCcont_open_col(const char *cont_name, pdcid_t pdc_id)
+    #pdcid_t PDCcont_open_col(const char *cont_name, pdcid_t pdc_id)
     perr_t PDCcont_close(pdcid_t cont_id)
     perr_t PDCcont_persist(pdcid_t cont_id)
     perr_t PDCprop_set_cont_lifetime(pdcid_t cont_create_prop, pdc_lifetime_t cont_lifetime)
@@ -93,7 +93,7 @@ cdef extern from "pdc_obj.h":
 
     pdcid_t PDCobj_create(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop)
     pdcid_t PDCobj_open(const char *obj_name, pdcid_t pdc_id)
-    pdcid_t PDCobj_open_col(const char *obj_name, pdcid_t pdc_id)
+    #pdcid_t PDCobj_open_col(const char *obj_name, pdcid_t pdc_id)
     perr_t PDCobj_close(pdcid_t obj_id)
     pdc_obj_info *PDCobj_get_info(pdcid_t obj)
     perr_t PDCprop_set_obj_user_id(pdcid_t obj_prop, uint32_t user_id)
@@ -108,7 +108,7 @@ cdef extern from "pdc_obj.h":
     obj_handle *PDCobj_iter_next(obj_handle *ohandle, pdcid_t cont_id)
     pdc_obj_info *PDCobj_iter_get_info(obj_handle *ohandle)
     pdcid_t PDCobj_put_data(const char *obj_name, void *data, uint64_t size, pdcid_t cont_id)
-    perr_t PDCobj_get_data(pdcid_t obj_0id, void *data, uint64_t size)
+    perr_t PDCobj_get_data(pdcid_t obj_id, void *data, uint64_t size)
     perr_t PDCobj_del_data(pdcid_t obj_id)
     perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, psize_t value_size)
     perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)
@@ -187,11 +187,11 @@ cdef extern from "pdc_region.h":
     perr_t PDCregion_transfer_close(pdcid_t transfer_request_id)
 
 cdef extern from "pdc_query.h":
-    cdef enum pdc_prop_name_t:
-        PDC_OBJ_NAME
-        PDC_CONT_NAME
-        PDC_APP_NAME
-        PDC_USER_ID
+    #cdef enum pdc_prop_name_t:
+    #    PDC_OBJ_NAME
+    #    PDC_CONT_NAME
+    #    PDC_APP_NAME
+    #    PDC_USER_ID
 
     ctypedef enum pdc_query_op_t:
         PDC_OP_NONE = 0
@@ -205,13 +205,7 @@ cdef extern from "pdc_query.h":
         PDC_QUERY_NONE = 0
         PDC_QUERY_AND = 1
         PDC_QUERY_OR = 2
-
-    ctypedef enum pdc_query_get_op_t:
-        PDC_QUERY_GET_NONE  = 0
-        PDC_QUERY_GET_NHITS = 1
-        PDC_QUERY_GET_SEL   = 2
-        PDC_QUERY_GET_DATA  = 3
-
+    
     ctypedef struct pdc_selection_t:
         pdcid_t   query_id
         size_t    ndim
@@ -247,7 +241,7 @@ cdef extern from "pdc_query.h":
     pdc_query_t *PDCquery_create(pdcid_t obj_id, pdc_query_op_t op, pdc_var_type_t type, void *value)
     pdc_query_t *PDCquery_and(pdc_query_t *query1, pdc_query_t *query2)
     pdc_query_t *PDCquery_or(pdc_query_t *query1, pdc_query_t *query2)
-    perr_t PDCobj_prop_query(pdcid_t cont_id, pdc_prop_name_t prop_name, void *prop_value, pdcid_t **out_ids, size_t *n_out)
+    #perr_t PDCobj_prop_query(pdcid_t cont_id, pdc_prop_name_t prop_name, void *prop_value, pdcid_t **out_ids, size_t *n_out)
     perr_t PDCquery_sel_region(pdc_query_t *query, pdc_region_info *obj_region)
     perr_t PDCquery_get_selection(pdc_query_t *query, pdc_selection_t *sel)
     perr_t PDCquery_get_nhits(pdc_query_t *query, uint64_t *n)
@@ -259,9 +253,17 @@ cdef extern from "pdc_query.h":
     void PDCquery_free_all(pdc_query_t *query) #?
     void PDCquery_print(pdc_query_t *query)
 
+#cdef extern from "pdc_mpi.h":
+#    pdcid_t PDCobj_create_mpi(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop, int rank_id, MPI_Comm comm)
 
-cdef extern from "pdc_mpi.h":
-    pdcid_t PDCobj_create_mpi(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop, int rank_id, MPI_Comm comm)
+cdef extern from "pdc_prop_pkg.h":
+    ctypedef struct pdc_kvtag_t:
+        char *   name
+        uint32_t size
+        void *   value 
+
+cdef extern from "pdc_client_connect.h":
+    perr_t PDC_Client_query_kvtag(pdc_kvtag_t *kvtag, int *n_res, uint64_t **pdc_ids)
 
 #low priority:
 #cdef extern from "pdc_transform.h":
