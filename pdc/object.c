@@ -1637,6 +1637,7 @@ static const char __pyx_k_throw[] = "throw";
 static const char __pyx_k_value[] = "value";
 static const char __pyx_k_Object[] = "Object";
 static const char __pyx_k_Region[] = "Region";
+static const char __pyx_k_delete[] = "delete";
 static const char __pyx_k_dims_2[] = "_dims";
 static const char __pyx_k_getuid[] = "getuid";
 static const char __pyx_k_import[] = "__import__";
@@ -1692,6 +1693,7 @@ static const char __pyx_k_numpy_typing[] = "numpy.typing";
 static const char __pyx_k_staticmethod[] = "staticmethod";
 static const char __pyx_k_Expected_Type[] = ".  Expected Type";
 static const char __pyx_k_Object___init[] = "Object.__init__";
+static const char __pyx_k_Object_delete[] = "Object.delete";
 static const char __pyx_k_expected_tuple[] = ".  expected tuple";
 static const char __pyx_k_pdc_object_pyx[] = "pdc/object.pyx";
 static const char __pyx_k_Object_get_data[] = "Object.get_data";
@@ -1755,6 +1757,7 @@ static PyObject *__pyx_n_s_Object_TransferRequest_result;
 static PyObject *__pyx_n_s_Object_TransferRequest_type;
 static PyObject *__pyx_n_s_Object___init;
 static PyObject *__pyx_n_s_Object_data;
+static PyObject *__pyx_n_s_Object_delete;
 static PyObject *__pyx_n_s_Object_get;
 static PyObject *__pyx_n_s_Object_get_data;
 static PyObject *__pyx_n_s_Object_name;
@@ -1783,6 +1786,7 @@ static PyObject *__pyx_n_s_close;
 static PyObject *__pyx_n_s_container;
 static PyObject *__pyx_n_s_copy;
 static PyObject *__pyx_n_s_data;
+static PyObject *__pyx_n_s_delete;
 static PyObject *__pyx_n_s_dims;
 static PyObject *__pyx_n_s_dims_2;
 static PyObject *__pyx_kp_s_dims_must_be_at_most_2_31_1_elem;
@@ -1874,6 +1878,7 @@ static PyObject *__pyx_pf_3pdc_6object_6Object_10_(CYTHON_UNUSED PyObject *__pyx
 static PyObject *__pyx_pf_3pdc_6object_6Object_12get(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_name); /* proto */
 static PyObject *__pyx_pf_3pdc_6object_6Object_14get_data(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_region); /* proto */
 static PyObject *__pyx_pf_3pdc_6object_6Object_16set_data(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_region, CYTHON_UNUSED PyObject *__pyx_v_data); /* proto */
+static PyObject *__pyx_pf_3pdc_6object_6Object_18delete(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self); /* proto */
 static PyObject *__pyx_tp_new_3pdc_6object___pyx_scope_struct____await__(PyTypeObject *t, PyObject *a, PyObject *k); /*proto*/
 static PyObject *__pyx_int_1;
 static PyObject *__pyx_int_2147483647;
@@ -1904,6 +1909,7 @@ static PyObject *__pyx_tuple__49;
 static PyObject *__pyx_tuple__51;
 static PyObject *__pyx_tuple__53;
 static PyObject *__pyx_tuple__55;
+static PyObject *__pyx_tuple__57;
 static PyObject *__pyx_codeobj__3;
 static PyObject *__pyx_codeobj__6;
 static PyObject *__pyx_codeobj__8;
@@ -1930,6 +1936,7 @@ static PyObject *__pyx_codeobj__50;
 static PyObject *__pyx_codeobj__52;
 static PyObject *__pyx_codeobj__54;
 static PyObject *__pyx_codeobj__56;
+static PyObject *__pyx_codeobj__58;
 /* Late includes */
 
 /* "pdc/object.pyx":21
@@ -4425,6 +4432,41 @@ static PyObject *__pyx_pf_3pdc_6object_6Object_16set_data(CYTHON_UNUSED PyObject
   return __pyx_r;
 }
 
+/* "pdc/object.pyx":247
+ *         pass
+ * 
+ *     def delete(self):             # <<<<<<<<<<<<<<
+ *         '''
+ *         Delete this Object.
+ */
+
+/* Python wrapper */
+static PyObject *__pyx_pw_3pdc_6object_6Object_19delete(PyObject *__pyx_self, PyObject *__pyx_v_self); /*proto*/
+static char __pyx_doc_3pdc_6object_6Object_18delete[] = "\n        Delete this Object.\n        Do not access any methods or properties of this object after calling.\n        ";
+static PyMethodDef __pyx_mdef_3pdc_6object_6Object_19delete = {"delete", (PyCFunction)__pyx_pw_3pdc_6object_6Object_19delete, METH_O, __pyx_doc_3pdc_6object_6Object_18delete};
+static PyObject *__pyx_pw_3pdc_6object_6Object_19delete(PyObject *__pyx_self, PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = 0;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("delete (wrapper)", 0);
+  __pyx_r = __pyx_pf_3pdc_6object_6Object_18delete(__pyx_self, ((PyObject *)__pyx_v_self));
+
+  /* function exit code */
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
+static PyObject *__pyx_pf_3pdc_6object_6Object_18delete(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self) {
+  PyObject *__pyx_r = NULL;
+  __Pyx_RefNannyDeclarations
+  __Pyx_RefNannySetupContext("delete", 0);
+
+  /* function exit code */
+  __pyx_r = Py_None; __Pyx_INCREF(Py_None);
+  __Pyx_XGIVEREF(__pyx_r);
+  __Pyx_RefNannyFinishContext();
+  return __pyx_r;
+}
+
 static struct __pyx_obj_3pdc_6object___pyx_scope_struct____await__ *__pyx_freelist_3pdc_6object___pyx_scope_struct____await__[8];
 static int __pyx_freecount_3pdc_6object___pyx_scope_struct____await__ = 0;
 
@@ -4612,6 +4654,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Object_TransferRequest_type, __pyx_k_Object_TransferRequest_type, sizeof(__pyx_k_Object_TransferRequest_type), 0, 0, 1, 1},
   {&__pyx_n_s_Object___init, __pyx_k_Object___init, sizeof(__pyx_k_Object___init), 0, 0, 1, 1},
   {&__pyx_n_s_Object_data, __pyx_k_Object_data, sizeof(__pyx_k_Object_data), 0, 0, 1, 1},
+  {&__pyx_n_s_Object_delete, __pyx_k_Object_delete, sizeof(__pyx_k_Object_delete), 0, 0, 1, 1},
   {&__pyx_n_s_Object_get, __pyx_k_Object_get, sizeof(__pyx_k_Object_get), 0, 0, 1, 1},
   {&__pyx_n_s_Object_get_data, __pyx_k_Object_get_data, sizeof(__pyx_k_Object_get_data), 0, 0, 1, 1},
   {&__pyx_n_s_Object_name, __pyx_k_Object_name, sizeof(__pyx_k_Object_name), 0, 0, 1, 1},
@@ -4640,6 +4683,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_container, __pyx_k_container, sizeof(__pyx_k_container), 0, 0, 1, 1},
   {&__pyx_n_s_copy, __pyx_k_copy, sizeof(__pyx_k_copy), 0, 0, 1, 1},
   {&__pyx_n_s_data, __pyx_k_data, sizeof(__pyx_k_data), 0, 0, 1, 1},
+  {&__pyx_n_s_delete, __pyx_k_delete, sizeof(__pyx_k_delete), 0, 0, 1, 1},
   {&__pyx_n_s_dims, __pyx_k_dims, sizeof(__pyx_k_dims), 0, 0, 1, 1},
   {&__pyx_n_s_dims_2, __pyx_k_dims_2, sizeof(__pyx_k_dims_2), 0, 0, 1, 1},
   {&__pyx_kp_s_dims_must_be_at_most_2_31_1_elem, __pyx_k_dims_must_be_at_most_2_31_1_elem, sizeof(__pyx_k_dims_must_be_at_most_2_31_1_elem), 0, 0, 1, 0},
@@ -5043,6 +5087,18 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__55);
   __Pyx_GIVEREF(__pyx_tuple__55);
   __pyx_codeobj__56 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__55, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pdc_object_pyx, __pyx_n_s_set_data, 236, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__56)) __PYX_ERR(0, 236, __pyx_L1_error)
+
+  /* "pdc/object.pyx":247
+ *         pass
+ * 
+ *     def delete(self):             # <<<<<<<<<<<<<<
+ *         '''
+ *         Delete this Object.
+ */
+  __pyx_tuple__57 = PyTuple_Pack(1, __pyx_n_s_self); if (unlikely(!__pyx_tuple__57)) __PYX_ERR(0, 247, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_tuple__57);
+  __Pyx_GIVEREF(__pyx_tuple__57);
+  __pyx_codeobj__58 = (PyObject*)__Pyx_PyCode_New(1, 0, 1, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__57, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pdc_object_pyx, __pyx_n_s_delete, 247, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__58)) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -6589,6 +6645,18 @@ if (!__Pyx_RefNanny) {
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_6, __pyx_t_7);
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
   if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_set_data, __pyx_t_6) < 0) __PYX_ERR(0, 236, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
+
+  /* "pdc/object.pyx":247
+ *         pass
+ * 
+ *     def delete(self):             # <<<<<<<<<<<<<<
+ *         '''
+ *         Delete this Object.
+ */
+  __pyx_t_6 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_6object_6Object_19delete, 0, __pyx_n_s_Object_delete, NULL, __pyx_n_s_pdc_object, __pyx_d, ((PyObject *)__pyx_codeobj__58)); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 247, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_6);
+  if (__Pyx_SetNameInClass(__pyx_t_1, __pyx_n_s_delete, __pyx_t_6) < 0) __PYX_ERR(0, 247, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_6); __pyx_t_6 = 0;
 
   /* "pdc/object.pyx":15
