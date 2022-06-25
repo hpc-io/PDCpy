@@ -1,12 +1,14 @@
 from enum import Enum
 from typing import Iterable
 
+from .main import KVTags
 from pdc.cpdc cimport pdc_lifetime_t
 import pdc
 
 class Container:
     '''
-    A PDC container
+    Containers can contain one or more objects, and objects can be part of one or more containers.
+    Containers act as boundaries for metadata queries, and as boundaries for 
     '''
 
     class Lifetime(Enum):
@@ -37,6 +39,14 @@ class Container:
         read-only
         '''
         pass
+    
+    @property
+    def tags(self) -> KVTags:
+        '''
+        Get the tags of this Object.  See :class:`KVTags` for more info
+        '''
+        pass
+
     
     def all_local_objects(self) -> Iterable['pdc.Object']:
         '''
@@ -72,7 +82,7 @@ class Container:
         pass
 
 
-def all_containers() -> Iterable[Container]:
+def all_local_containers() -> Iterable[Container]:
     '''
     Get an iterable of all containers that have been retrieved by the client, and haven't yet been garbage collected.
     Deleting a container after this function is called, then using the iterator may cause undefined behavior.

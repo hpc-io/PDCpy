@@ -24,13 +24,25 @@ cdef void *malloc_or_memerr(size_t size):
         raise MemoryError()
     return ptr
 
+def _free_from_int(ptr: int):
+    cdef size_t cptr
+    if ptr:
+        cptr = ptr
+        free(<void *> cptr)
+
 class PDCError(Exception):
+    '''
+    A general error type for all errors in the pdc api.
+    '''
+    pass
+
+class InternalPDCError(Exception):
+    '''
+    Indicates an error internal to the python interface.  If you see this error, report it.
+    '''
     pass
 
 _is_open = False
-
-def test(uint64_t value):
-    pass
 
 def _get_pdcid() -> pdcid:
     global pdc_id
@@ -38,9 +50,9 @@ def _get_pdcid() -> pdcid:
 
 def init(name:str="PDC"):
     '''
-    Initialize PDC
+    Initialize PDC.
     This call will block and eventually terminate the program if the PDC server is not running.
-    This must be called before anything else
+    This must be called before any other PDC method.
     '''
     global pdc_id, _is_open
     name_bytes = name.encode('utf-8')
@@ -115,17 +127,20 @@ class KVTags(ABC):
     An object used to manipulate object and container tags.
     Supports the following operations:
 
-    =============== ==============================
-    example         effect
-    =============== ==============================
-    value = tags[x] get the value of the tag ``x``
-    tags[x] = value set the value of the tag ``x``
-    del tags[x]     delete the tag ``x``
-    =============== ==============================
+    =================== ==============================
+    example             effect
+    =================== ==============================
+    ``value = tags[x]`` get the value of the tag ``x``
+    ``tags[x] = value`` set the value of the tag ``x``
+    ``del tags[x]``     delete the tag ``x``
+    =================== ==============================
     '''
 
     def __getitem__(self, name:str):
         pass
     
     def __setitem__(self, name:str, value:object):
+        pass
+    
+    def __delitem__(self, name:str):
         pass

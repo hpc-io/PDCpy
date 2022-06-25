@@ -1,7 +1,7 @@
 import abc
 import collections.abc
 from abc import ABC, abstractmethod
-from typing import TypeVar, Iterable
+from typing import TypeVar, Iterable, Tuple
 from enum import Enum
 
 import numpy.typing as npt
@@ -99,3 +99,14 @@ class DataQuery(Query, collections.abc.Mapping):
         :rtype: Result
         '''
         pass
+
+def tag_query(tag_name:str, tag_value:str) -> Tuple['Object']:
+    '''
+    Get objects with a tag of the given name and value
+
+    :param str tag_name: name of the tag
+    :param str tag_value: value of the tag
+    :return: objects with the given tag
+    :rtype: Iterable[Object]
+    '''
+    pass

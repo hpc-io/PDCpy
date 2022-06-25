@@ -1,16 +1,18 @@
 import builtins
 import os
 from functools import singledispatchmethod
-from typing import Tuple, Optional, Iterable
+from typing import Tuple, Optional, Iterable, Union
 from enum import Enum
 import numpy.typing as npt
+from weakref import finalize
 
-from pdc.main import uint32, uint64, Type
+from pdc.main import uint32, uint64, Type, KVTags, _free_from_int
 cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
 from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t
 from pdc.main cimport malloc_or_memerr
-from . import container 
+from . import container
+from . import region
 
 class Object:
     '''
@@ -34,6 +36,8 @@ class Object:
     @property
     def data(self) -> 'DataQueryComponent':
         '''
+        An object used to build queries.
+        ex. ``query = my_object.data > 1``
         '''
         pass
 
@@ -42,20 +46,14 @@ class Object:
         Contains most of the metadata associated with an object.
         This is an inner class of Object
         '''
-
-        _dims:Tuple[int]
-        _type:Type
-        _time_step:uint32
-        _user_id:uint32
-        _app_name:str
-        prop_id:pdcid
+        _id:pdcid
 
         _dims_ptr:uint64
 
-        def __init__(self, dims:Tuple[int], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str=''):
+        def __init__(self, dims:Union[Tuple[int], int], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str=''):
             '''
-            :param dims: A tuple containing dimensions of the object.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
-            :type dims: Sequence[int]
+            :param dims: A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
+            :type dims: Tuple[int]
             :param Type type: the data type.  Defaults to INT
             :param uint32 time_step: For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.
             :param uint32 user_id: the id of the user.  defaults to os.getuid()
@@ -65,24 +63,31 @@ class Object:
                 user_id = os.getuid()
             
             global pdc_id
-            self.prop_id = cpdc.PDCprop_create(cpdc.pdc_prop_type_t.PDC_OBJ_CREATE, pdc_id)        
+            self._id = cpdc.PDCprop_create(cpdc.pdc_prop_type_t.PDC_OBJ_CREATE, pdc_id)        
             self.app_name = app_name
             self.type = type
             self.time_step = time_step
             self.user_id = user_id
+            self._finalizer = None
         
-        def _free_dims(self):
-            cdef uint64_t ptr
-            if self._dims_ptr:
-                ptr = self._dims_ptr
-                free(<uint64_t*> ptr)
+        @staticmethod
+        def _finalize(id, ptrs):
+            for p in ptrs:
+                _free_from_int(p)
+
+        def _reregister_finalizer(self):
+            if self._finalizer:
+                self._finalizer.detach()
+            finalize(self, type(self)._finalize, self._id, self._dims_ptr)
         
         @property
         def dims(self) -> Tuple[int]:
-            return self._dims
+            pass
         
         @dims.setter
-        def dims(self, dims:Tuple[int]):
+        def dims(self, dims:Union[Tuple[int], int]):
+            if isinstance(dims, int):
+                dims = (dims,)
             if not isinstance(dims, tuple):
                 raise TypeError(f"invalid type of dims: {type(dims)}.  expected tuple")
             if not 1 <= len(dims) <= 2**31-1:
@@ -90,36 +95,36 @@ class Object:
             
             cdef uint32_t length = len(dims)
 
-            self._free_dims()
             cdef uint64_t *dims_ptr = <uint64_t*> malloc_or_memerr(length * sizeof(uint64_t))
             self._dims_ptr = <uint64_t> dims_ptr
+            self._reregister_finalizer()
 
             for i in range(length):
                 dims_ptr[i] = dims[i]
             
-            cpdc.PDCprop_set_obj_dims(self.prop_id, length, dims_ptr)
+            cpdc.PDCprop_set_obj_dims(self._id, length, dims_ptr)
 
             self._dims = dims
         
         @property
         def type(self) -> Type:
-            return self._type
+            pass
         
         @type.setter
         def type(self, type:Type):
             if not isinstance(type, Type):
                 raise TypeError(f"invalid type of type: {builtins.type(type)}.  Expected Type")
             
-            cpdc.PDCprop_set_obj_type(self.prop_id, type.value)
+            cpdc.PDCprop_set_obj_type(self._id, type.value)
         
         @property
         def time_step(self) -> uint32:
-            return self._time_step
+            pass
         
         @time_step.setter
         def time_step(self, uint32_t time_step:uint32):
             cdef uint32_t time_step_c = time_step
-            cpdc.PDCprop_set_obj_time_step(self.prop_id, time_step_c)
+            cpdc.PDCprop_set_obj_time_step(self._id, time_step_c)
         
         @property
         def user_id(self) -> uint32:
@@ -192,6 +197,13 @@ class Object:
     
     @singledispatchmethod
     def __init__(self, name, *args):
+        '''
+        Create a new object.  To get an existing object, use Object.get() instead
+
+        :param str name: the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.
+        :param Object.Properties properties: An ObjectProperties describing the properties of the object
+        :param Container container: the container this object should be placed in.
+        '''
         raise TypeError(f'Invalid type of name: {type(name)}')
 
     @__init__.register
@@ -223,21 +235,28 @@ class Object:
         '''
         pass
     
-    def get_data(self, region:'Region') -> TransferRequest:
+    @property
+    def tags(self) -> KVTags:
+        '''
+        Get the tags of this Object.  See :class:`KVTags` for more info
+        '''
+        pass
+    
+    def get_data(self, region:'Region'=region.region[:]) -> TransferRequest:
         '''
         Request a region of data from an object
 
-        :param Region region: the region of data to get
+        :param Region region: the region of data to get.  Defaults to the entire object.
         :return: A transfer request representing this request
         :rtype: TransferRequest
         '''
         pass
     
-    def set_data(self, region:'Region', data:npt.ArrayLike) -> TransferRequest:
+    def set_data(self, data:npt.ArrayLike, region:'Region'=region.region[:]) -> TransferRequest:
         '''
         Request a region of data from an object to be set to a new value
 
-        :param Region region: the region of data to set
+        :param Region region: the region of data to set. Defaults to the entire object.
         :param data: The data to set the region to.
         :return: A TransferRequest representing this request
         :rtype: TransferRequest

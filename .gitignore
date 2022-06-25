@@ -4,3 +4,4 @@ build/**
 pdc_tmp/**
 docs/build/html/.buildinfo
 **/__pycache__/**
+pdc_tmp/**
