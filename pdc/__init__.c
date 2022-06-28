@@ -1178,18 +1178,18 @@ static const char __pyx_k_Container[] = "Container";
 static const char __pyx_k_DataQuery[] = "DataQuery";
 static const char __pyx_k_container[] = "container";
 static const char __pyx_k_tag_query[] = "tag_query";
-static const char __pyx_k_InternalPDCError[] = "InternalPDCError";
+static const char __pyx_k_ServerContext[] = "ServerContext";
 static const char __pyx_k_DataQueryComponent[] = "DataQueryComponent";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_all_local_containers[] = "all_local_containers";
 static PyObject *__pyx_n_s_Container;
 static PyObject *__pyx_n_s_DataQuery;
 static PyObject *__pyx_n_s_DataQueryComponent;
-static PyObject *__pyx_n_s_InternalPDCError;
 static PyObject *__pyx_n_s_KVTags;
 static PyObject *__pyx_n_s_Object;
 static PyObject *__pyx_n_s_PDCError;
 static PyObject *__pyx_n_s_Region;
+static PyObject *__pyx_n_s_ServerContext;
 static PyObject *__pyx_n_s_Type;
 static PyObject *__pyx_n_s_all_local_containers;
 static PyObject *__pyx_n_s_cline_in_traceback;
@@ -1259,11 +1259,11 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Container, __pyx_k_Container, sizeof(__pyx_k_Container), 0, 0, 1, 1},
   {&__pyx_n_s_DataQuery, __pyx_k_DataQuery, sizeof(__pyx_k_DataQuery), 0, 0, 1, 1},
   {&__pyx_n_s_DataQueryComponent, __pyx_k_DataQueryComponent, sizeof(__pyx_k_DataQueryComponent), 0, 0, 1, 1},
-  {&__pyx_n_s_InternalPDCError, __pyx_k_InternalPDCError, sizeof(__pyx_k_InternalPDCError), 0, 0, 1, 1},
   {&__pyx_n_s_KVTags, __pyx_k_KVTags, sizeof(__pyx_k_KVTags), 0, 0, 1, 1},
   {&__pyx_n_s_Object, __pyx_k_Object, sizeof(__pyx_k_Object), 0, 0, 1, 1},
   {&__pyx_n_s_PDCError, __pyx_k_PDCError, sizeof(__pyx_k_PDCError), 0, 0, 1, 1},
   {&__pyx_n_s_Region, __pyx_k_Region, sizeof(__pyx_k_Region), 0, 0, 1, 1},
+  {&__pyx_n_s_ServerContext, __pyx_k_ServerContext, sizeof(__pyx_k_ServerContext), 0, 0, 1, 1},
   {&__pyx_n_s_Type, __pyx_k_Type, sizeof(__pyx_k_Type), 0, 0, 1, 1},
   {&__pyx_n_s_all_local_containers, __pyx_k_all_local_containers, sizeof(__pyx_k_all_local_containers), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
@@ -1571,7 +1571,7 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "pdc/__init__.pyx":1
- * from .main import uint32, uint64, Type, KVTags, PDCError, InternalPDCError, init, ready             # <<<<<<<<<<<<<<
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext             # <<<<<<<<<<<<<<
  * from .object import Object
  * from .container import Container, all_local_containers
  */
@@ -1592,15 +1592,15 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_PDCError);
   __Pyx_GIVEREF(__pyx_n_s_PDCError);
   PyList_SET_ITEM(__pyx_t_1, 4, __pyx_n_s_PDCError);
-  __Pyx_INCREF(__pyx_n_s_InternalPDCError);
-  __Pyx_GIVEREF(__pyx_n_s_InternalPDCError);
-  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_n_s_InternalPDCError);
   __Pyx_INCREF(__pyx_n_s_init);
   __Pyx_GIVEREF(__pyx_n_s_init);
-  PyList_SET_ITEM(__pyx_t_1, 6, __pyx_n_s_init);
+  PyList_SET_ITEM(__pyx_t_1, 5, __pyx_n_s_init);
   __Pyx_INCREF(__pyx_n_s_ready);
   __Pyx_GIVEREF(__pyx_n_s_ready);
-  PyList_SET_ITEM(__pyx_t_1, 7, __pyx_n_s_ready);
+  PyList_SET_ITEM(__pyx_t_1, 6, __pyx_n_s_ready);
+  __Pyx_INCREF(__pyx_n_s_ServerContext);
+  __Pyx_GIVEREF(__pyx_n_s_ServerContext);
+  PyList_SET_ITEM(__pyx_t_1, 7, __pyx_n_s_ServerContext);
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_main_2, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -1624,10 +1624,6 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_PDCError, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
-  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_InternalPDCError); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_InternalPDCError, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_init); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_init, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -1636,10 +1632,14 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_ready, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_ServerContext); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_ServerContext, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":2
- * from .main import uint32, uint64, Type, KVTags, PDCError, InternalPDCError, init, ready
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext
  * from .object import Object             # <<<<<<<<<<<<<<
  * from .container import Container, all_local_containers
  * from .region import region, Region
@@ -1659,7 +1659,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pdc/__init__.pyx":3
- * from .main import uint32, uint64, Type, KVTags, PDCError, InternalPDCError, init, ready
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext
  * from .object import Object
  * from .container import Container, all_local_containers             # <<<<<<<<<<<<<<
  * from .region import region, Region
@@ -1747,7 +1747,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":1
- * from .main import uint32, uint64, Type, KVTags, PDCError, InternalPDCError, init, ready             # <<<<<<<<<<<<<<
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext             # <<<<<<<<<<<<<<
  * from .object import Object
  * from .container import Container, all_local_containers
  */

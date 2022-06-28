@@ -1,13 +1,13 @@
+import pytest
 import pdc
 from pdc import Object, region
 import numpy as np
-import mpi4py
+from mpi4py import MPI
 import asyncio
 
 async def main():
-    rank = mpi4py.MPI.COMM_WORLD.Get_rank()
+    rank = MPI.COMM_WORLD.Get_rank()
 
-    pdc.init()
     cont = pdc.Container()
     prop = Object.Properties(dims=(0,))
     obj1 = Object('o1', prop, cont)
@@ -32,4 +32,6 @@ async def main():
     test_query('key4', '4', 0)
     test_query('key1', 'derp', 0)
 
-asyncio.run(main())
+@pytest.mark.skip
+def test_kvtag_query():
+    asyncio.run(main())

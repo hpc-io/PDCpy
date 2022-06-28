@@ -1,5 +1,5 @@
 from enum import Enum
-from typing import Iterable
+from typing import Iterable, Optional
 
 from .main import KVTags
 from pdc.cpdc cimport pdc_lifetime_t
@@ -8,7 +8,7 @@ import pdc
 class Container:
     '''
     Containers can contain one or more objects, and objects can be part of one or more containers.
-    Containers act as boundaries for metadata queries, and as boundaries for 
+    Containers are mainly used to allow objects to persist, and have very little other functionality at the moment.
     '''
 
     class Lifetime(Enum):
@@ -19,10 +19,22 @@ class Container:
         TRANSIENT  = pdc_lifetime_t.PDC_TRANSIENT
 
     
-    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT):
+    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, _fromid:Optional[int]=None):
         '''
+        __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT)
         :param str name: the name of the container.  Container names should be unique between all processes that use PDC.
         :param Lifetime lifetime: the container's lifetime.
+        '''
+        pass
+    
+    @staticmethod
+    def get(name:str) -> 'Container':
+        '''
+        Get an existing container by name.
+
+        :param str name: the name of the container.
+        :return: the container.
+        :rtype: Container
         '''
         pass
     

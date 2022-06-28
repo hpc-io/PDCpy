@@ -743,16 +743,15 @@ static CYTHON_INLINE float __PYX_NAN() {
 #define __PYX_HAVE_API__pdc__query
 /* Early includes */
 #include <stdint.h>
-#include "mpi.h"
 #include "pdc_public.h"
 #include "pdc.h"
 #include "pdc_id_pkg.h"
 #include "pdc_cont.h"
 #include "pdc_obj.h"
 #include "pdc_prop.h"
+#include "pdc_prop_pkg.h"
 #include "pdc_region.h"
 #include "pdc_query.h"
-#include "pdc_prop_pkg.h"
 #include "pdc_client_connect.h"
 #ifdef _OPENMP
 #include <omp.h>

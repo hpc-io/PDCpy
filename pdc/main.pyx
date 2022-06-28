@@ -1,17 +1,14 @@
 cimport pdc.cpdc as cpdc
-from pdc.cpdc cimport uint32_t, uint64_t, pdc_var_type_t, pdc_lifetime_t, pdc_access_t, pdc_query_combine_op_t, pdc_query_op_t
-import atexit
-from typing import Optional, Tuple, List, TypeVar, Generic, Iterable, NewType
+from pdc.cpdc cimport pdc_var_type_t
+from typing import TypeVar, Generic, NewType
 from enum import Enum
 import os
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
-from functools import singledispatchmethod
-import builtins
 import numpy as np
-import numpy.typing as npt
-from abc import ABC, abstractmethod
+from abc import ABC
 from weakref import finalize
-import collections.abc
+import shutil
+from subprocess import Popen, PIPE
 
 int32 = NewType('int32', int)
 uint32 = NewType('uint32', int)
@@ -33,12 +30,6 @@ def _free_from_int(ptr: int):
 class PDCError(Exception):
     '''
     A general error type for all errors in the pdc api.
-    '''
-    pass
-
-class InternalPDCError(Exception):
-    '''
-    Indicates an error internal to the python interface.  If you see this error, report it.
     '''
     pass
 
@@ -73,6 +64,10 @@ def _close(pdc_id):
     if err < 0:
         raise PDCError('Could not close PDC')
     _is_open = False
+
+def _get_pdcid():
+    global pdc_id
+    return pdc_id
 
 def ready() -> bool:
     '''
@@ -144,3 +139,42 @@ class KVTags(ABC):
     
     def __delitem__(self, name:str):
         pass
+
+class ServerContext:
+    '''
+    A context manager that starts and stops a single PDC server instance on enter and exit
+    This is intended for testing
+    '''
+    def __enter__(self):
+        path = shutil.which('pdc_server.exe')
+        if not path:
+            raise FileNotFoundError('pdc_server.exe not on PATH')
+        self.popen = Popen([path], stdout=PIPE, encoding='ascii', text=True)
+        for line in self.popen.stdout:
+            if 'Server ready' in line:
+                break
+        else:
+            raise PDCError('Could not start PDC server')
+        return self
+    
+    def __exit__(self, exc_type, exc_value, traceback):
+        self.popen.kill()
+        self.popen.wait()
+        return False
+
+def checktype(value, name, expected):
+    if not isinstance(value, expected):
+        raise TypeError(f'invalid type of {name}: {type(value)}, expected {expected.__name__}')
+
+def checkrange(value, name, expected:str):
+    if expected == 'uint32':
+        if value < 0 or value > 0xFFFFFFFF:
+            raise OverflowError(f'{name} is out of range for uint32: {value}')
+    elif expected == 'uint64':
+        if value < 0 or value > 0xFFFFFFFFFFFFFFFF:
+            raise OverflowError(f'{name} is out of range for uint64: {value}')
+    elif expected == 'int32':
+        if value < -0x7FFFFFFF or value > 0x7FFFFFFF:
+            raise OverflowError(f'{name} is out of range for int32: {value}')
+    else:
+        raise ValueError(f'invalid value for expected range: {expected}')

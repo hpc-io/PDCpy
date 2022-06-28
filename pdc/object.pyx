@@ -6,23 +6,42 @@ from enum import Enum
 import numpy.typing as npt
 from weakref import finalize
 
-from pdc.main import uint32, uint64, Type, KVTags, _free_from_int
+from pdc.main import uint32, uint64, Type, KVTags, _free_from_int, _get_pdcid, PDCError, PDCError, pdcid, checktype
 cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
-from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t
+from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t, pdcid_t, pdc_obj_prop, _pdc_obj_prop
 from pdc.main cimport malloc_or_memerr
 from . import container
 from . import region
+from libc.string cimport strcpy
+
+cdef pdc_obj_prop prop_struct_from_prop(pdcid_t prop_id):
+    return ((cpdc.PDC_obj_prop_get_info(prop_id))[0].obj_prop_pub)[0]
 
 class Object:
     '''
     A PDC object
     '''
 
-    @property
-    def properties(self) -> 'Properties':
+    def get_properties(self) -> 'Properties':
         '''
-        The properties of this object.  read-only
+        Get a copy of the properties of this object.  read-only
+        '''
+        pass
+    
+    @property
+    def dims(self) -> Tuple[uint32, ...]:
+        '''
+        The dimensions of this object.  read-only
+        Equivalent to ``obj.get_properties().dims``
+        '''
+        pass
+    
+    @property
+    def type(self) -> Type:
+        '''
+        The type of this object.  read-only
+        Equivalent to ``obj.get_properties().type``
         '''
         pass
     
@@ -50,8 +69,10 @@ class Object:
 
         _dims_ptr:uint64
 
-        def __init__(self, dims:Union[Tuple[int], int], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str=''):
+        def __init__(self, dims:Union[Tuple[uint32, ...], uint32], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str='', _fromid:Optional[pdcid]=None):
             '''
+            __init__(self, dims:Union[Tuple[uint32, ...], uint32], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str='')
+
             :param dims: A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
             :type dims: Tuple[int]
             :param Type type: the data type.  Defaults to INT
@@ -59,94 +80,129 @@ class Object:
             :param uint32 user_id: the id of the user.  defaults to os.getuid()
             :param str app_name: the name of the application.  Defaults to an empty string.
             '''
+
+            global pdc_id
+            self._id = cpdc.PDCprop_create(cpdc.pdc_prop_type_t.PDC_OBJ_CREATE, _get_pdcid())
+            self._finalizer = finalize(self, builtins.type(self)._finalize, self._id)
+            if _fromid is not None:
+                self._id = _fromid
+                return
+
             if user_id is None:
                 user_id = os.getuid()
             
-            global pdc_id
-            self._id = cpdc.PDCprop_create(cpdc.pdc_prop_type_t.PDC_OBJ_CREATE, pdc_id)        
+            self.dims = dims
             self.app_name = app_name
             self.type = type
             self.time_step = time_step
             self.user_id = user_id
-            self._finalizer = None
         
         @staticmethod
-        def _finalize(id, ptrs):
-            for p in ptrs:
-                _free_from_int(p)
-
-        def _reregister_finalizer(self):
-            if self._finalizer:
-                self._finalizer.detach()
-            finalize(self, type(self)._finalize, self._id, self._dims_ptr)
+        def _finalize(id):
+            cpdc.PDCprop_close(id)            
         
         @property
-        def dims(self) -> Tuple[int]:
-            pass
+        def dims(self) -> Tuple[int, ...]:
+            '''
+            The dimensions of this object as a tuple.
+            '''
+            cdef pdc_obj_prop prop_struct = prop_struct_from_prop(self._id)
+            cdef uint64_t *dims_array = prop_struct.dims
+            cdef size_t dims_len = prop_struct.ndim
+            rtn = []
+            for i in range(dims_len):
+                rtn.append(dims_array[i])
+            return tuple(rtn)
         
         @dims.setter
-        def dims(self, dims:Union[Tuple[int], int]):
+        def dims(self, dims:Union[Tuple[uint32, ...], uint32]):
             if isinstance(dims, int):
                 dims = (dims,)
-            if not isinstance(dims, tuple):
-                raise TypeError(f"invalid type of dims: {type(dims)}.  expected tuple")
+            checktype(dims, 'dims', tuple)
             if not 1 <= len(dims) <= 2**31-1:
                 raise ValueError('dims must be at most 2^31-1 elements long')
-            
+            for d in dims:
+                checktype(d, 'dims', int)
+                if d < 0:
+                    raise ValueError('dims must be non-negative')
+
             cdef uint32_t length = len(dims)
 
             cdef uint64_t *dims_ptr = <uint64_t*> malloc_or_memerr(length * sizeof(uint64_t))
-            self._dims_ptr = <uint64_t> dims_ptr
-            self._reregister_finalizer()
 
             for i in range(length):
                 dims_ptr[i] = dims[i]
             
             cpdc.PDCprop_set_obj_dims(self._id, length, dims_ptr)
 
-            self._dims = dims
-        
+            free(dims_ptr)
+
         @property
         def type(self) -> Type:
-            pass
+            '''
+            The data type of this object.
+            '''
+            cdef pdc_obj_prop prop_struct = prop_struct_from_prop(self._id)
+            if prop_struct.type == -1:
+                raise PDCError('property type not set')
+            try:
+                return Type(prop_struct.type)
+            except ValueError:
+                raise PDCError(f'unimplemented type: {prop_struct.type}')
         
         @type.setter
         def type(self, type:Type):
-            if not isinstance(type, Type):
-                raise TypeError(f"invalid type of type: {builtins.type(type)}.  Expected Type")
-            
+            checktype(type, 'type', Type)
             cpdc.PDCprop_set_obj_type(self._id, type.value)
         
         @property
         def time_step(self) -> uint32:
-            pass
+            '''
+            The time step of this object.
+            For applications that involve data along a time axis, this represents the point in time of the data.
+            '''
+            cdef _pdc_obj_prop prop_struct = (cpdc.PDC_obj_prop_get_info(self._id))[0]
+            return prop_struct.time_step
         
         @time_step.setter
-        def time_step(self, uint32_t time_step:uint32):
-            cdef uint32_t time_step_c = time_step
-            cpdc.PDCprop_set_obj_time_step(self._id, time_step_c)
+        def time_step(self, time_step:uint32):
+            checktype(time_step, 'time step', int)
+            cpdc.PDCprop_set_obj_time_step(self._id, time_step)
         
         @property
         def user_id(self) -> uint32:
             '''
             the id of the user.
             '''
-            pass
+            cdef _pdc_obj_prop prop_struct = (cpdc.PDC_obj_prop_get_info(self._id))[0]
+            return prop_struct.user_id
         
         @user_id.setter
-        def user_id(self, uint32_t id:uint32):
-            pass
+        def user_id(self, id:uint32):
+            checktype(id, 'user_id', int)
+            
+            rtn = cpdc.PDCprop_set_obj_user_id(self._id, id)
+            if rtn != 0:
+                raise PDCError('failed to set user_id')
         
         @property
         def app_name(self) -> str:
             '''
             The name of the application
             '''
-            pass
+            cdef _pdc_obj_prop prop_struct = (cpdc.PDC_obj_prop_get_info(self._id))[0]
+            return prop_struct.app_name.decode('utf-8')
         
         @app_name.setter
         def app_name(self, str name:str):
-            pass
+            checktype(name, 'app name', str)
+            cdef char *app_ptr = <char*> malloc_or_memerr((len(name.encode('utf-8'))+1) * sizeof(char))
+            strcpy(app_ptr, name.encode('utf-8'))
+            
+            rtn = cpdc.PDCprop_set_obj_app_name(self._id, app_ptr)
+            free(app_ptr)
+            if rtn != 0:
+                raise PDCError('failed to set app name')
         
         def copy(self) -> 'Properties':
             '''
@@ -155,7 +211,13 @@ class Object:
             :return: A copy of this object
             :rtype: Properties 
             '''
-            pass
+            return type(self)(
+                dims=self.dims,
+                type=self.type,
+                time_step=self.time_step,
+                user_id=self.user_id,
+                app_name=self.app_name
+            )
     
     class TransferRequest:
         '''
@@ -195,33 +257,26 @@ class Object:
             '''
             return None
     
-    @singledispatchmethod
-    def __init__(self, name, *args):
+    def __init__(self, name:str, properties:Properties, container:container.Container, _fromid:Optional[pdcid] = None):
         '''
-        Create a new object.  To get an existing object, use Object.get() instead
-
-        :param str name: the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.
-        :param Object.Properties properties: An ObjectProperties describing the properties of the object
-        :param Container container: the container this object should be placed in.
-        '''
-        raise TypeError(f'Invalid type of name: {type(name)}')
-
-    @__init__.register
-    def _(self, name:str, properties:Properties, container:container.Container):
-        '''
+        __init__(self, name:str, properties:Properties, container:container.Container)
         Create a new object.  To get an existing object, use Object.get() instead
 
         :param str name: the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.
         :param ObjectProperties properties: An ObjectProperties describing the properties of the object
         :param Container container: the container this object should be placed in.
         '''
-        pass
-    
-    @__init__.register
-    def _(self, id:int):
-        #create from id instead
-        pass
-    
+        checktype(name, 'name', str)
+        checktype(properties, 'properties', type(self).Properties)
+        checktype(container, 'container', container.Container)
+        
+        if _fromid is not None:
+            self._id = _fromid
+            return
+        cdef pdcid_t id = cpdc.PDCobj_create(name.encode('utf-8'), properties._id, container._id)
+        if id == -1:
+            raise PDCError('failed to create object')
+        self._id = id
 
     @staticmethod
     def get(name:str) -> 'Object':
@@ -233,7 +288,11 @@ class Object:
         
         :param str name: the name of the object
         '''
-        pass
+        checktype(name, 'name', str)
+        cdef pdcid_t id = cpdc.PDCobj_open(name.encode('utf-8'), _get_pdcid())
+        if id == -1:
+            raise PDCError('object not found or failed to open object')
+        return Object(_fromid=id)
     
     @property
     def tags(self) -> KVTags:
@@ -268,4 +327,6 @@ class Object:
         Delete this Object.
         Do not access any methods or properties of this object after calling.
         '''
-        pass
+        cpdc.PDCobj_del(self._id)
+        #leave self._id as is, because we still need to finalize
+    

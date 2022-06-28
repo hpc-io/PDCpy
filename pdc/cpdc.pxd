@@ -1,8 +1,5 @@
 from libc.stdint cimport uint32_t, uint64_t
 
-cdef extern from "mpi.h":
-    ctypedef int MPI_Comm
-
 cdef extern from "pdc_public.h":
     ctypedef int                perr_t
     ctypedef uint64_t           pdcid_t
@@ -93,6 +90,7 @@ cdef extern from "pdc_obj.h":
 
     pdcid_t PDCobj_create(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop)
     pdcid_t PDCobj_open(const char *obj_name, pdcid_t pdc_id)
+    perr_t PDCobj_del(pdcid_t obj_id)
     #pdcid_t PDCobj_open_col(const char *obj_name, pdcid_t pdc_id)
     perr_t PDCobj_close(pdcid_t obj_id)
     pdc_obj_info *PDCobj_get_info(pdcid_t obj)
@@ -127,7 +125,7 @@ cdef extern from "pdc_obj.h":
 #nothing from "pdc_dt_conv.h", "pdc_hist_pkg.h" included because it is never mentioned in the examples or tests
 
 cdef extern from "pdc_prop.h":
-    ctypedef struct pdc_obj_prop:
+    struct pdc_obj_prop:
         pdcid_t        obj_prop_id
         size_t         ndim
         uint64_t *     dims
@@ -139,7 +137,18 @@ cdef extern from "pdc_prop.h":
     
     pdcid_t PDCprop_create(pdc_prop_type_t type, pdcid_t pdc_id)
     perr_t PDCprop_close(pdcid_t id)
-    pdcid_t PDCprop_obj_dup(pdcid_t prop_id)
+    #does not copy most properties.  not that useful:
+    #pdcid_t PDCprop_obj_dup(pdcid_t prop_id)
+
+cdef extern from "pdc_prop_pkg.h":
+    struct _pdc_obj_prop:
+        pdc_obj_prop *obj_prop_pub
+        uint32_t             user_id
+        char *               app_name
+        uint32_t             time_step
+
+    _pdc_obj_prop *PDC_obj_prop_get_info(pdcid_t obj_prop)
+
 
 cdef extern from "pdc_region.h":
     struct pdc_region_info:

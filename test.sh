@@ -1,2 +1,2 @@
 ./build.sh
-python3.8 pdc_init.py
+python3.8 run_tests.py "$@"

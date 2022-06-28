@@ -1,13 +1,13 @@
+import pytest
 import pdc
 from pdc import Object, region
 import numpy as np
-import mpi4py
+from mpi4py import MPI
 import asyncio
 
 async def main():
-    rank = mpi4py.MPI.COMM_WORLD.Get_rank()
+    rank = MPI.COMM_WORLD.Get_rank()
 
-    pdc.init()
     cont = pdc.Container()
 
     #create np data array of 128 doubles
@@ -32,4 +32,6 @@ async def main():
     for val in await obj2.get_data():
         assert val == 2.0
 
-asyncio.run(main())
+@pytest.mark.skip
+def test_obj_get_data():
+    asyncio.run(main())

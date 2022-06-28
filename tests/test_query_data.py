@@ -3,22 +3,17 @@ import sys
 import pdc
 from pdc import Object, region
 import numpy as np
-import mpi4py
+from mpi4py import MPI
 import asyncio
-
-comm = mpi4py.MPI.COMM_WORLD
+import pytest
 
 #size is in number of floating point numbers, not bytes, unlike the original
 
-async def main():
-    if len(sys.argv) != 3:
-        print(f'Usage: srun -n {sys.argv[0]} obj_name size')
-        return
-    
+async def main(obj_name:str, length:int):
+    comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
-    obj_name = sys.argv[1]
-    length = int(sys.argv[2])
+
     cont = pdc.Container()
     prop = Object.Properties(
         (length,),
@@ -48,4 +43,7 @@ async def main():
     query = ((obj.data < 1000) | (obj.data >= 2000 & obj.data < 3000) | (obj.data >= 5000 & obj.data < 7000))
     print(query.get_result(my_region)[obj])
 
-asyncio.run(main())
+#skip this test
+@pytest.mark.skip
+def test_query():
+    asyncio.run(main('test_query', 100000))
