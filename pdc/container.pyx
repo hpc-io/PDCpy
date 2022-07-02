@@ -1,9 +1,39 @@
 from enum import Enum
 from typing import Iterable, Optional
+from weakref import finalize
 
-from .main import KVTags
-from pdc.cpdc cimport pdc_lifetime_t
+from .main import KVTags, checktype, _get_pdcid, PDCError
+from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t
 import pdc
+cimport pdc.cpdc as cpdc
+from cpython.bytes cimport PyBytes_FromStringAndSize
+
+cdef _pdc_cont_info get_info_struct(pdcid_t id):
+    cdef _pdc_cont_info *private_struct = cpdc.PDC_cont_get_info(id)
+    if private_struct == NULL:
+        raise PDCError("Could not get info for object")
+    return private_struct[0]
+
+class ContainerKVTags(KVTags):
+    def __init__(self, cont):
+        self.cont = cont
+    
+    def delete(self, name:bytes):
+        raise NotImplementedError("Cannot delete tag from container: https://github.com/hpc-io/pdc/issues/66")
+        #if cpdc.PDCcont_del_tag(self.cont._id, name) != 0:
+        #    raise PDCError("tag does not exist or could not delete tag")
+    
+    def get(self, name:bytes):
+        cdef void* value_out
+        cdef psize_t size_out
+        if cpdc.PDCcont_get_tag(self.cont._id, name, &value_out, &size_out) != 0:
+            raise PDCError("tag does not exist or could not get tag")
+        rtn = PyBytes_FromStringAndSize(<char *> value_out, size_out)
+        return rtn
+    
+    def set(self, name:bytes, value:bytes):
+        if cpdc.PDCcont_put_tag(self.cont._id, name, <char *> value, len(value)) != 0:
+            raise PDCError("could not set tag")
 
 class Container:
     '''
@@ -19,14 +49,42 @@ class Container:
         TRANSIENT  = pdc_lifetime_t.PDC_TRANSIENT
 
     
-    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, _fromid:Optional[int]=None):
+    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, *, _fromid:Optional[int]=None):
         '''
         __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT)
         :param str name: the name of the container.  Container names should be unique between all processes that use PDC.
         :param Lifetime lifetime: the container's lifetime.
         '''
-        pass
-    
+        if _fromid is not None:
+            checktype(_fromid, 'id', int)
+            self._id = _fromid
+            return
+
+        checktype(name, 'name', str)
+        checktype(lifetime, 'lifetime', Container.Lifetime)
+        
+        if name == '':
+            raise ValueError("Container name cannot be empty")
+
+        cdef pdcid_t prop_id = cpdc.PDCprop_create(pdc_prop_type_t.PDC_CONT_CREATE, _get_pdcid())
+        if prop_id == 0:
+            raise PDCError('Failed to create container property')
+        
+        if cpdc.PDCprop_set_cont_lifetime(prop_id, lifetime.value) != 0:
+            raise PDCError('Failed to set container lifetime')
+        
+        cdef pdcid_t id = cpdc.PDCcont_create(name.encode('utf-8'), prop_id)
+        if id == 0:
+            raise PDCError('Failed to create container')
+        
+        self._id = id
+        finalize(self, self._finalize, id)
+
+    @staticmethod
+    def _finalize(pdcid_t id):
+        if cpdc.PDCcont_close(id) != 0:
+            raise PDCError('Failed to close container')
+
     @staticmethod
     def get(name:str) -> 'Container':
         '''
@@ -36,29 +94,40 @@ class Container:
         :return: the container.
         :rtype: Container
         '''
-        pass
+        cdef pdcid_t id = cpdc.PDCcont_open(name.encode('utf-8'), _get_pdcid())
+        if id == 0:
+            raise PDCError('Container not found or failed to open container')
+        return Container(None, _fromid=id)
     
-    def persist():
+    def persist(self):
         '''
         Make this container persistent if it wasn't already.
         '''
-        pass
+        if cpdc.PDCcont_persist(self._id) != 0:
+            raise PDCError('Failed to make container persistent')
     
     @property
-    def lifetime():
+    def lifetime(self):
         '''
-        The lifetime of this container
-        read-only
+        The lifetime of this container. read-only.
         '''
-        pass
+        return type(self).Lifetime((get_info_struct(self._id).cont_pt)[0].cont_life)
+    
+    @property
+    def name(self):
+        '''
+        The name of this container. read-only
+        '''
+        return (get_info_struct(self._id).cont_info_pub)[0].name.decode('utf-8')
     
     @property
     def tags(self) -> KVTags:
         '''
-        Get the tags of this Object.  See :class:`KVTags` for more info
-        '''
-        pass
+        The tags of this container. See :class:`KVTags` for more information.
 
+        NOTE: currently, deleting tags from containers is not supported.
+        '''
+        return ContainerKVTags(self)
     
     def all_local_objects(self) -> Iterable['pdc.Object']:
         '''
@@ -86,13 +155,15 @@ class Container:
         '''
         pass
     
-    def delete(self):
+    def _delete(self):
         '''
-        Remove all objects in this container (?), then delete the container.
+        Delete this container.
         Do not access any methods or properties of this object after calling.
-        '''
-        pass
 
+        NOTE: this is currently broken, and doesn't actually delete the container.
+        '''
+        if cpdc.PDCcont_del(self._id) != 0:
+            raise PDCError('Failed to delete container')
 
 def all_local_containers() -> Iterable[Container]:
     '''

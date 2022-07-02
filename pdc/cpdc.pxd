@@ -1,4 +1,4 @@
-from libc.stdint cimport uint32_t, uint64_t
+from libc.stdint cimport uint32_t, uint64_t, int8_t, int16_t, int64_t
 
 cdef extern from "pdc_public.h":
     ctypedef int                perr_t
@@ -74,10 +74,16 @@ cdef extern from "pdc_cont.h":
     perr_t PDCcont_get_tag(pdcid_t cont_id, char *tag_name, void **tag_value, psize_t *value_size)
     perr_t PDCcont_del_tag(pdcid_t cont_id, char *tag_name)
 
+cdef extern from "pdc_cont_pkg.h":
+    struct _pdc_cont_info:
+        pdc_cont_info * cont_info_pub
+        _pdc_cont_prop *cont_pt
+    
+    _pdc_cont_info *PDC_cont_get_info(pdcid_t cont_id)
 
 cdef extern from "pdc_obj.h":
     ctypedef _pdc_id_info obj_handle
-    ctypedef struct pdc_obj_info:
+    struct pdc_obj_info:
         char *       name
         pdcid_t      meta_id
         pdcid_t      local_id
@@ -126,7 +132,8 @@ cdef extern from "pdc_obj.h":
 
 cdef extern from "pdc_prop.h":
     struct pdc_obj_prop:
-        pdcid_t        obj_prop_id
+        #not used:
+        #pdcid_t        obj_prop_id
         size_t         ndim
         uint64_t *     dims
         pdc_var_type_t type
@@ -146,6 +153,9 @@ cdef extern from "pdc_prop_pkg.h":
         uint32_t             user_id
         char *               app_name
         uint32_t             time_step
+    
+    struct _pdc_cont_prop:
+        pdc_lifetime_t     cont_life
 
     _pdc_obj_prop *PDC_obj_prop_get_info(pdcid_t obj_prop)
 
@@ -161,24 +171,6 @@ cdef extern from "pdc_region.h":
         void *                buf
         size_t                unit
     
-    ctypedef struct pdc_transfer_request:
-        pdcid_t        obj_id
-        uint64_t       metadata_id
-        pdc_access_t   access_type
-        pdc_var_type_t mem_type
-        char *         buf
-
-        int       local_region_ndim
-        uint64_t *local_region_offset
-        uint64_t *local_region_size
-
-        int       remote_region_ndim
-        uint64_t *remote_region_offset
-        uint64_t *remote_region_size
-
-        int       obj_ndim
-        uint64_t *obj_dims
-    
     ctypedef enum pdc_transfer_status_t:
         PDC_TRANSFER_STATUS_COMPLETE  = 0
         PDC_TRANSFER_STATUS_PENDING   = 1
@@ -186,13 +178,12 @@ cdef extern from "pdc_region.h":
     
     pdcid_t PDCregion_create(psize_t ndims, uint64_t *offset, uint64_t *size)
     perr_t PDCregion_close(pdcid_t region_id)
-    void PDCregion_free(pdc_region_info *region)
     pdcid_t PDCregion_transfer_create(void *buf, pdc_access_t access_type, pdcid_t obj_id, pdcid_t local_reg, pdcid_t remote_reg)
     perr_t PDCregion_transfer_start(pdcid_t transfer_request_id)
-    perr_t PDCregion_transfer_start_all(pdcid_t *transfer_request_id, size_t size)
+    #perr_t PDCregion_transfer_start_all(pdcid_t *transfer_request_id, size_t size)
     perr_t PDCregion_transfer_status(pdcid_t transfer_request_id, pdc_transfer_status_t *completed)
     perr_t PDCregion_transfer_wait(pdcid_t transfer_request_id)
-    perr_t PDCregion_transfer_wait_all(pdcid_t *transfer_request_id, size_t size)
+    #perr_t PDCregion_transfer_wait_all(pdcid_t *transfer_request_id, size_t size)
     perr_t PDCregion_transfer_close(pdcid_t transfer_request_id)
 
 cdef extern from "pdc_query.h":

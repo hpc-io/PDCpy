@@ -98,3 +98,13 @@ def test_copy():
     assert prop.time_step == 2
     assert prop.user_id == 3333
     assert prop.app_name == 'test'
+
+def test_equals():
+    prop = pdc.Object.Properties(dims=(128,), type=pdc.Type.INT8, time_step=2, user_id=3333, app_name='test')
+    prop2 = pdc.Object.Properties(dims=(128,), type=pdc.Type.INT8, time_step=2, user_id=3333, app_name='test')
+    assert prop == prop2
+    assert prop2 == prop
+    assert hash(prop) == hash(prop2)
+
+    prop2.dims = (1, 2, 3, 4, 5)
+    assert prop != prop2

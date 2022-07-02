@@ -1,14 +1,15 @@
 cimport pdc.cpdc as cpdc
-from pdc.cpdc cimport pdc_var_type_t
-from typing import TypeVar, Generic, NewType
+from pdc.cpdc cimport pdc_var_type_t, int64_t, uint64_t, int16_t, int8_t
+from typing import TypeVar, Generic, NewType, Union
 from enum import Enum
 import os
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
 import numpy as np
-from abc import ABC
+from abc import ABC, abstractmethod
 from weakref import finalize
 import shutil
 from subprocess import Popen, PIPE
+import ast
 
 int32 = NewType('int32', int)
 uint32 = NewType('uint32', int)
@@ -48,7 +49,7 @@ def init(name:str="PDC"):
     global pdc_id, _is_open
     name_bytes = name.encode('utf-8')
     pdc_id = cpdc.PDCinit(name_bytes)
-    if not pdc_id:
+    if pdc_id == 0:
         raise PDCError('Could not initialize PDC')
     
     #hack to ensure close runs after all finalizers
@@ -61,7 +62,7 @@ def _close(pdc_id):
     if not _is_open:
         return
     err = cpdc.PDCclose(pdc_id)
-    if err < 0:
+    if err != 0:
         raise PDCError('Could not close PDC')
     _is_open = False
 
@@ -117,6 +118,31 @@ class Type(Enum):
     An 8-bit signed integer
     '''
 
+    def as_numpy_type(self):
+        '''
+        Returns the numpy type corresponding to this PDC type
+        '''
+        if self == Type.INT:
+            return np.dtype('=i')
+        elif self == Type.UINT:
+            return np.uintc.newbyteorder('=')
+        elif self == Type.FLOAT:
+            return np.dtype('=f')
+        elif self == Type.DOUBLE:
+            return np.dtype('=d')
+        elif self == Type.CHAR:
+            return np.dtype('=c')
+        elif self == Type.INT64:
+            return np.dtype('=i8')
+        elif self == Type.UINT64:
+            return np.dtype('=u8')
+        elif self == Type.INT16:
+            return np.dtype('=h')
+        elif self == Type.INT8:
+            return np.dtype('=b')
+        else:
+            raise ValueError('Unknown PDC type')
+
 class KVTags(ABC):
     '''
     An object used to manipulate object and container tags.
@@ -131,14 +157,61 @@ class KVTags(ABC):
     =================== ==============================
     '''
 
-    def __getitem__(self, name:str):
+    tag_types = (tuple, str, int, float, bool, type(None))
+    tag_types_union = Union[tuple, str, int, float, bool, type(None)]
+
+    @classmethod
+    def _encode(cls, obj:tag_types_union) -> bytes:
+        if isinstance(obj, tuple):
+            for i in obj:
+                if not isinstance(i, cls.tag_types):
+                    raise ValueError('tuples must contain only strings, ints, floats, and tuples')
+            if len(obj) == 0:
+                return b'()'
+            elif len(obj) == 1:
+                return b'(' + cls._encode(obj[0]) + b',)'
+            else:
+                return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
+        elif isinstance(obj, str):
+            return repr(obj).encode('utf-8')
+        elif isinstance(obj, int):
+            return str(obj).encode('utf-8')
+        elif isinstance(obj, float):
+            return str(obj).encode('utf-8')
+        elif isinstance(obj, bool):
+            return str(obj).encode('utf-8')
+        elif obj is None:
+            return b'None'
+        else:
+            raise TypeError(f'Unsupported type of tag: {type(obj)}')
+    
+    @staticmethod
+    def _decode(data:bytes) -> tag_types_union:
+        return ast.literal_eval(data.decode('utf-8'))
+    
+    @abstractmethod
+    def set(self, key:bytes, value:bytes):
         pass
     
-    def __setitem__(self, name:str, value:object):
+    @abstractmethod
+    def get(self, key:bytes) -> bytes:
         pass
+    
+    @abstractmethod
+    def delete(self, key:bytes):
+        pass
+
+    def __getitem__(self, name:str):
+        checktype(name, 'tag name', str)
+        return type(self)._decode(self.get(name.encode('utf-8')))
+    
+    def __setitem__(self, name:str, value:tag_types_union):
+        checktype(name, 'tag name', str)
+        self.set(name.encode('utf-8'), type(self)._encode(value))
     
     def __delitem__(self, name:str):
-        pass
+        checktype(name, 'tag name', str)
+        self.delete(name.encode('utf-8'))
 
 class ServerContext:
     '''

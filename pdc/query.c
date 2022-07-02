@@ -7,6 +7,7 @@
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_client_connect.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont_pkg.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_id_pkg.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop.h",
@@ -747,6 +748,7 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "pdc.h"
 #include "pdc_id_pkg.h"
 #include "pdc_cont.h"
+#include "pdc_cont_pkg.h"
 #include "pdc_obj.h"
 #include "pdc_prop.h"
 #include "pdc_prop_pkg.h"

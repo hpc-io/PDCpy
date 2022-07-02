@@ -64,7 +64,7 @@ class Region:
         
         self.slices = tuple(newslices)
     
-    def _construct_with(self, dims:Tuple[uint64]) -> pdcid:
+    def _construct_with(self, dims:Tuple[uint64]) -> Tuple[pdcid, Tuple[uint64, ...]]:
         '''
         Constructs a pdc region based on the provided dimensions of the object.
         '''
@@ -84,16 +84,16 @@ class Region:
                 if s.stop is not None and s.stop > d:
                     raise ValueError(f'slice stop value {s.stop} is greater than the dimension {d}')
             
-            for s, d in zip(self.slices, dims):
+            for s, d, i in zip(self.slices, dims, range(len(dims))):
                 start = s.start if s.start is not None else 0
                 stop = s.stop if s.stop is not None else d
-                size_arr[slice.start] = stop - start
-                offset_arr[slice.start] = start
+                size_arr[i] = stop - start
+                offset_arr[i] = start
             
             id = cpdc.PDCregion_create(len(dims), offset_arr, size_arr)
             if id == 0:
                 raise PDCError('failed to create region')
-            return id
+            return id, tuple(size_arr[i] for i in range(len(dims)))
         finally:
             free(size_arr)
             free(offset_arr)
