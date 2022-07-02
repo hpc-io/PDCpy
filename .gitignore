@@ -1,7 +1,8 @@
 pdc_server.exe
 *.so
 build/**
-pdc_tmp/**
+**/pdc_tmp/**
 docs/build/html/.buildinfo
 **/__pycache__/**
-pdc_tmp/**
+**/pdc_data/**
+ctests/*.out

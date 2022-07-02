@@ -1,0 +1,4 @@
+mpicc ./container_duplicate_name.c -o container_duplicate_name.out -lpdc -I/home/gerzytet/Documents/PDC/mercury/pdc/src/api -I/home/gerzytet/Documents/PDC/mercury/pdc/src/install/api -I/home/gerzytet/Documents/PDC/mercury/install/include
+mpicc ./container_get_after_delete.c -o container_get_after_delete.out -lpdc -I/home/gerzytet/Documents/PDC/mercury/pdc/src/api -I/home/gerzytet/Documents/PDC/mercury/pdc/src/install/api -I/home/gerzytet/Documents/PDC/mercury/install/include
+mpicc ./obj_set_all_data.c -o obj_set_all_data.out -lpdc -I/home/gerzytet/Documents/PDC/mercury/pdc/src/api -I/home/gerzytet/Documents/PDC/mercury/pdc/src/install/api -I/home/gerzytet/Documents/PDC/mercury/install/include
+mpicc ./container_delete_tag.c -o container_delete_tag.out -lpdc -I/home/gerzytet/Documents/PDC/mercury/pdc/src/api -I/home/gerzytet/Documents/PDC/mercury/pdc/src/install/api -I/home/gerzytet/Documents/PDC/mercury/install/include
