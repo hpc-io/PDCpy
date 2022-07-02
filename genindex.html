@@ -58,6 +58,7 @@
  | <a href="#T"><strong>T</strong></a>
  | <a href="#U"><strong>U</strong></a>
  | <a href="#V"><strong>V</strong></a>
+ | <a href="#W"><strong>W</strong></a>
  
 </div>
 <h2 id="A">A</h2>
@@ -72,6 +73,8 @@
       <li><a href="index.html#pdc.container.Container.all_local_objects">all_local_objects() (pdc.container.Container method)</a>
 </li>
       <li><a href="index.html#pdc.object.Object.Properties.app_name">app_name (pdc.object.Object.Properties property)</a>
+</li>
+      <li><a href="index.html#pdc.main.Type.as_numpy_type">as_numpy_type() (pdc.main.Type method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -91,6 +94,8 @@
 </li>
       <li><a href="index.html#pdc.container.Container.Lifetime">Container.Lifetime (class in pdc.container)</a>
 </li>
+      <li><a href="index.html#pdc.container.ContainerKVTags">ContainerKVTags (class in pdc.container)</a>
+</li>
       <li><a href="index.html#pdc.object.Object.Properties.copy">copy() (pdc.object.Object.Properties method)</a>
 </li>
   </ul></td>
@@ -107,10 +112,14 @@
 </li>
       <li><a href="index.html#pdc.query.DataQueryComponent">DataQueryComponent (class in pdc.query)</a>
 </li>
-      <li><a href="index.html#pdc.container.Container.delete">delete() (pdc.container.Container method)</a>
+      <li><a href="index.html#pdc.container.ContainerKVTags.delete">delete() (pdc.container.ContainerKVTags method)</a>
 
       <ul>
+        <li><a href="index.html#pdc.main.KVTags.delete">(pdc.main.KVTags method)</a>
+</li>
         <li><a href="index.html#pdc.object.Object.delete">(pdc.object.Object method)</a>
+</li>
+        <li><a href="index.html#pdc.object.ObjectKVTags.delete">(pdc.object.ObjectKVTags method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -144,7 +153,13 @@
       <li><a href="index.html#pdc.container.Container.get">get() (pdc.container.Container static method)</a>
 
       <ul>
+        <li><a href="index.html#pdc.container.ContainerKVTags.get">(pdc.container.ContainerKVTags method)</a>
+</li>
+        <li><a href="index.html#pdc.main.KVTags.get">(pdc.main.KVTags method)</a>
+</li>
         <li><a href="index.html#pdc.object.Object.get">(pdc.object.Object static method)</a>
+</li>
+        <li><a href="index.html#pdc.object.ObjectKVTags.get">(pdc.object.ObjectKVTags method)</a>
 </li>
       </ul></li>
   </ul></td>
@@ -152,8 +167,6 @@
       <li><a href="index.html#pdc.object.Object.get_data">get_data() (pdc.object.Object method)</a>
 </li>
       <li><a href="index.html#pdc.query.DataQuery.get_num_hits">get_num_hits() (pdc.query.DataQuery method)</a>
-</li>
-      <li><a href="index.html#pdc.object.Object.get_properties">get_properties() (pdc.object.Object method)</a>
 </li>
       <li><a href="index.html#pdc.query.DataQuery.get_result">get_result() (pdc.query.DataQuery method)</a>
 </li>
@@ -218,8 +231,12 @@
 <h2 id="N">N</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="index.html#pdc.object.Object.name">name (pdc.object.Object property)</a>
+      <li><a href="index.html#pdc.container.Container.name">name (pdc.container.Container property)</a>
+
+      <ul>
+        <li><a href="index.html#pdc.object.Object.name">(pdc.object.Object property)</a>
 </li>
+      </ul></li>
   </ul></td>
 </tr></table>
 
@@ -235,6 +252,8 @@
       <li><a href="index.html#pdc.object.Object.TransferRequest">Object.TransferRequest (class in pdc.object)</a>
 </li>
       <li><a href="index.html#pdc.object.Object.TransferRequest.RequestType">Object.TransferRequest.RequestType (class in pdc.object)</a>
+</li>
+      <li><a href="index.html#pdc.object.ObjectKVTags">ObjectKVTags (class in pdc.object)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -311,10 +330,18 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#pdc.main.ServerContext">ServerContext (class in pdc.main)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#pdc.object.Object.TransferRequest.RequestType.SET">SET (pdc.object.Object.TransferRequest.RequestType attribute)</a>
 </li>
+      <li><a href="index.html#pdc.container.ContainerKVTags.set">set() (pdc.container.ContainerKVTags method)</a>
+
+      <ul>
+        <li><a href="index.html#pdc.main.KVTags.set">(pdc.main.KVTags method)</a>
+</li>
+        <li><a href="index.html#pdc.object.ObjectKVTags.set">(pdc.object.ObjectKVTags method)</a>
+</li>
+      </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#pdc.object.Object.set_data">set_data() (pdc.object.Object method)</a>
 </li>
   </ul></td>
@@ -325,16 +352,20 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#pdc.query.tag_query">tag_query() (in module pdc.query)</a>
 </li>
+      <li><a href="index.html#pdc.main.KVTags.tag_types">tag_types (pdc.main.KVTags attribute)</a>
+</li>
+      <li><a href="index.html#pdc.main.KVTags.tag_types_union">tag_types_union (pdc.main.KVTags attribute)</a>
+</li>
       <li><a href="index.html#pdc.container.Container.tags">tags (pdc.container.Container property)</a>
 
       <ul>
         <li><a href="index.html#pdc.object.Object.tags">(pdc.object.Object property)</a>
 </li>
       </ul></li>
-      <li><a href="index.html#pdc.object.Object.Properties.time_step">time_step (pdc.object.Object.Properties property)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#pdc.object.Object.Properties.time_step">time_step (pdc.object.Object.Properties property)</a>
+</li>
       <li><a href="index.html#pdc.container.Container.Lifetime.TRANSIENT">TRANSIENT (pdc.container.Container.Lifetime attribute)</a>
 </li>
       <li><a href="index.html#pdc.main.Type">Type (class in pdc.main)</a>
@@ -368,6 +399,14 @@
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="index.html#pdc.region.Region.validate_slice">validate_slice() (pdc.region.Region static method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="W">W</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="index.html#pdc.object.Object.TransferRequest.wait_for_result">wait_for_result() (pdc.object.Object.TransferRequest method)</a>
 </li>
   </ul></td>
 </tr></table>
