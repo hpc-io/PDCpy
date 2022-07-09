@@ -197,6 +197,21 @@ This is intended for testing</p>
 <dd></dd></dl>
 
 <dl class="py function">
+<dt class="sig sig-object py" id="pdc.main.ctrace">
+<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">ctrace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.ctrace" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pdc.main.format_arg">
+<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">format_arg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.format_arg" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pdc.main.format_id">
+<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">format_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.format_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="pdc.main.init">
 <span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize PDC.
@@ -209,6 +224,11 @@ This must be called before any other PDC method.</p>
 <span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.ready" title="Permalink to this definition">¶</a></dt>
 <dd><p>True if init() has been called, False otherwise</p>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pdc.main.test">
+<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.test" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-pdc.container">
@@ -266,9 +286,14 @@ In particular, do not write <code class="docutils literal notranslate"><span cla
 </dl>
 </dd></dl>
 
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.container.Container.containers_by_id">
+<span class="sig-name descname"><span class="pre">containers_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pdc.container.Container.containers_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.container.Container.get">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.container.Container" title="pdc.container.Container"><span class="pre">Container</span></a></span></span><a class="headerlink" href="#pdc.container.Container.get" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.container.Container" title="pdc.container.Container"><span class="pre">Container</span></a></span></span><a class="headerlink" href="#pdc.container.Container.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an existing container by name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -466,12 +491,6 @@ This object can be awaited</p>
 <dd><p>If the request is done and the request type is RequestType.GET, this is a numpy array containing the requested data.</p>
 </dd></dl>
 
-<dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.object.Object.TransferRequest.RequestType" title="pdc.object.Object.TransferRequest.RequestType"><span class="pre">RequestType</span></a></em><a class="headerlink" href="#pdc.object.Object.TransferRequest.type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the type of request</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.wait_for_result">
 <span class="sig-name descname"><span class="pre">wait_for_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object.TransferRequest.wait_for_result" title="Permalink to this definition">¶</a></dt>
@@ -503,7 +522,7 @@ Equivalent to <code class="docutils literal notranslate"><span class="pre">obj.g
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.object.Object.get">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a></span></span><a class="headerlink" href="#pdc.object.Object.get" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a></span></span><a class="headerlink" href="#pdc.object.Object.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an existing object by name</p>
 <p>If you have created multiple objects with the same name, this will return the one with time_step=0
 If there are multiple objects with the same name and time_step, the tie is broken arbitrarily</p>
@@ -536,6 +555,11 @@ If there are multiple objects with the same name and time_step, the tie is broke
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pdc.object.Object.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of this object. read-only</p>
 </dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.object.Object.objects_by_id">
+<span class="sig-name descname"><span class="pre">objects_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pdc.object.Object.objects_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.object.Object.set_data">
@@ -675,7 +699,8 @@ For example:
 <dl class="py function">
 <dt class="sig sig-object py" id="pdc.query.tag_query">
 <span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">tag_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.tag_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get objects with a tag of the given name and value</p>
+<dd><p>Get objects with a tag of the given name and value
+CURRENTLY NOT IMPLEMENTED</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
