@@ -263,17 +263,6 @@ Containers are mainly used to allow objects to persist, and have very little oth
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.Container.add_objects">
-<span class="sig-name descname"><span class="pre">add_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.Container.add_objects" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add objects to this container</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>object</strong> – An iterable of Objects to add.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="pdc.container.Container.all_local_objects">
 <span class="sig-name descname"><span class="pre">all_local_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pdc.container.Container.all_local_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an iterable through all objects in this container that have been retrieved by the client, and haven’t yet been garbage collected.
@@ -288,7 +277,7 @@ In particular, do not write <code class="docutils literal notranslate"><span cla
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pdc.container.Container.containers_by_id">
-<span class="sig-name descname"><span class="pre">containers_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pdc.container.Container.containers_by_id" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">containers_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;WeakValueDictionary&gt;</span></em><a class="headerlink" href="#pdc.container.Container.containers_by_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
@@ -324,17 +313,6 @@ In particular, do not write <code class="docutils literal notranslate"><span cla
 <dt class="sig sig-object py" id="pdc.container.Container.persist">
 <span class="sig-name descname"><span class="pre">persist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.Container.persist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make this container persistent if it wasn’t already.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.Container.remove_objects">
-<span class="sig-name descname"><span class="pre">remove_objects</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">objects</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.Container.remove_objects" title="Permalink to this definition">¶</a></dt>
-<dd><p>Remove objects from this container</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>objects</strong> – An iterable of Objects to remove.</p>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py property">
@@ -377,6 +355,11 @@ Deleting a container after this function is called, then using the iterator may 
 </dd>
 </dl>
 </dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="pdc.container.to_c_object_list">
+<span class="sig-prename descclassname"><span class="pre">pdc.container.</span></span><span class="sig-name descname"><span class="pre">to_c_object_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.to_c_object_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </section>
 <section id="module-pdc.object">
@@ -558,7 +541,7 @@ If there are multiple objects with the same name and time_step, the tie is broke
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pdc.object.Object.objects_by_id">
-<span class="sig-name descname"><span class="pre">objects_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{}</span></em><a class="headerlink" href="#pdc.object.Object.objects_by_id" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">objects_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;WeakValueDictionary&gt;</span></em><a class="headerlink" href="#pdc.object.Object.objects_by_id" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
