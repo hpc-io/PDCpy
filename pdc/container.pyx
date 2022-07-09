@@ -1,11 +1,13 @@
 from enum import Enum
-from typing import Iterable, Optional
-from weakref import finalize
+from typing import Iterable, Optional, Sequence, Union
+from weakref import finalize, WeakValueDictionary
 
 from .main import KVTags, checktype, _get_pdcid, PDCError, ctrace
-from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t
+from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t, uint64_t, obj_handle, pdc_obj_info, cont_handle, pdc_cont_info
+from pdc.main cimport malloc_or_memerr
 import pdc
 cimport pdc.cpdc as cpdc
+from cpython.mem cimport PyMem_Free as free
 from cpython.bytes cimport PyBytes_FromStringAndSize
 
 cdef _pdc_cont_info get_info_struct(pdcid_t id):
@@ -35,6 +37,23 @@ class ContainerKVTags(KVTags):
         if cpdc.PDCcont_put_tag(self.cont._id, name, <char *> value, len(value)) != 0:
             raise PDCError("could not set tag")
 
+def to_c_object_list(objects: Union['pdc.Object', Sequence['pdc.Object']]):
+    cdef size_t size
+    cdef pdcid_t *ids
+    if isinstance(objects, pdc.Object):
+        size = 1
+        ids = <pdcid_t *> malloc_or_memerr(sizeof(pdcid_t))
+        ids[0] = objects._id
+    else:
+        size = len(objects)
+        ids = <pdcid_t *> malloc_or_memerr(sizeof(pdcid_t) * size)
+        try:
+            for i in range(size):
+                ids[i] = objects[i]._id
+        finally:
+            free(ids)
+    return <uint64_t> ids, size
+
 class Container:
     '''
     Containers can contain one or more objects, and objects can be part of one or more containers.
@@ -48,7 +67,7 @@ class Container:
         PERSISTENT = pdc_lifetime_t.PDC_PERSIST
         TRANSIENT  = pdc_lifetime_t.PDC_TRANSIENT
     
-    containers_by_id = {}
+    containers_by_id = WeakValueDictionary()
     
     def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, *, _id:Optional[int]=None):
         '''
@@ -90,6 +109,7 @@ class Container:
         
         finalize(self, self._finalize, id)
         self._id = id
+        type(self).containers_by_id[id] = self
 
     @staticmethod
     def _finalize(pdcid_t id):
@@ -157,23 +177,63 @@ class Container:
 
         :return: An iterable of Objects
         '''
-        pass
+        cdef obj_handle *handle = cpdc.PDCobj_iter_start(self._id)
+        ctrace('obj_iter_start', <uint64_t> handle, self._id)
+
+        cdef pdc_obj_info *info
+        cdef pdcid_t id
+        
+        while True:
+            rtn = cpdc.PDCobj_iter_null(handle)
+            ctrace('obj_iter_null', bool(rtn), <uint64_t> handle)
+            if rtn:
+                break
+            
+            info = cpdc.PDCobj_iter_get_info(handle)
+            ctrace('obj_iter_get_info', <uint64_t> info, <uint64_t> handle)
+            if info == NULL:
+                raise PDCError('Failed to get object info')
+            
+            id = info[0].local_id
+            if id == 0:
+                raise PDCError('Object local ID missing')
+            
+            yield pdc.Object._fromid(id)
+            
+            handle = cpdc.PDCobj_iter_next(handle, self._id)
+            ctrace('obj_iter_next', <uint64_t> handle, <uint64_t> handle, self._id)
     
-    def add_objects(self, objects:Iterable['pdc.Object']):
+    def _add_objects(self, objects:Union[Sequence['pdc.Object'], 'pdc.Object']):
         '''
         Add objects to this container
 
-        :param object: An iterable of Objects to add.
+        :param object: A single Object, or a sequence of Objects to add.
         '''
-        pass
+        ptr, size = to_c_object_list(objects)
+        cdef pdcid_t *ids = <pdcid_t *> <uint64_t> ptr
+        try:
+            rtn = cpdc.PDCcont_put_objids(self._id, size, ids)
+            ctrace('cont_put_objids', rtn, self._id, size, tuple(o._id for o in objects))
+            if rtn != 0:
+                raise PDCError('Failed to add objects to container')
+        finally:
+            free(ids)
     
-    def remove_objects(self, objects:Iterable['pdc.Object']):
+    def _remove_objects(self, objects:Union[Sequence['pdc.Object'], 'pdc.Object']):
         '''
         Remove objects from this container
         
-        :param objects: An iterable of Objects to remove.
+        :param object: A single Object, or a sequence of Objects to add.
         '''
-        pass
+        ptr, size = to_c_object_list(objects)
+        cdef pdcid_t *ids = <pdcid_t *> <uint64_t> ptr
+        try:
+            rtn = cpdc.PDCcont_del_objids(self._id, size, ids)
+            ctrace('cont_del_objids', rtn, self._id, size, tuple(o._id for o in objects))
+            if rtn != 0:
+                raise PDCError('Failed to add objects to container')
+        finally:
+            free(ids)
     
     def _delete(self):
         '''
@@ -184,6 +244,12 @@ class Container:
         '''
         if cpdc.PDCcont_del(self._id) != 0:
             raise PDCError('Failed to delete container')
+    
+    def __eq__(self, other):
+        return isinstance(other, Container) and self._id == other._id
+    
+    def __hash__(self):
+        return hash(self._id)
 
 def all_local_containers() -> Iterable[Container]:
     '''
@@ -192,4 +258,28 @@ def all_local_containers() -> Iterable[Container]:
 
     :return: An iterable of Containers
     '''
-    pass
+    cdef cont_handle *handle = cpdc.PDCcont_iter_start()
+    ctrace('cont_iter_start', <uint64_t> handle)
+
+    cdef pdc_cont_info *info
+    cdef pdcid_t id
+    
+    while True:
+        rtn = cpdc.PDCcont_iter_null(handle)
+        ctrace('cont_iter_null', bool(rtn), <uint64_t> handle)
+        if rtn:
+            break
+        
+        info = cpdc.PDCcont_iter_get_info(handle)
+        ctrace('cont_iter_get_info', <uint64_t> info, <uint64_t> handle)
+        if info == NULL:
+            raise PDCError('Failed to get container info')
+        
+        id = info[0].local_id
+        if id == 0:
+            raise PDCError('Container local ID missing')
+        
+        yield Container._fromid(id)
+        
+        handle = cpdc.PDCcont_iter_next(handle)
+        ctrace('cont_iter_next', <uint64_t> handle, <uint64_t> handle)

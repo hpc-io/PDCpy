@@ -49,7 +49,7 @@ cdef extern from "pdc_id_pkg.h":
 
 cdef extern from "pdc_cont.h":
     ctypedef _pdc_id_info cont_handle
-    ctypedef struct pdc_cont_info:
+    struct pdc_cont_info:
         char *   name
         pdcid_t  local_id
         uint64_t meta_id
@@ -65,6 +65,7 @@ cdef extern from "pdc_cont.h":
 
     #low priority, but straightforward to implement
     cont_handle *PDCcont_iter_start()
+    cont_handle *PDCcont_iter_next(cont_handle *chandle)
     pbool_t PDCcont_iter_null(cont_handle *chandle)
     pdc_cont_info *PDCcont_iter_get_info(cont_handle *chandle)
     

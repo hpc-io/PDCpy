@@ -190,6 +190,7 @@ class Type(Enum):
             return np.dtype('=b')
         else:
             raise ValueError('Unknown PDC type')
+        #TODO: add inverse operation
 
 class KVTags(ABC):
     '''

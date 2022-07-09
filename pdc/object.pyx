@@ -4,7 +4,7 @@ from functools import singledispatchmethod
 from typing import Tuple, Optional, Iterable, Union
 from enum import Enum
 import numpy.typing as npt
-from weakref import finalize
+from weakref import finalize, WeakValueDictionary
 import ctypes
 
 from pdc.main import uint32, uint64, Type, KVTags, _free_from_int, _get_pdcid, PDCError, PDCError, pdcid, checktype, ctrace
@@ -396,7 +396,7 @@ class Object:
             if rtn != 0 or rtn2 != 0 or rtn3 != 0:
                 raise PDCError('Failed to close region or transfer request')
     
-    objects_by_id = {}
+    objects_by_id = WeakValueDictionary()
 
     def __init__(self, name:str, properties:Properties, container:container.Container, *, _id:Optional[pdcid]=None):
         '''
@@ -440,7 +440,6 @@ class Object:
         ctrace('obj_close', rtn, id)
         if rtn != 0:
             raise PDCError('failed to close object')
-        del objects_by_id[id]
     
     @classmethod
     def _fromid(cls, pdcid_t id):
@@ -558,4 +557,3 @@ class Object:
         if rtn != 0:
             raise PDCError('failed to delete object')
         #leave self._id as is, because we still need to finalize
-    

@@ -42,3 +42,25 @@ def test_container_get_del():
     #    cont2ref = Container.get('contgetdel2')
     
     #cont2 = pdc.Container('contgetdel2')
+
+@pytest.mark.skip
+#this has no tests on the c side
+def test_put_del_ids():
+    cont = pdc.Container('contputdelids')
+    cont2 = pdc.Container('contputdelids2')
+    prop = pdc.Object.Properties(dims=(8, 6), type=pdc.Type.INT16)
+    obj = pdc.Object('objputdelids', prop, cont)
+    obj2 = pdc.Object('objputdelids2', prop, cont)
+    obj3 = pdc.Object('objputdelids3', prop, cont)
+
+    cont.remove_objects([obj, obj2, obj3])
+    cont2.add_objects([obj, obj2, obj3])
+
+    cont2.remove_objects(obj2)
+    cont2.add_objects(obj2)
+
+    with pytest.raises(TypeError):
+        cont2.remove_objects(1)
+    
+    with pytest.raises(TypeError):
+        cont2.add_objects(1)
