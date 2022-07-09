@@ -1161,7 +1161,7 @@ static const char __pyx_k_Type[] = "Type";
 static const char __pyx_k_init[] = "init";
 static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
-static const char __pyx_k_test[] = "__test__";
+static const char __pyx_k_test[] = "test";
 static const char __pyx_k_query[] = "query";
 static const char __pyx_k_ready[] = "ready";
 static const char __pyx_k_KVTags[] = "KVTags";
@@ -1171,6 +1171,7 @@ static const char __pyx_k_import[] = "__import__";
 static const char __pyx_k_main_2[] = "main";
 static const char __pyx_k_object[] = "object";
 static const char __pyx_k_region[] = "region";
+static const char __pyx_k_test_2[] = "__test__";
 static const char __pyx_k_uint32[] = "uint32";
 static const char __pyx_k_uint64[] = "uint64";
 static const char __pyx_k_PDCError[] = "PDCError";
@@ -1206,6 +1207,7 @@ static PyObject *__pyx_n_s_ready;
 static PyObject *__pyx_n_s_region;
 static PyObject *__pyx_n_s_tag_query;
 static PyObject *__pyx_n_s_test;
+static PyObject *__pyx_n_s_test_2;
 static PyObject *__pyx_n_s_uint32;
 static PyObject *__pyx_n_s_uint64;
 /* Late includes */
@@ -1280,6 +1282,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_region, __pyx_k_region, sizeof(__pyx_k_region), 0, 0, 1, 1},
   {&__pyx_n_s_tag_query, __pyx_k_tag_query, sizeof(__pyx_k_tag_query), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
+  {&__pyx_n_s_test_2, __pyx_k_test_2, sizeof(__pyx_k_test_2), 0, 0, 1, 1},
   {&__pyx_n_s_uint32, __pyx_k_uint32, sizeof(__pyx_k_uint32), 0, 0, 1, 1},
   {&__pyx_n_s_uint64, __pyx_k_uint64, sizeof(__pyx_k_uint64), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
@@ -1571,11 +1574,11 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "pdc/__init__.pyx":1
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext             # <<<<<<<<<<<<<<
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, test             # <<<<<<<<<<<<<<
  * from .object import Object
  * from .container import Container, all_local_containers
  */
-  __pyx_t_1 = PyList_New(8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_uint32);
   __Pyx_GIVEREF(__pyx_n_s_uint32);
@@ -1601,6 +1604,9 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_ServerContext);
   __Pyx_GIVEREF(__pyx_n_s_ServerContext);
   PyList_SET_ITEM(__pyx_t_1, 7, __pyx_n_s_ServerContext);
+  __Pyx_INCREF(__pyx_n_s_test);
+  __Pyx_GIVEREF(__pyx_n_s_test);
+  PyList_SET_ITEM(__pyx_t_1, 8, __pyx_n_s_test);
   __pyx_t_2 = __Pyx_Import(__pyx_n_s_main_2, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
@@ -1636,10 +1642,14 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_ServerContext, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_test); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":2
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, test
  * from .object import Object             # <<<<<<<<<<<<<<
  * from .container import Container, all_local_containers
  * from .region import region, Region
@@ -1659,7 +1669,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pdc/__init__.pyx":3
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, test
  * from .object import Object
  * from .container import Container, all_local_containers             # <<<<<<<<<<<<<<
  * from .region import region, Region
@@ -1747,13 +1757,13 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":1
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext             # <<<<<<<<<<<<<<
+ * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, test             # <<<<<<<<<<<<<<
  * from .object import Object
  * from .container import Container, all_local_containers
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test_2, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /*--- Wrapped vars code ---*/

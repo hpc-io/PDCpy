@@ -40,6 +40,7 @@ cdef extern from "pdc_public.h":
 cdef extern from "pdc.h":
     pdcid_t PDCinit(const char *pdc_name)
     perr_t PDCclose(pdcid_t pdcid)
+    int test()
 
 cdef extern from "pdc_id_pkg.h":
     ctypedef struct _pdc_id_info:
@@ -105,6 +106,7 @@ cdef extern from "pdc_obj.h":
     perr_t PDCprop_set_obj_time_step(pdcid_t obj_prop, uint32_t time_step)    
     perr_t PDCprop_set_obj_dims(pdcid_t obj_prop, PDC_int_t ndim, uint64_t *dims)
     perr_t PDCprop_set_obj_type(pdcid_t obj_prop, pdc_var_type_t type)
+    _pdc_obj_info *PDC_obj_get_info(pdcid_t obj_id)
 
     #low priority, but straightforward to implement:
     obj_handle *PDCobj_iter_start(pdcid_t cont_id)
@@ -117,6 +119,10 @@ cdef extern from "pdc_obj.h":
     perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, psize_t value_size)
     perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)
     perr_t PDCobj_del_tag(pdcid_t obj_id, char *tag_name)
+
+cdef extern from "pdc_obj_pkg.h":
+    cdef struct _pdc_obj_info:
+        _pdc_obj_prop *      obj_pt
 
 #low priority:
 
@@ -260,7 +266,7 @@ cdef extern from "pdc_prop_pkg.h":
     ctypedef struct pdc_kvtag_t:
         char *   name
         uint32_t size
-        void *   value 
+        void *   value
 
 cdef extern from "pdc_client_connect.h":
     perr_t PDC_Client_query_kvtag(pdc_kvtag_t *kvtag, int *n_res, uint64_t **pdc_ids)

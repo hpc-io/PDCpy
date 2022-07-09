@@ -54,5 +54,5 @@ def test_container_tags():
     assert cont.tags['b'] == (True, False, -44.88, (None,), 'merp')
 
     #https://github.com/hpc-io/pdc/issues/66
-    #del cont.tags['a']
-    #del cont.tags['b']
+    with pytest.raises(NotImplementedError):
+        del cont.tags['a']

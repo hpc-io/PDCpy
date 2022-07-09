@@ -6,10 +6,9 @@
 int
 main(int argc, char **argv)
 {
-    pdcid_t pdc_id, cont_id, cont_prop, cont_id2, obj_prop, obj_id, region_id, transfer_id;
+    pdcid_t pdc_id, cont_id, cont_prop, cont_id2, obj_prop, obj_id, global_region_id, transfer_id, local_region_id;
     int     rank = 0, size = 1;
     int     ret_value = 0;
-    double  *data = (double *) malloc(sizeof(double) * 128);
 
     // create a pdc
 #ifdef ENABLE_MPI
@@ -24,7 +23,7 @@ main(int argc, char **argv)
         printf("Fail to create container property @ line  %d!\n", __LINE__);
 
     // create a container
-    cont_id = PDCcont_create("VPIC_cont", cont_prop);
+    cont_id = PDCcont_create("cont", cont_prop);
     if (cont_id <= 0)
         printf("Fail to create container @ line  %d!\n", __LINE__);
     
@@ -32,25 +31,44 @@ main(int argc, char **argv)
     obj_prop = PDCprop_create(PDC_OBJ_CREATE, pdc_id);
     if (obj_prop <= 0)
         printf("Fail to create object property @ line  %d!\n", __LINE__);
-    uint64_t dims[] = {128};
-    if (PDCprop_set_obj_dims(obj_prop, 1, dims) != 0)
+    uint64_t dims[] = {8, 8};
+    if (PDCprop_set_obj_dims(obj_prop, 2, dims) != 0)
         printf("Fail to set object dimensions @ line  %d!\n", __LINE__);
-    if (PDCprop_set_obj_type(obj_prop, PDC_DOUBLE) != 0)
+    if (PDCprop_set_obj_type(obj_prop, PDC_INT8) != 0)
         printf("Fail to set object type @ line  %d!\n", __LINE__);
     obj_id = PDCobj_create(cont_id, "obj", obj_prop);
     if (obj_id <= 0)
         printf("Fail to create object @ line  %d!\n", __LINE__);
+    
+    //get object data.
+    int8_t all_data[8*8];
+    PDCobj_get_data(obj_id, all_data, 8*8);
+    
+    //print all_data in an 8*8 grid
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+            printf("%d\t", all_data[i*8+j]);
+        printf("\n");
+    }
 
-    uint64_t offsets[] = {0};
+    uint64_t global_region_offsets[] = {1, 2};
+    uint64_t global_region_dims[] = {6, 2};
 
-    //create region.  this region will be used for all region parameters.
-    region_id = PDCregion_create(1, offsets, dims);
-    if (region_id <= 0)
+    global_region_id = PDCregion_create(2, global_region_offsets, global_region_dims);
+    if (global_region_id <= 0)
         printf("Fail to create region @ line  %d!\n", __LINE__);
     
+    uint64_t local_region_offsets[] = {0, 0};
+    uint64_t local_region_dims[] = {6, 2};
+    local_region_id = PDCregion_create(2, local_region_offsets, local_region_dims);
+    if (local_region_id <= 0)
+        printf("Fail to create region @ line  %d!\n", __LINE__);
+    
+    int8_t data_to_send[6][2] = {{2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}, {2, 2}};
+    
     //set object data.
-    memset(data, 1.0, 128 * sizeof(double));
-    transfer_id = PDCregion_transfer_create(data, PDC_WRITE, obj_id, region_id, region_id);
+    transfer_id = PDCregion_transfer_create(data_to_send, PDC_WRITE, obj_id, local_region_id, global_region_id);
     if (transfer_id <= 0)
         printf("Fail to create transfer @ line  %d!\n", __LINE__);
     if (PDCregion_transfer_start(transfer_id) != SUCCEED)
@@ -58,11 +76,25 @@ main(int argc, char **argv)
     if (PDCregion_transfer_wait(transfer_id) != SUCCEED)
         printf("Fail to wait transfer @ line  %d!\n", __LINE__);
     
-    //PDCregion_close(region_id);
+    if (PDCregion_close(local_region_id) != SUCCEED)
+        printf("Fail to close region @ line  %d!\n", __LINE__);
+    if (PDCregion_close(global_region_id) != SUCCEED)
+        printf("Fail to close region @ line  %d!\n", __LINE__);
 
-    puts("here");
+    puts("AFTER:");
+
+    //get object data.
+    PDCobj_get_data(obj_id, all_data, 8*8);
     
-    //create output buffer for getting data
+    //print all_data in an 8*8 grid
+    for (int i = 0; i < 8; i++)
+    {
+        for (int j = 0; j < 8; j++)
+            printf("%d\t", all_data[i*8+j]);
+        printf("\n");
+    }
+    
+    /*//create output buffer for getting data
     double *data_out = (double *) malloc(sizeof(double) * 128);
     transfer_id = PDCregion_transfer_create(data_out, PDC_READ, obj_id, region_id, region_id);  //SEGFAULT HERE
     if (transfer_id <= 0)
@@ -76,10 +108,8 @@ main(int argc, char **argv)
     
     for (int i = 0; i < 128; i++)
         if (data[i] != data_out[i])
-            printf("Wrong data value @ line  %d!\n", __LINE__);
+            printf("Wrong data value @ line  %d!\n", __LINE__);*/
     
-    if (PDCregion_close(region_id) != SUCCEED)
-        printf("Fail to close region @ line  %d!\n", __LINE__);
     if (PDCregion_transfer_close(transfer_id) != SUCCEED)
         printf("Fail to close transfer @ line  %d!\n", __LINE__);
     if (PDCobj_close(obj_id) != SUCCEED)

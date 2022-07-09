@@ -1,7 +1,7 @@
 from functools import singledispatchmethod
 import builtins
 from pdc.main cimport malloc_or_memerr
-from .main import checktype, uint64, checkrange, PDCError, pdcid
+from .main import checktype, uint64, checkrange, PDCError, pdcid, ctrace
 from pdc.cpdc cimport uint64_t, pdcid_t
 cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Free as free
@@ -80,17 +80,18 @@ class Region:
         cdef uint64_t start, stop
         cdef pdcid_t id
         try:
-            for s, d in zip(self.slices, dims):
+            for s, d in zip(newslices, dims):
                 if s.stop is not None and s.stop > d:
                     raise ValueError(f'slice stop value {s.stop} is greater than the dimension {d}')
             
-            for s, d, i in zip(self.slices, dims, range(len(dims))):
+            for s, d, i in zip(newslices, dims, range(len(dims))):
                 start = s.start if s.start is not None else 0
                 stop = s.stop if s.stop is not None else d
                 size_arr[i] = stop - start
                 offset_arr[i] = start
             
             id = cpdc.PDCregion_create(len(dims), offset_arr, size_arr)
+            ctrace('region_create', id, len(dims), tuple(offset_arr[i] for i in range(len(dims))), tuple(size_arr[i] for i in range(len(dims))))
             if id == 0:
                 raise PDCError('failed to create region')
             return id, tuple(size_arr[i] for i in range(len(dims)))

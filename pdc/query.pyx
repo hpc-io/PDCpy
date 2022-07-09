@@ -6,7 +6,10 @@ from enum import Enum
 
 import numpy.typing as npt
 
-from pdc.cpdc cimport pdc_query_combine_op_t, pdc_query_op_t
+from pdc.cpdc cimport pdc_query_combine_op_t, pdc_query_op_t, pdc_kvtag_t, uint64_t
+cimport pdc.cpdc as cpdc
+from .main import PDCError, checktype, KVTags
+from . import object
 
 class Query(ABC):
     class _CombineOp(Enum):
@@ -103,10 +106,30 @@ class DataQuery(Query, collections.abc.Mapping):
 def tag_query(tag_name:str, tag_value:str) -> Tuple['Object']:
     '''
     Get objects with a tag of the given name and value
+    CURRENTLY NOT IMPLEMENTED
 
     :param str tag_name: name of the tag
     :param str tag_value: value of the tag
     :return: objects with the given tag
     :rtype: Iterable[Object]
     '''
-    pass
+    raise NotImplementedError()
+    '''
+    checktype(tag_name, 'tag name', str)
+    checktype(tag_value, 'tag value', str)
+
+    cdef pdc_kvtag_t kvtag
+    tag_name_bytes = tag_name.encode('utf-8')
+    tag_value_bytes = KVTags._encode(tag_value)
+    kvtag.name = tag_name_bytes
+    kvtag.value = <char *> tag_value_bytes
+    kvtag.size = len(tag_value_bytes)
+
+    cdef int num_results
+    cdef uint64_t *results
+    if (cpdc.PDC_Client_query_kvtag(&kvtag, &num_results, &results) != 0):
+        raise PDCError('Error querying for objects with tag {}={}'.format(tag_name, tag_value))
+    
+    rtn = tuple(object.Object._fromid(results[i]) for i in range(num_results))
+    return rtn
+    '''

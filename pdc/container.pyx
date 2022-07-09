@@ -2,7 +2,7 @@ from enum import Enum
 from typing import Iterable, Optional
 from weakref import finalize
 
-from .main import KVTags, checktype, _get_pdcid, PDCError
+from .main import KVTags, checktype, _get_pdcid, PDCError, ctrace
 from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t
 import pdc
 cimport pdc.cpdc as cpdc
@@ -47,46 +47,66 @@ class Container:
         '''
         PERSISTENT = pdc_lifetime_t.PDC_PERSIST
         TRANSIENT  = pdc_lifetime_t.PDC_TRANSIENT
-
     
-    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, *, _fromid:Optional[int]=None):
+    containers_by_id = {}
+    
+    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, *, _id:Optional[int]=None):
         '''
         __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT)
         :param str name: the name of the container.  Container names should be unique between all processes that use PDC.
         :param Lifetime lifetime: the container's lifetime.
         '''
-        if _fromid is not None:
-            checktype(_fromid, 'id', int)
-            self._id = _fromid
-            return
 
-        checktype(name, 'name', str)
-        checktype(lifetime, 'lifetime', Container.Lifetime)
-        
-        if name == '':
-            raise ValueError("Container name cannot be empty")
+        cdef pdcid_t id, prop_id
+        if _id is not None:
+            checktype(_id, 'id', int)
+            id = _id
+        else:
+            checktype(name, 'name', str)
+            checktype(lifetime, 'lifetime', Container.Lifetime)
+            
+            if name == '':
+                raise ValueError("Container name cannot be empty")
 
-        cdef pdcid_t prop_id = cpdc.PDCprop_create(pdc_prop_type_t.PDC_CONT_CREATE, _get_pdcid())
-        if prop_id == 0:
-            raise PDCError('Failed to create container property')
+            prop_id = cpdc.PDCprop_create(pdc_prop_type_t.PDC_CONT_CREATE, _get_pdcid())
+            ctrace('prop_create', prop_id, 'PDC_CONT_CREATE', _get_pdcid())
+            if prop_id == 0:
+                raise PDCError('Failed to create container property')
+            
+            rtn = cpdc.PDCprop_set_cont_lifetime(prop_id, lifetime.value)
+            ctrace('prop_set_cont_lifetime', rtn, prop_id, lifetime)
+            if rtn != 0:
+                raise PDCError('Failed to set container lifetime')
+            
+            id = cpdc.PDCcont_create(name.encode('utf-8'), prop_id)
+            ctrace('cont_create', id, name.encode('utf-8'), prop_id)
+            if id == 0:
+                raise PDCError('Failed to create container')
+            
+            rtn = cpdc.PDCprop_close(prop_id)
+            ctrace('prop_close', rtn, prop_id)
+            if rtn != 0:
+                raise PDCError('Failed to close container property')
         
-        if cpdc.PDCprop_set_cont_lifetime(prop_id, lifetime.value) != 0:
-            raise PDCError('Failed to set container lifetime')
-        
-        cdef pdcid_t id = cpdc.PDCcont_create(name.encode('utf-8'), prop_id)
-        if id == 0:
-            raise PDCError('Failed to create container')
-        
-        self._id = id
         finalize(self, self._finalize, id)
+        self._id = id
 
     @staticmethod
     def _finalize(pdcid_t id):
-        if cpdc.PDCcont_close(id) != 0:
+        rtn = cpdc.PDCcont_close(id)
+        ctrace('cont_close', rtn, id)
+        if rtn != 0:
             raise PDCError('Failed to close container')
+    
+    @classmethod
+    def _fromid(cls, pdcid_t id):
+        if id in cls.containers_by_id:
+            return cls.containers_by_id[id]
+        else:
+            return cls(None, None, _id=id)
 
-    @staticmethod
-    def get(name:str) -> 'Container':
+    @classmethod
+    def get(cls, name:str) -> 'Container':
         '''
         Get an existing container by name.
 
@@ -97,7 +117,7 @@ class Container:
         cdef pdcid_t id = cpdc.PDCcont_open(name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('Container not found or failed to open container')
-        return Container(None, _fromid=id)
+        return cls._fromid(id)
     
     def persist(self):
         '''

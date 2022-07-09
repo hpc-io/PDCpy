@@ -7,10 +7,10 @@ import numpy.typing as npt
 from weakref import finalize
 import ctypes
 
-from pdc.main import uint32, uint64, Type, KVTags, _free_from_int, _get_pdcid, PDCError, PDCError, pdcid, checktype
+from pdc.main import uint32, uint64, Type, KVTags, _free_from_int, _get_pdcid, PDCError, PDCError, pdcid, checktype, ctrace
 cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
-from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t, pdcid_t, pdc_obj_prop, _pdc_obj_prop, pdc_obj_info, pdc_transfer_status_t, psize_t
+from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t, pdcid_t, pdc_obj_prop, _pdc_obj_prop, pdc_obj_info, pdc_transfer_status_t, psize_t, _pdc_obj_info
 from pdc.main cimport malloc_or_memerr
 from . import container
 from . import container as container_
@@ -32,24 +32,38 @@ cdef pdc_obj_info get_obj_info(pdcid_t obj_id):
         raise PDCError("could not get info for object")
     return private_struct[0]
 
+cdef _pdc_obj_info get_private_obj_info(pdcid_t obj_id):
+    cdef _pdc_obj_info *private_struct = cpdc.PDC_obj_get_info(obj_id)
+    if private_struct == NULL:
+        raise PDCError("could not get info for object")
+    return private_struct[0]
+
 class ObjectKVTags(KVTags):
     def __init__(self, obj):
         self.obj = obj
     
     def delete(self, name:bytes):
-        if cpdc.PDCobj_del_tag(self.obj._id, name) != 0:
+        rtn = cpdc.PDCobj_del_tag(self.obj._id, name)
+        ctrace("obj_del_tag", rtn, self.obj._id, name)
+        if rtn != 0:
             raise PDCError("tag does not exist or could not delete tag")
     
     def get(self, name:bytes):
         cdef void* value_out
         cdef psize_t size_out
-        if cpdc.PDCobj_get_tag(self.obj._id, name, &value_out, &size_out) != 0:
+        rtn = cpdc.PDCobj_get_tag(self.obj._id, name, &value_out, &size_out)
+        ctrace("obj_get_tag", rtn, self.obj._id, name, <size_t> value_out, size_out)
+        if rtn != 0:
             raise PDCError("tag does not exist or could not get tag")
         rtn = PyBytes_FromStringAndSize(<char *> value_out, size_out)
         return rtn
     
     def set(self, name:bytes, value:bytes):
-        if cpdc.PDCobj_put_tag(self.obj._id, name, <char *> value, len(value)) != 0:
+        ctrace('here', None)
+        ctrace("obj_put_tag", '?', self.obj._id, name, value, len(value))
+        rtn = cpdc.PDCobj_put_tag(self.obj._id, name, <char *> value, len(value))
+        ctrace('here', None)
+        if rtn != 0:
             raise PDCError("could not set tag")
 
 class Object:
@@ -80,6 +94,7 @@ class Object:
 
             global pdc_id
             cdef pdcid_t id = cpdc.PDCprop_create(cpdc.pdc_prop_type_t.PDC_OBJ_CREATE, _get_pdcid())
+            ctrace("prop_create", id, 'PDC_OBJ_CREATE', _get_pdcid())
             if id == 0:
                 raise PDCError('Failed to create object')
             self._id = id
@@ -99,7 +114,9 @@ class Object:
         
         @staticmethod
         def _finalize(id):
-            if cpdc.PDCprop_close(id) != 0:
+            rtn = cpdc.PDCprop_close(id)
+            ctrace("prop_close", rtn, id)
+            if rtn != 0:
                 raise PDCError('Failed to close object')
         
         @property
@@ -135,7 +152,9 @@ class Object:
                 for i in range(length):
                     dims_ptr[i] = dims[i]
                 
-                if cpdc.PDCprop_set_obj_dims(self._id, length, dims_ptr) != 0:
+                rtn = cpdc.PDCprop_set_obj_dims(self._id, length, dims_ptr)
+                ctrace("prop_set_obj_dims", rtn, self._id, length, dims)
+                if rtn != 0:
                     raise PDCError('Failed to set object dimensions')
             finally:
                 free(dims_ptr)
@@ -156,7 +175,9 @@ class Object:
         @type.setter
         def type(self, type:Type):
             checktype(type, 'type', Type)
-            if cpdc.PDCprop_set_obj_type(self._id, type.value) != 0:
+            rtn = cpdc.PDCprop_set_obj_type(self._id, type.value)
+            ctrace("prop_set_obj_type", 0, self._id, type)
+            if rtn != 0:
                 raise PDCError('Failed to set object type')
         
         @property
@@ -171,7 +192,9 @@ class Object:
         @time_step.setter
         def time_step(self, time_step:uint32):
             checktype(time_step, 'time step', int)
-            if cpdc.PDCprop_set_obj_time_step(self._id, time_step) != 0:
+            rtn = cpdc.PDCprop_set_obj_time_step(self._id, time_step)
+            ctrace("prop_set_obj_time_step", rtn, self._id, time_step)
+            if rtn != 0:
                 raise PDCError('Failed to set object time step')
         
         @property
@@ -187,6 +210,7 @@ class Object:
             checktype(id, 'user_id', int)
             
             rtn = cpdc.PDCprop_set_obj_user_id(self._id, id)
+            ctrace("prop_set_obj_user_id", rtn, self._id, id)
             if rtn != 0:
                 raise PDCError('failed to set user_id')
         
@@ -249,8 +273,12 @@ class Object:
             '''
             Wait for the result of the transfer request
             '''
-            if cpdc.PDCregion_transfer_wait(self._id) != 0:
+            ctrace('region_transfer_wait', '?', self._id)
+            rtn = cpdc.PDCregion_transfer_wait(self._id)
+            ctrace('region_transfer_wait', rtn, self._id)
+            if rtn != 0:
                 raise PDCError('Failed to wait for transfer request')
+            self._done = True
             return self.result
 
         @property
@@ -258,20 +286,27 @@ class Object:
             '''
             True if this transfer request is completed
             '''
+            if self._done:
+                return True
             cdef pdc_transfer_status_t out_status
-            cpdc.PDCregion_transfer_status(self._id, &out_status)
-            if out_status == pdc_transfer_status_t.PDC_TRANSFER_STATUS_NOT_FOUND:
+            if cpdc.PDCregion_transfer_status(self._id, &out_status) != 0:
+                raise PDCError('Failed to get transfer status')
+            elif out_status == pdc_transfer_status_t.PDC_TRANSFER_STATUS_NOT_FOUND:
                 raise PDCError('could not get transfer request status: transfer request not found')
             elif out_status == pdc_transfer_status_t.PDC_TRANSFER_STATUS_COMPLETE:
+                self._done = True
                 return True
-            return False
+            elif out_status == pdc_transfer_status_t.PDC_TRANSFER_STATUS_PENDING:
+                return False
+            else:
+                raise PDCError(f'unknown transfer status: {out_status}')
         
-        @property
-        def type(self) -> RequestType:
-            '''
-            Get the type of request
-            '''
-            pass
+        #@property
+        #def type(self) -> RequestType:
+        #    '''
+        #    Get the type of request
+        #    '''
+        #    pass
         
         @property
         def result(self) -> Optional[npt.NDArray]:
@@ -284,16 +319,17 @@ class Object:
             return self._out
         
         def __init__(self, remoteRegion:Region, object:'Object', request_type:RequestType, data=None):
-            #TODO: make this hold a reference to the object
             '''
             __init__(*args)
             '''
             checktype(remoteRegion, 'remote region', Region)
             checktype(object, 'object', Object)
             checktype(request_type, 'request type', type(self).RequestType)
-
             region_id, sizes = remoteRegion._construct_with(object.dims)
             cdef pdcid_t local_region_id = 0
+            self.obj_reference = object
+            self.type = request_type
+            self._done = False
 
             try:
                 _id, _ = region[:]._construct_with(sizes)
@@ -314,40 +350,55 @@ class Object:
                         np_data.reshape(sizes)
                     
                     transfer_id = cpdc.PDCregion_transfer_create(<void *> <size_t> np_data.ctypes.data, type(self).RequestType.SET.value, object._id, local_region_id, region_id)
+                    ctrace('region_transfer_create', transfer_id, np_data, type(self).RequestType.SET, object._id, local_region_id, region_id)
                     if transfer_id == 0:
                         raise PDCError('failed to create transfer')
                     self._id = transfer_id
                     self._out = None
-                    self._local_id = local_region_id
+                    self._local_region_id = local_region_id
+                    self._global_region_id = region_id
                 else:
                     out = np.empty(sizes, dtype=object.type.as_numpy_type())
                     transfer_id = cpdc.PDCregion_transfer_create(<void *> <size_t> out.ctypes.data, type(self).RequestType.GET.value, object._id, local_region_id, region_id)
+                    ctrace('region_transfer_create', transfer_id, out, type(self).RequestType.GET, object._id, local_region_id, region_id)
                     if transfer_id == 0:
                         raise PDCError('failed to create transfer')
                     self._id = transfer_id
                     self._out = out
-                    self._local_id = local_region_id
+                    self._local_region_id = local_region_id
+                    self._global_region_id = region_id
             except:
                 rtn = cpdc.PDCregion_close(region_id)
+                ctrace('region_close', rtn, region_id)
                 rtn2 = 0
                 if local_region_id != 0:
                     rtn2 = cpdc.PDCregion_close(local_region_id)
+                    ctrace('region_close', rtn2, local_region_id)
                 if rtn != 0 or rtn2 != 0:
                     raise PDCError('Failed to create region')
                 raise
             
-            finalize(self, type(self)._finalize, self._id, self._local_id)
-            if cpdc.PDCregion_transfer_start(self._id) != 0:
+            finalize(self, type(self)._finalize, self._id, self._global_region_id, self._local_region_id)
+            ctrace('region_transfer_start', '?', self._id)
+            rtn = cpdc.PDCregion_transfer_start(self._id)
+            ctrace('region_transfer_start', rtn, self._id)
+            if rtn != 0:
                 raise PDCError('failed to start transfer')
         
         @staticmethod
-        def _finalize(id, local_id):
+        def _finalize(transfer_id, global_id, local_id):
             rtn = cpdc.PDCregion_close(local_id)
-            rtn2 = cpdc.PDCregion_close(id)
-            if rtn != 0 or rtn2 != 0:
-                raise PDCError('Failed to close region')
-        
-    def __init__(self, name:str, properties:Properties, container:container.Container, *, _fromid:Optional[pdcid] = None):
+            ctrace('region_close', rtn, local_id)
+            rtn2 = cpdc.PDCregion_close(global_id)
+            ctrace('region_close', rtn2, global_id)
+            rtn3 = cpdc.PDCregion_transfer_close(transfer_id)
+            ctrace('region_transfer_close', rtn3, transfer_id)
+            if rtn != 0 or rtn2 != 0 or rtn3 != 0:
+                raise PDCError('Failed to close region or transfer request')
+    
+    objects_by_id = {}
+
+    def __init__(self, name:str, properties:Properties, container:container.Container, *, _id:Optional[pdcid]=None):
         '''
         __init__(self, name:str, properties:Properties, container:container.Container)
         Create a new object.  To get an existing object, use Object.get() instead
@@ -356,17 +407,23 @@ class Object:
         :param ObjectProperties properties: An ObjectProperties describing the properties of the object.
         :param Container container: the container this object should be placed in.
         '''
-        checktype(name, 'name', str)
-        checktype(properties, 'properties', type(self).Properties)
-        checktype(container, 'container', container_.Container)
-        
-        if _fromid is not None:
-            self._id = _fromid
-            return
-        cdef pdcid_t id = cpdc.PDCobj_create(container._id, name.encode('utf-8'), properties._id)
-        if id == 0:
-            raise PDCError('failed to create object')
+        cdef pdcid_t id
+        if _id is not None:
+            checktype(_id, '_id', int)
+            id = _id
+        else:
+            checktype(name, 'name', str)
+            checktype(properties, 'properties', type(self).Properties)
+            checktype(container, 'container', container_.Container)
+
+            id = cpdc.PDCobj_create(container._id, name.encode('utf-8'), properties._id)
+            ctrace('obj_create', id, container._id, name.encode('utf-8'), properties._id)
+            if id == 0:
+                raise PDCError('failed to create object')
+            
         self._id = id
+        finalize(self, type(self)._finalize, id, type(self).objects_by_id)
+        type(self).objects_by_id[id] = self
     
     #pdc_obj_prop.obj_prop_id is not used, so this is not implementable:
     #def get_properties(self) -> 'Properties':
@@ -376,6 +433,25 @@ class Object:
     #    cdef pdcid_t prop_id = (get_obj_info(self._id).obj_pt)[0].obj_prop_id
     #    raise PDCError(str(prop_id))
     #    return type(self).Properties(None, _fromid=prop_id).copy()
+
+    @staticmethod
+    def _finalize(id, objects_by_id):
+        rtn = cpdc.PDCobj_close(id)
+        ctrace('obj_close', rtn, id)
+        if rtn != 0:
+            raise PDCError('failed to close object')
+        del objects_by_id[id]
+    
+    @classmethod
+    def _fromid(cls, pdcid_t id):
+        '''
+        Get an object using an existing object id.
+        '''
+        if id in cls.objects_by_id:
+            print(f'Returning existing object: {id}')
+            return cls.objects_by_id[id]
+        else:
+            return cls(None, None, None, _id=id)
     
     @property
     def dims(self) -> Tuple[uint64, ...]:
@@ -383,9 +459,15 @@ class Object:
         The dimensions of this object.  read-only
         Equivalent to ``obj.get_properties().dims``
         '''
-        cdef pdc_obj_prop obj_prop = (get_obj_info(self._id).obj_pt)[0]
-        cdef uint64_t ndims = obj_prop.ndim
-        cdef uint64_t *dims = obj_prop.dims
+        cdef _pdc_obj_prop *obj_prop = (get_private_obj_info(self._id).obj_pt)
+        if obj_prop == NULL:
+            raise PDCError('info->obj_pt is NULL')
+        cdef pdc_obj_prop *pub_obj_prop = obj_prop[0].obj_prop_pub
+        if pub_obj_prop == NULL:
+            raise PDCError('info->obj_pt->obj_prop_pub is NULL')
+        cdef uint64_t ndims = pub_obj_prop[0].ndim
+        cdef uint64_t *dims = pub_obj_prop[0].dims
+
         return tuple(dims[i] for i in range(ndims))
     
     @property
@@ -394,7 +476,7 @@ class Object:
         The type of this object.  read-only
         Equivalent to ``obj.get_properties().type``
         '''
-        typenum = (get_obj_info(self._id).obj_pt)[0].type
+        typenum = get_private_obj_info(self._id).obj_pt[0].obj_prop_pub[0].type
         try:
             return Type(typenum)
         except ValueError:
@@ -415,8 +497,8 @@ class Object:
         '''
         pass
 
-    @staticmethod
-    def get(name:str) -> 'Object':
+    @classmethod
+    def get(cls, name:str) -> 'Object':
         '''
         Get an existing object by name
 
@@ -427,9 +509,10 @@ class Object:
         '''
         checktype(name, 'name', str)
         cdef pdcid_t id = cpdc.PDCobj_open(name.encode('utf-8'), _get_pdcid())
+        ctrace('obj_open', id, name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('object not found or failed to open object')
-        return Object(_fromid=id)
+        return cls._fromid(id)
     
     @property
     def tags(self) -> KVTags:
@@ -470,7 +553,9 @@ class Object:
         Delete this Object.
         Do not access any methods or properties of this object after calling.
         '''
-        if cpdc.PDCobj_del(self._id) != 0:
+        rtn = cpdc.PDCobj_del(self._id)
+        ctrace('obj_del', rtn, self._id)
+        if rtn != 0:
             raise PDCError('failed to delete object')
         #leave self._id as is, because we still need to finalize
     

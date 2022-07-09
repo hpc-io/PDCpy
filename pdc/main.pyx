@@ -28,6 +28,52 @@ def _free_from_int(ptr: int):
         cptr = ptr
         free(<void *> cptr)
 
+ctrace_id_map = {}
+term_color_map = {
+    'red': '\033[31m',
+    'green': '\033[32m',
+    'yellow': '\033[33m',
+    'blue': '\033[34m',
+    'magenta': '\033[35m',
+    'turquoise': '\033[36m'
+}
+term_color_end = '\033[0m'
+last_color = None
+do_ctrace = True
+file_output = True
+ctrace_file = None
+def format_id(id):
+    global last_color
+    if id in ctrace_id_map:
+        color = ctrace_id_map[id]
+    elif last_color is None:
+        color = 'red'
+    else:
+        colors = list(term_color_map.keys())
+        color = colors[(colors.index(last_color) + 1) % len(colors)]
+    
+    ctrace_id_map[id] = color
+    last_color = color
+    return term_color_map[color] + str(id) + term_color_end
+def format_arg(arg):
+    if isinstance(arg, int) and arg > 100000:
+        return format_id(arg)
+    else:
+        return str(arg)
+def ctrace(name, rtn, *args):
+    global ctrace_file
+    if not do_ctrace:
+        return
+    print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}')
+    if file_output:
+        #delete old ctrace file
+        if ctrace_file is None:
+            if os.path.exists('./ctrace.txt'):
+                os.remove('./ctrace.txt')
+            ctrace_file = open('./ctrace.txt', 'w')
+        
+        print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
+
 class PDCError(Exception):
     '''
     A general error type for all errors in the pdc api.
@@ -49,6 +95,7 @@ def init(name:str="PDC"):
     global pdc_id, _is_open
     name_bytes = name.encode('utf-8')
     pdc_id = cpdc.PDCinit(name_bytes)
+    ctrace('init', pdc_id, name)
     if pdc_id == 0:
         raise PDCError('Could not initialize PDC')
     
@@ -62,6 +109,7 @@ def _close(pdc_id):
     if not _is_open:
         return
     err = cpdc.PDCclose(pdc_id)
+    ctrace('close', err, pdc_id)
     if err != 0:
         raise PDCError('Could not close PDC')
     _is_open = False
@@ -220,6 +268,7 @@ class ServerContext:
     '''
     def __enter__(self):
         path = shutil.which('pdc_server.exe')
+        print(path)
         if not path:
             raise FileNotFoundError('pdc_server.exe not on PATH')
         self.popen = Popen([path], stdout=PIPE, encoding='ascii', text=True)
@@ -251,3 +300,6 @@ def checkrange(value, name, expected:str):
             raise OverflowError(f'{name} is out of range for int32: {value}')
     else:
         raise ValueError(f'invalid value for expected range: {expected}')
+
+def test():
+    return cpdc.test()

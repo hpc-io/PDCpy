@@ -32,6 +32,5 @@ async def main():
     for val in obj2.get_data().wait_for_result():
         assert val == 2.0
 
-@pytest.mark.skip
 def test_obj_get_data():
     asyncio.run(main())
