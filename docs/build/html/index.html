@@ -225,11 +225,6 @@ This must be called before any other PDC method.</p>
 <dd><p>True if init() has been called, False otherwise</p>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.test">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">test</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.test" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </section>
 <section id="module-pdc.container">
 <span id="containers"></span><h1>Containers<a class="headerlink" href="#module-pdc.container" title="Permalink to this heading">¶</a></h1>
@@ -484,7 +479,7 @@ This object can be awaited</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pdc.object.Object.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.query.DataQueryComponent" title="pdc.query.DataQueryComponent"><span class="pre">DataQueryComponent</span></a></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataQueryComponent</span></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object used to build queries.
 ex. <code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">=</span> <span class="pre">my_object.data</span> <span class="pre">&gt;</span> <span class="pre">1</span></code></p>
 </dd></dl>
@@ -626,59 +621,6 @@ The previous region example can be created with <code class="docutils literal no
 </section>
 <section id="module-pdc.query">
 <span id="queries"></span><h1>Queries<a class="headerlink" href="#module-pdc.query" title="Permalink to this heading">¶</a></h1>
-<dl class="py class">
-<dt class="sig sig-object py" id="pdc.query.DataQuery">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">DataQuery</span></span><a class="headerlink" href="#pdc.query.DataQuery" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py class">
-<dt class="sig sig-object py" id="pdc.query.DataQuery.Result">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><a class="headerlink" href="#pdc.query.DataQuery.Result" title="Permalink to this definition">¶</a></dt>
-<dd><p>Result of a DataQuery</p>
-<p>To get results from this class, index it using objects as keys
-For example:
-<code class="docutils literal notranslate"><span class="pre">query.get_result()[object1]</span></code></p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.query.DataQuery.get_num_hits">
-<span class="sig-name descname"><span class="pre">get_num_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pdc.query.DataQuery.get_num_hits" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get number of hits for this query (i.e. number of elements that match this query)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>number of hits</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.query.DataQuery.get_result">
-<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.query.DataQuery.Result" title="pdc.query.DataQuery.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#pdc.query.DataQuery.get_result" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get the result of this query</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the result</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pdc.query.DataQuery.Result" title="pdc.query.DataQuery.Result">Result</a></p>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pdc.query.DataQueryComponent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">DataQueryComponent</span></span><a class="headerlink" href="#pdc.query.DataQueryComponent" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py function">
 <dt class="sig sig-object py" id="pdc.query.tag_query">
 <span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">tag_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.tag_query" title="Permalink to this definition">¶</a></dt>

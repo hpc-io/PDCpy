@@ -4,18 +4,17 @@
 {
     "distutils": {
         "depends": [
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_client_connect.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_id_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_public.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_query.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_region.h"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include/pdc_cont_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include/pdc_obj_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include/pdc_prop_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_cont.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_obj.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_prop.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_public.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_query.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_region.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_id_pkg.h"
         ],
         "extra_compile_args": [
             "-Wl,-Bsymbolic-functions",
@@ -32,15 +31,16 @@
             "-lmpich"
         ],
         "include_dirs": [
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/api",
-            "/home/gerzytet/Documents/PDC/mercury/install/include"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include",
+            "/home/gerzytet/Documents/PDC/mercury/install/include",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include"
         ],
         "libraries": [
             "pdc"
         ],
         "library_dirs": [
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/bin"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/lib"
         ],
         "name": "pdc.main",
         "sources": [
@@ -756,7 +756,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "pdc_prop_pkg.h"
 #include "pdc_region.h"
 #include "pdc_query.h"
-#include "pdc_client_connect.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */
@@ -1538,9 +1537,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_perr_t(perr_t value);
 /* CIntToPy.proto */
 static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value);
 
-/* CIntToPy.proto */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value);
-
 /* CIntFromPy.proto */
 static CYTHON_INLINE long __Pyx_PyInt_As_long(PyObject *);
 
@@ -1659,7 +1655,7 @@ static const char __pyx_k_name[] = "name";
 static const char __pyx_k_open[] = "open";
 static const char __pyx_k_path[] = "path";
 static const char __pyx_k_self[] = "self";
-static const char __pyx_k_test[] = "test";
+static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_text[] = "text";
 static const char __pyx_k_wait[] = "wait";
 static const char __pyx_k_FLOAT[] = "FLOAT";
@@ -1703,7 +1699,6 @@ static const char __pyx_k_remove[] = "remove";
 static const char __pyx_k_return[] = "return";
 static const char __pyx_k_shutil[] = "shutil";
 static const char __pyx_k_stdout[] = "stdout";
-static const char __pyx_k_test_2[] = "__test__";
 static const char __pyx_k_typing[] = "typing";
 static const char __pyx_k_uint32[] = "uint32";
 static const char __pyx_k_uint64[] = "uint64";
@@ -1981,7 +1976,6 @@ static PyObject *__pyx_n_s_tag_types_union;
 static PyObject *__pyx_n_s_term_color_end;
 static PyObject *__pyx_n_s_term_color_map;
 static PyObject *__pyx_n_s_test;
-static PyObject *__pyx_n_s_test_2;
 static PyObject *__pyx_n_s_text;
 static PyObject *__pyx_n_s_traceback;
 static PyObject *__pyx_kp_s_tuples_must_contain_only_strings;
@@ -2020,7 +2014,6 @@ static PyObject *__pyx_pf_3pdc_4main_13ServerContext___enter__(CYTHON_UNUSED PyO
 static PyObject *__pyx_pf_3pdc_4main_13ServerContext_2__exit__(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_exc_type, CYTHON_UNUSED PyObject *__pyx_v_exc_value, CYTHON_UNUSED PyObject *__pyx_v_traceback); /* proto */
 static PyObject *__pyx_pf_3pdc_4main_18checktype(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_value, PyObject *__pyx_v_name, PyObject *__pyx_v_expected); /* proto */
 static PyObject *__pyx_pf_3pdc_4main_20checkrange(CYTHON_UNUSED PyObject *__pyx_self, PyObject *__pyx_v_value, PyObject *__pyx_v_name, PyObject *__pyx_v_expected); /* proto */
-static PyObject *__pyx_pf_3pdc_4main_22test(CYTHON_UNUSED PyObject *__pyx_self); /* proto */
 static __Pyx_CachedCFunction __pyx_umethod_PyList_Type_index = {0, &__pyx_n_s_index, 0, 0, 0};
 static __Pyx_CachedCFunction __pyx_umethod_PyString_Type_encode = {0, &__pyx_n_s_encode_2, 0, 0, 0};
 static PyObject *__pyx_int_0;
@@ -2075,7 +2068,6 @@ static PyObject *__pyx_codeobj__48;
 static PyObject *__pyx_codeobj__50;
 static PyObject *__pyx_codeobj__52;
 static PyObject *__pyx_codeobj__54;
-static PyObject *__pyx_codeobj__55;
 /* Late includes */
 
 /* "pdc/main.pyx":19
@@ -7401,8 +7393,6 @@ static PyObject *__pyx_pf_3pdc_4main_20checkrange(CYTHON_UNUSED PyObject *__pyx_
  *             raise OverflowError(f'{name} is out of range for int32: {value}')
  *     else:
  *         raise ValueError(f'invalid value for expected range: {expected}')             # <<<<<<<<<<<<<<
- * 
- * def test():
  */
   /*else*/ {
     __pyx_t_3 = __Pyx_PyObject_FormatSimple(__pyx_v_expected, __pyx_empty_unicode); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 303, __pyx_L1_error)
@@ -7434,66 +7424,6 @@ static PyObject *__pyx_pf_3pdc_4main_20checkrange(CYTHON_UNUSED PyObject *__pyx_
   __Pyx_XDECREF(__pyx_t_3);
   __Pyx_XDECREF(__pyx_t_6);
   __Pyx_AddTraceback("pdc.main.checkrange", __pyx_clineno, __pyx_lineno, __pyx_filename);
-  __pyx_r = NULL;
-  __pyx_L0:;
-  __Pyx_XGIVEREF(__pyx_r);
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-/* "pdc/main.pyx":305
- *         raise ValueError(f'invalid value for expected range: {expected}')
- * 
- * def test():             # <<<<<<<<<<<<<<
- *     return cpdc.test()
- */
-
-/* Python wrapper */
-static PyObject *__pyx_pw_3pdc_4main_23test(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused); /*proto*/
-static PyMethodDef __pyx_mdef_3pdc_4main_23test = {"test", (PyCFunction)__pyx_pw_3pdc_4main_23test, METH_NOARGS, 0};
-static PyObject *__pyx_pw_3pdc_4main_23test(PyObject *__pyx_self, CYTHON_UNUSED PyObject *unused) {
-  PyObject *__pyx_r = 0;
-  __Pyx_RefNannyDeclarations
-  __Pyx_RefNannySetupContext("test (wrapper)", 0);
-  __pyx_r = __pyx_pf_3pdc_4main_22test(__pyx_self);
-
-  /* function exit code */
-  __Pyx_RefNannyFinishContext();
-  return __pyx_r;
-}
-
-static PyObject *__pyx_pf_3pdc_4main_22test(CYTHON_UNUSED PyObject *__pyx_self) {
-  PyObject *__pyx_r = NULL;
-  __Pyx_RefNannyDeclarations
-  PyObject *__pyx_t_1 = NULL;
-  int __pyx_lineno = 0;
-  const char *__pyx_filename = NULL;
-  int __pyx_clineno = 0;
-  __Pyx_RefNannySetupContext("test", 0);
-
-  /* "pdc/main.pyx":306
- * 
- * def test():
- *     return cpdc.test()             # <<<<<<<<<<<<<<
- */
-  __Pyx_XDECREF(__pyx_r);
-  __pyx_t_1 = __Pyx_PyInt_From_int(test()); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 306, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_1);
-  __pyx_r = __pyx_t_1;
-  __pyx_t_1 = 0;
-  goto __pyx_L0;
-
-  /* "pdc/main.pyx":305
- *         raise ValueError(f'invalid value for expected range: {expected}')
- * 
- * def test():             # <<<<<<<<<<<<<<
- *     return cpdc.test()
- */
-
-  /* function exit code */
-  __pyx_L1_error:;
-  __Pyx_XDECREF(__pyx_t_1);
-  __Pyx_AddTraceback("pdc.main.test", __pyx_clineno, __pyx_lineno, __pyx_filename);
   __pyx_r = NULL;
   __pyx_L0:;
   __Pyx_XGIVEREF(__pyx_r);
@@ -7735,7 +7665,6 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_term_color_end, __pyx_k_term_color_end, sizeof(__pyx_k_term_color_end), 0, 0, 1, 1},
   {&__pyx_n_s_term_color_map, __pyx_k_term_color_map, sizeof(__pyx_k_term_color_map), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
-  {&__pyx_n_s_test_2, __pyx_k_test_2, sizeof(__pyx_k_test_2), 0, 0, 1, 1},
   {&__pyx_n_s_text, __pyx_k_text, sizeof(__pyx_k_text), 0, 0, 1, 1},
   {&__pyx_n_s_traceback, __pyx_k_traceback, sizeof(__pyx_k_traceback), 0, 0, 1, 1},
   {&__pyx_kp_s_tuples_must_contain_only_strings, __pyx_k_tuples_must_contain_only_strings, sizeof(__pyx_k_tuples_must_contain_only_strings), 0, 0, 1, 0},
@@ -8069,14 +7998,6 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
   __Pyx_GOTREF(__pyx_tuple__53);
   __Pyx_GIVEREF(__pyx_tuple__53);
   __pyx_codeobj__54 = (PyObject*)__Pyx_PyCode_New(3, 0, 3, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_tuple__53, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pdc_main_pyx, __pyx_n_s_checkrange, 292, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__54)) __PYX_ERR(0, 292, __pyx_L1_error)
-
-  /* "pdc/main.pyx":305
- *         raise ValueError(f'invalid value for expected range: {expected}')
- * 
- * def test():             # <<<<<<<<<<<<<<
- *     return cpdc.test()
- */
-  __pyx_codeobj__55 = (PyObject*)__Pyx_PyCode_New(0, 0, 0, 0, CO_OPTIMIZED|CO_NEWLOCALS, __pyx_empty_bytes, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_empty_tuple, __pyx_kp_s_pdc_main_pyx, __pyx_n_s_test, 305, __pyx_empty_bytes); if (unlikely(!__pyx_codeobj__55)) __PYX_ERR(0, 305, __pyx_L1_error)
   __Pyx_RefNannyFinishContext();
   return 0;
   __pyx_L1_error:;
@@ -9467,17 +9388,6 @@ if (!__Pyx_RefNanny) {
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_checkrange, __pyx_t_2) < 0) __PYX_ERR(0, 292, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
-  /* "pdc/main.pyx":305
- *         raise ValueError(f'invalid value for expected range: {expected}')
- * 
- * def test():             # <<<<<<<<<<<<<<
- *     return cpdc.test()
- */
-  __pyx_t_2 = PyCFunction_NewEx(&__pyx_mdef_3pdc_4main_23test, NULL, __pyx_n_s_pdc_main); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 305, __pyx_L1_error)
-  __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 305, __pyx_L1_error)
-  __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
-
   /* "pdc/main.pyx":1
  * cimport pdc.cpdc as cpdc             # <<<<<<<<<<<<<<
  * from pdc.cpdc cimport pdc_var_type_t, int64_t, uint64_t, int16_t, int8_t
@@ -9485,7 +9395,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
-  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test_2, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_test, __pyx_t_2) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /*--- Wrapped vars code ---*/
@@ -12604,44 +12514,6 @@ static CYTHON_INLINE PyObject* __Pyx_PyInt_From_long(long value) {
         int one = 1; int little = (int)*(unsigned char *)&one;
         unsigned char *bytes = (unsigned char *)&value;
         return _PyLong_FromByteArray(bytes, sizeof(long),
-                                     little, !is_unsigned);
-    }
-}
-
-/* CIntToPy */
-static CYTHON_INLINE PyObject* __Pyx_PyInt_From_int(int value) {
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-    const int neg_one = (int) -1, const_zero = (int) 0;
-#ifdef __Pyx_HAS_GCC_DIAGNOSTIC
-#pragma GCC diagnostic pop
-#endif
-    const int is_unsigned = neg_one > const_zero;
-    if (is_unsigned) {
-        if (sizeof(int) < sizeof(long)) {
-            return PyInt_FromLong((long) value);
-        } else if (sizeof(int) <= sizeof(unsigned long)) {
-            return PyLong_FromUnsignedLong((unsigned long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(unsigned PY_LONG_LONG)) {
-            return PyLong_FromUnsignedLongLong((unsigned PY_LONG_LONG) value);
-#endif
-        }
-    } else {
-        if (sizeof(int) <= sizeof(long)) {
-            return PyInt_FromLong((long) value);
-#ifdef HAVE_LONG_LONG
-        } else if (sizeof(int) <= sizeof(PY_LONG_LONG)) {
-            return PyLong_FromLongLong((PY_LONG_LONG) value);
-#endif
-        }
-    }
-    {
-        int one = 1; int little = (int)*(unsigned char *)&one;
-        unsigned char *bytes = (unsigned char *)&value;
-        return _PyLong_FromByteArray(bytes, sizeof(int),
                                      little, !is_unsigned);
     }
 }

@@ -4,18 +4,17 @@
 {
     "distutils": {
         "depends": [
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_client_connect.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_cont_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_id_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_prop_pkg.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_public.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_query.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_region.h"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include/pdc_cont_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include/pdc_obj_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include/pdc_prop_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_cont.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_obj.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_prop.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_public.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_query.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_region.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_id_pkg.h"
         ],
         "extra_compile_args": [
             "-Wl,-Bsymbolic-functions",
@@ -32,15 +31,16 @@
             "-lmpich"
         ],
         "include_dirs": [
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/api",
-            "/home/gerzytet/Documents/PDC/mercury/install/include"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include",
+            "/home/gerzytet/Documents/PDC/mercury/install/include",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/api/pdc_obj/include"
         ],
         "libraries": [
             "pdc"
         ],
         "library_dirs": [
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/bin"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/lib"
         ],
         "name": "pdc.object",
         "sources": [
@@ -756,7 +756,6 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "pdc_prop_pkg.h"
 #include "pdc_region.h"
 #include "pdc_query.h"
-#include "pdc_client_connect.h"
 #include <string.h>
 #include <stdio.h>
 #ifdef _OPENMP

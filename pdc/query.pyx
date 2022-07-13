@@ -12,56 +12,6 @@ from .main import PDCError, checktype, KVTags
 from . import object
 
 class Query(ABC):
-    class _CombineOp(Enum):
-        NONE = pdc_query_combine_op_t.PDC_QUERY_NONE
-        AND = pdc_query_combine_op_t.PDC_QUERY_AND
-        OR = pdc_query_combine_op_t.PDC_QUERY_OR
-    
-    @abstractmethod
-    def _combine(self: 'Query', other: 'Query', op:_CombineOp) -> 'Query':
-        pass
-    
-    def __and__(self, other: 'Query') -> 'Query':
-        return self.combine(other, Query._CombineOp.AND)
-    
-    def __or__(self, other: 'Query') -> 'Query':
-        return self.combine(other, Query._CombineOp.OR)
-    
-Q = TypeVar('Q', bound=Query)
-
-class QueryComponent(ABC):
-    class _CompareOp(Enum):
-        OP_NONE = pdc_query_op_t.PDC_OP_NONE
-        GT = pdc_query_op_t.PDC_GT
-        LT = pdc_query_op_t.PDC_LT
-        GTE = pdc_query_op_t.PDC_GTE
-        LTE = pdc_query_op_t.PDC_LTE
-        EQ = pdc_query_op_t.PDC_EQ
-    
-    @abstractmethod
-    def _compare(self, other:object, op:_CompareOp) -> Q:
-        pass
-    
-    def __gt__(self, other:object) -> Query:
-        return self._compare(other, QueryComponent._CompareOp.GT)
-    
-    def __lt__(self, other:object) -> Query:
-        return self._compare(other, QueryComponent._CompareOp.LT)
-    
-    def __ge__(self, other:object) -> Query:
-        return self._compare(other, QueryComponent._CompareOp.GTE)
-    
-    def __le__(self, other:object) -> Query:
-        return self._compare(other, QueryComponent._CompareOp.LTE)
-    
-    def __eq__(self, other:object) -> Query:
-        return self._compare(other, QueryComponent._CompareOp.EQ)
-
-class DataQueryComponent:
-    def _compare(self, other:object, op:QueryComponent._CompareOp) -> 'DataQuery':
-        pass
-
-class DataQuery(Query, collections.abc.Mapping):
     class Result:
         '''
         Result of a DataQuery
@@ -80,8 +30,23 @@ class DataQuery(Query, collections.abc.Mapping):
         def __len__(self) -> int:
             pass
 
-    def _combine(self: Q, other:Q, op:Query._CombineOp) -> Q:
+    class _CombineOp(Enum):
+        NONE = pdc_query_combine_op_t.PDC_QUERY_NONE
+        AND = pdc_query_combine_op_t.PDC_QUERY_AND
+        OR = pdc_query_combine_op_t.PDC_QUERY_OR
+    
+    @staticmethod
+    def _from_comparison(obj:'Object', op:'QueryComponent._CompareOp') -> 'Query':
         pass
+    
+    def _combine(self: 'Query', other: 'Query', op:_CombineOp) -> 'Query':
+        pass
+    
+    def __and__(self, other: 'Query') -> 'Query':
+        return self.combine(other, Query._CombineOp.AND)
+    
+    def __or__(self, other: 'Query') -> 'Query':
+        return self.combine(other, Query._CombineOp.OR)
     
     def get_num_hits(self, region:'Region' = None) -> int:
         '''
@@ -102,6 +67,42 @@ class DataQuery(Query, collections.abc.Mapping):
         :rtype: Result
         '''
         pass
+    
+class QueryComponent:
+    '''
+    An object used to build a query
+    '''
+
+    class _CompareOp(Enum):
+        OP_NONE = pdc_query_op_t.PDC_OP_NONE
+        GT = pdc_query_op_t.PDC_GT
+        LT = pdc_query_op_t.PDC_LT
+        GTE = pdc_query_op_t.PDC_GTE
+        LTE = pdc_query_op_t.PDC_LTE
+        EQ = pdc_query_op_t.PDC_EQ
+    
+    def __init__(self, obj:'Object'):
+        self._obj = obj
+    
+    def _compare(self, other:object, op:'_CompareOp') -> Query:
+        checktype(op, type(self)._CompareOp)
+        return Query._from_comparison(self._obj, op)
+    
+    def __gt__(self, other:object) -> Query:
+        return self._compare(other, type(self)._CompareOp.GT)
+    
+    def __lt__(self, other:object) -> Query:
+        return self._compare(other, type(self)._CompareOp.LT)
+    
+    def __ge__(self, other:object) -> Query:
+        return self._compare(other, type(self)._CompareOp.GTE)
+    
+    def __le__(self, other:object) -> Query:
+        return self._compare(other, type(self)._CompareOp.LTE)
+    
+    def __eq__(self, other:object) -> Query:
+        return self._compare(other, type(self)._CompareOp.EQ)
+
 
 def tag_query(tag_name:str, tag_value:str) -> Tuple['Object']:
     '''

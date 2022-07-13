@@ -301,6 +301,3 @@ def checkrange(value, name, expected:str):
             raise OverflowError(f'{name} is out of range for int32: {value}')
     else:
         raise ValueError(f'invalid value for expected range: {expected}')
-
-def test():
-    return cpdc.test()

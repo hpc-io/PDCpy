@@ -40,7 +40,6 @@ cdef extern from "pdc_public.h":
 cdef extern from "pdc.h":
     pdcid_t PDCinit(const char *pdc_name)
     perr_t PDCclose(pdcid_t pdcid)
-    int test()
 
 cdef extern from "pdc_id_pkg.h":
     ctypedef struct _pdc_id_info:
@@ -269,8 +268,8 @@ cdef extern from "pdc_prop_pkg.h":
         uint32_t size
         void *   value
 
-cdef extern from "pdc_client_connect.h":
-    perr_t PDC_Client_query_kvtag(pdc_kvtag_t *kvtag, int *n_res, uint64_t **pdc_ids)
+#cdef extern from "pdc_client_connect.h":
+#    perr_t PDC_Client_query_kvtag(pdc_kvtag_t *kvtag, int *n_res, uint64_t **pdc_ids)
 
 #low priority:
 #cdef extern from "pdc_transform.h":
