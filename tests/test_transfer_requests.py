@@ -4,7 +4,6 @@ import pytest
 import numpy as np
 from pdc import region
 
-#TODO: investigate why this test fails
 def test_transfer_color_by_number():
     #end result:
     #11111111
