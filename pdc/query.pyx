@@ -36,7 +36,8 @@ class Query(ABC):
         OR = pdc_query_combine_op_t.PDC_QUERY_OR
     
     @staticmethod
-    def _from_comparison(obj:'Object', op:'QueryComponent._CompareOp') -> 'Query':
+    #TODO: add more specific type for other
+    def _from_comparison(obj:'Object', op:'QueryComponent._CompareOp', other:object) -> 'Query':
         pass
     
     def _combine(self: 'Query', other: 'Query', op:_CombineOp) -> 'Query':
@@ -86,7 +87,7 @@ class QueryComponent:
     
     def _compare(self, other:object, op:'_CompareOp') -> Query:
         checktype(op, type(self)._CompareOp)
-        return Query._from_comparison(self._obj, op)
+        return Query._from_comparison(self._obj, op, other)
     
     def __gt__(self, other:object) -> Query:
         return self._compare(other, type(self)._CompareOp.GT)

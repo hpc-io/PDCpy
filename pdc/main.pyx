@@ -40,7 +40,7 @@ term_color_map = {
 term_color_end = '\033[0m'
 last_color = None
 do_ctrace = True
-file_output = True
+do_ctrace_print = False
 ctrace_file = None
 def format_id(id):
     global last_color
@@ -64,15 +64,17 @@ def ctrace(name, rtn, *args):
     global ctrace_file
     if not do_ctrace:
         return
-    print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}')
-    if file_output:
-        #delete old ctrace file
-        if ctrace_file is None:
-            if os.path.exists('./ctrace.txt'):
-                os.remove('./ctrace.txt')
-            ctrace_file = open('./ctrace.txt', 'w')
-        
-        print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
+    
+    if do_ctrace_print:
+        print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}')
+    
+    #delete old ctrace file
+    if ctrace_file is None:
+        if os.path.exists('./ctrace.txt'):
+            os.remove('./ctrace.txt')
+        ctrace_file = open('./ctrace.txt', 'w')
+    
+    print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
 
 class PDCError(Exception):
     '''

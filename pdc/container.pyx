@@ -10,6 +10,7 @@ cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Free as free
 from cpython.bytes cimport PyBytes_FromStringAndSize
 
+#TODO:caller is expected to free this struct
 cdef _pdc_cont_info get_info_struct(pdcid_t id):
     cdef _pdc_cont_info *private_struct = cpdc.PDC_cont_get_info(id)
     if private_struct == NULL:

@@ -20,18 +20,21 @@ from libc.string cimport strcpy
 import numpy as np
 from cpython.bytes cimport PyBytes_FromStringAndSize
 
+#TODO:caller is expected to free this struct
 cdef pdc_obj_prop prop_struct_from_prop(pdcid_t prop_id):
     cdef _pdc_obj_prop *private_struct = cpdc.PDC_obj_prop_get_info(prop_id)
     if private_struct == NULL:
         raise PDCError("could not get info for property")
     return (private_struct[0].obj_prop_pub)[0]
 
+#TODO:caller is expected to free this struct
 cdef pdc_obj_info get_obj_info(pdcid_t obj_id):
     cdef pdc_obj_info *private_struct = cpdc.PDCobj_get_info(obj_id)
     if private_struct == NULL:
         raise PDCError("could not get info for object")
     return private_struct[0]
 
+#TODO:caller is expected to free this struct
 cdef _pdc_obj_info get_private_obj_info(pdcid_t obj_id):
     cdef _pdc_obj_info *private_struct = cpdc.PDC_obj_get_info(obj_id)
     if private_struct == NULL:
@@ -327,7 +330,7 @@ class Object:
             checktype(request_type, 'request type', type(self).RequestType)
             region_id, sizes = remoteRegion._construct_with(object.dims)
             cdef pdcid_t local_region_id = 0
-            self.obj_reference = object
+            self.obj = object
             self.type = request_type
             self._done = False
 
