@@ -9,7 +9,7 @@ import pytest
 
 #size is in number of floating point numbers, not bytes, unlike the original
 
-async def main(obj_name:str, length:int):
+def main(obj_name:str, length:int):
     comm = MPI.COMM_WORLD
     rank = comm.Get_rank()
     size = comm.Get_size()
@@ -33,8 +33,8 @@ async def main(obj_name:str, length:int):
 
     comm.Barrier()
     start = time.time()
-
-    await obj.set_data(data, my_region)
+    
+    obj.set_data(data, my_region)
 
     comm.Barrier()
     end = time.time()
@@ -43,7 +43,6 @@ async def main(obj_name:str, length:int):
     query = ((obj.data < 1000) | (obj.data >= 2000 & obj.data < 3000) | (obj.data >= 5000 & obj.data < 7000))
     print(query.get_result(my_region)[obj])
 
-#skip this test
 @pytest.mark.skip
 def test_query():
-    asyncio.run(main('test_query', 100000))
+    main('test_query', 100000)

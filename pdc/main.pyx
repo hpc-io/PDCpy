@@ -10,6 +10,7 @@ from weakref import finalize
 import shutil
 from subprocess import Popen, PIPE
 import ast
+import numpy.typing as npt
 
 int32 = NewType('int32', int)
 uint32 = NewType('uint32', int)
@@ -159,7 +160,7 @@ class Type(Enum):
     '''
     A 64-bit unsigned integer
     '''
-    INT16    = pdc_var_type_t.PDC_INT64
+    INT16    = pdc_var_type_t.PDC_INT16
     '''
     A 16-bit signed integer
     '''
@@ -192,7 +193,70 @@ class Type(Enum):
             return np.dtype('=b')
         else:
             raise ValueError('Unknown PDC type')
-        #TODO: add inverse operation
+    
+    @staticmethod
+    def from_numpy_type(dtype):
+        if dtype == np.dtype('=i'):
+            return Type.INT
+        elif dtype == np.uintc.newbyteorder('='):
+            return Type.UINT
+        elif dtype == np.dtype('=f'):
+            return Type.FLOAT
+        elif dtype == np.dtype('=d'):
+            return Type.DOUBLE
+        elif dtype == np.dtype('=c'):
+            return Type.CHAR
+        elif dtype == np.dtype('=i8'):
+            return Type.INT64
+        elif dtype == np.dtype('=u8'):
+            return Type.UINT64
+        elif dtype == np.dtype('=h'):
+            return Type.INT16
+        elif dtype == np.dtype('=b'):
+            return Type.INT8
+        else:
+            raise ValueError(f'Unsupported numpy type: {dtype}')
+    
+    '''
+    currently unused
+    def validate(self, value:object):
+        cdef int int_
+        cdef unsigned int uint_
+        cdef float float_
+        cdef double double_
+        cdef char char_
+        cdef int64_t int64_
+        cdef uint64_t uint64_ 
+        cdef int16_t int16_
+        cdef int8_t int8_
+        if self in (Type.FLOAT, Type.DOUBLE):
+            checktype(value, 'value', float)
+        else:
+            checktype(value, 'value', float)
+        try:
+            if self == Type.INT:
+                int_ = value
+            elif self == Type.UINT:
+                uint_ = value
+            elif self == Type.FLOAT:
+                float_ = value
+            elif self == Type.DOUBLE:
+                double_ = value
+            elif self == Type.CHAR:
+                char_ = value
+            elif self == Type.INT64:
+                int64_ = value
+            elif self == Type.UINT64:
+                uint64_ = value
+            elif self == Type.INT16:
+                int16_ = value
+            elif self == Type.INT8:
+                int8_ = value
+            else:
+                raise ValueError(f'Unknown PDC type: {self.name}')
+        except OverflowError:
+            raise OverflowError(f'value {value} is not within the acceptable range for {self.name}') from None
+    '''
 
 class KVTags(ABC):
     '''

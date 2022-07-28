@@ -17,3 +17,10 @@ def test_object_attrs():
     #prop_copy = obj.get_properties()
     #assert prop_copy.dims == (3, 4, 5)
     #assert prop_copy.type == pdc.Type.FLOAT
+
+def test_int16():    
+    cont = pdc.Container('testint16')
+    prop = pdc.Object.Properties(dims=(3, 4, 5), type=pdc.Type.INT16)
+    obj = pdc.Object('testint16obj', prop, cont)
+
+    assert obj.type == pdc.Type.INT16

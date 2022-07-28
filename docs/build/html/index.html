@@ -155,7 +155,7 @@ This is intended for testing</p>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="pdc.main.Type.INT16">
-<span class="sig-name descname"><span class="pre">INT16</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#pdc.main.Type.INT16" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">INT16</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#pdc.main.Type.INT16" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -183,6 +183,11 @@ This is intended for testing</p>
 <span class="sig-name descname"><span class="pre">as_numpy_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.Type.as_numpy_type" title="Permalink to this definition">¶</a></dt>
 <dd><p>Returns the numpy type corresponding to this PDC type</p>
 </dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.main.Type.from_numpy_type">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_numpy_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.Type.from_numpy_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 </dd></dl>
 
@@ -479,7 +484,7 @@ This object can be awaited</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pdc.object.Object.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">DataQueryComponent</span></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">QueryComponent</span></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object used to build queries.
 ex. <code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">=</span> <span class="pre">my_object.data</span> <span class="pre">&gt;</span> <span class="pre">1</span></code></p>
 </dd></dl>
@@ -621,27 +626,6 @@ The previous region example can be created with <code class="docutils literal no
 </section>
 <section id="module-pdc.query">
 <span id="queries"></span><h1>Queries<a class="headerlink" href="#module-pdc.query" title="Permalink to this heading">¶</a></h1>
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.query.tag_query">
-<span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">tag_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.tag_query" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get objects with a tag of the given name and value
-CURRENTLY NOT IMPLEMENTED</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>tag_name</strong> (<em>str</em>) – name of the tag</p></li>
-<li><p><strong>tag_value</strong> (<em>str</em>) – value of the tag</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>objects with the given tag</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Iterable[<a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object">Object</a>]</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>

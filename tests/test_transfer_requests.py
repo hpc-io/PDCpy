@@ -4,7 +4,6 @@ import pytest
 import numpy as np
 from pdc import region
 
-@pytest.mark.skip
 def test_transfer_color_by_number():
     #end result:
     #11111111

@@ -15,8 +15,12 @@ def get_env_or_exit(name):
 PDC_DIR = os.path.join(*os.path.split(get_env_or_exit("PDC_DIR"))[:-1])
 MERCURY_DIR = get_env_or_exit("MERCURY_DIR")
 
+#TODO: use MPICC environment variable to let user choose compiler
 mpi_build_args = os.popen('mpicc -compile_info').read().strip().split()[1:]
 mpi_link_args = os.popen('mpicc -link_info').read().strip().split()[1:]
+
+#print(mpi_build_args)
+#print(mpi_link_args)
 
 setup(
     name='Proactive Data Containers',

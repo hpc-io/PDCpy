@@ -15,6 +15,7 @@ from pdc.main cimport malloc_or_memerr
 from . import container
 from . import container as container_
 from . import region
+from . import query
 from .region import region, Region
 from libc.string cimport strcpy
 import numpy as np
@@ -492,12 +493,13 @@ class Object:
         return get_obj_info(self._id).name.decode('utf-8')
     
     @property
-    def data(self) -> 'DataQueryComponent':
+    def data(self) -> 'QueryComponent':
+        #TODO: turn this into a regular property
         '''
         An object used to build queries.
         ex. ``query = my_object.data > 1``
         '''
-        pass
+        return query.QueryComponent(self)
 
     @classmethod
     def get(cls, name:str) -> 'Object':
