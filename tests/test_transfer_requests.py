@@ -14,7 +14,7 @@ def test_transfer_color_by_number():
     #02205660
     #02200000
 
-    cont = pdc.Container('test_transfer_color_by_number')
+    cont = pdc.Container('test_transfer_color_by_number', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(8, 8), type=pdc.Type.INT8)
     obj1 = pdc.Object('colorbynumobj', prop, cont)
 

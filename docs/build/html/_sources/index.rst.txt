@@ -56,7 +56,24 @@ Queries
 .. automodule:: pdc.query
    :members:
    :undoc-members:
-   :exclude-members: Query, QueryComponent
+   :exclude-members: Query
+
+   .. autoclass:: pdc.Query
+      :members:
+      :undoc-members:
+      :exclude-members: Result
+
+      .. autoclass:: pdc.Query.Result
+         :members:
+         :undoc-members:
+
+         .. property:: hits
+
+            Number of hits in the result.
+            If you *only* want the number of hits, use :func:`query.get_num_hits`
+      
+      
+      
 
 Indices and tables
 ==================

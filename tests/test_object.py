@@ -2,7 +2,7 @@ import pdc
 import pytest
 
 def test_object_attrs():
-    cont = pdc.Container('testobject')
+    cont = pdc.Container('testobject', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(3, 4, 5), type=pdc.Type.FLOAT)
     obj = pdc.Object('testobject', prop, cont)
 

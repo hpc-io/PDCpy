@@ -162,6 +162,7 @@ cdef extern from "pdc_prop_pkg.h":
     
     struct _pdc_cont_prop:
         pdc_lifetime_t     cont_life
+        _pdc_class *pdc
 
     _pdc_obj_prop *PDC_obj_prop_get_info(pdcid_t obj_prop)
 
@@ -267,6 +268,15 @@ cdef extern from "pdc_prop_pkg.h":
         char *   name
         uint32_t size
         void *   value
+
+cdef extern from "pdc_malloc.h":
+    void *PDC_free(void *mem)
+
+cdef extern from "pdc_private.h":
+    cdef struct _pdc_class:
+        char *  name
+        pdcid_t local_id
+
 
 #cdef extern from "pdc_client_connect.h":
 #    perr_t PDC_Client_query_kvtag(pdc_kvtag_t *kvtag, int *n_res, uint64_t **pdc_ids)

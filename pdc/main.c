@@ -14,7 +14,9 @@
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_public.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_query.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include/pdc_region.h",
-            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_id_pkg.h"
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_id_pkg.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_malloc.h",
+            "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_private.h"
         ],
         "extra_compile_args": [
             "-Wl,-Bsymbolic-functions",
@@ -756,6 +758,8 @@ static CYTHON_INLINE float __PYX_NAN() {
 #include "pdc_prop_pkg.h"
 #include "pdc_region.h"
 #include "pdc_query.h"
+#include "pdc_malloc.h"
+#include "pdc_private.h"
 #ifdef _OPENMP
 #include <omp.h>
 #endif /* _OPENMP */

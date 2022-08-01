@@ -19,10 +19,10 @@ def test_container_name():
 
 def test_container_lifetime():
     cont = pdc.Container('contlifetest')
-    assert cont.lifetime == Container.Lifetime.TRANSIENT
+    assert cont.lifetime == pdc.Container.Lifetime.TRANSIENT
 
     cont.persist()
-    assert cont.lifetime == Container.Lifetime.PERSISTENT
+    assert cont.lifetime == pdc.Container.Lifetime.PERSISTENT
 
     cont2 = pdc.Container('contlifetest2', lifetime=Container.Lifetime.PERSISTENT)
     assert cont2.lifetime == Container.Lifetime.PERSISTENT
@@ -46,12 +46,12 @@ def test_container_get_del():
 @pytest.mark.skip
 #this has no tests on the c side
 def test_put_del_ids():
-    cont = pdc.Container('contputdelids')
-    cont2 = pdc.Container('contputdelids2')
+    cont = pdc.Container('contputdelids', lifetime=pdc.Container.Lifetime.TRANSIENT)
+    cont2 = pdc.Container('contputdelids2', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(8, 6), type=pdc.Type.INT16)
-    obj = pdc.Object('objputdelids', prop, cont)
-    obj2 = pdc.Object('objputdelids2', prop, cont)
-    obj3 = pdc.Object('objputdelids3', prop, cont)
+    obj = pdc.Object('objputdelids', prop, cont, lifetime=pdc.Container.Lifetime.TRANSIENT)
+    obj2 = pdc.Object('objputdelids2', prop, cont, lifetime=pdc.Container.Lifetime.TRANSIENT)
+    obj3 = pdc.Object('objputdelids3', prop, cont, lifetime=pdc.Container.Lifetime.TRANSIENT)
 
     cont.remove_objects([obj, obj2, obj3])
     cont2.add_objects([obj, obj2, obj3])

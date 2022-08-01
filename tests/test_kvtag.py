@@ -32,7 +32,7 @@ def test_decode():
     assert KVTags._decode(b'(False,True,False)') == (False, True, False)
 
 def test_object_tags():
-    cont = pdc.Container('testobjkvtags')
+    cont = pdc.Container('testobjkvtags', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(3, 4, 5), type=pdc.Type.FLOAT)
     obj = pdc.Object('testobjkvtags', prop, cont)
 
@@ -45,7 +45,7 @@ def test_object_tags():
     del obj.tags['derp']
 
 def test_container_tags():
-    cont = pdc.Container('testcontkvtags')
+    cont = pdc.Container('testcontkvtags', lifetime=pdc.Container.Lifetime.TRANSIENT)
     
     cont.tags['a'] = 'b'
     cont.tags['b'] = (True, False, -44.88, (None,), 'merp')

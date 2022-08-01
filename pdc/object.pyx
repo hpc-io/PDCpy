@@ -17,25 +17,24 @@ from . import container as container_
 from . import region
 from . import query
 from .region import region, Region
+from .region import region as region_
 from libc.string cimport strcpy
 import numpy as np
 from cpython.bytes cimport PyBytes_FromStringAndSize
 
-#TODO:caller is expected to free this struct
+#TODO:these 3 function may cause memory leaks.... but it's not possible to mitigate them all.  I will wait for a public replacement
 cdef pdc_obj_prop prop_struct_from_prop(pdcid_t prop_id):
     cdef _pdc_obj_prop *private_struct = cpdc.PDC_obj_prop_get_info(prop_id)
     if private_struct == NULL:
         raise PDCError("could not get info for property")
     return (private_struct[0].obj_prop_pub)[0]
 
-#TODO:caller is expected to free this struct
 cdef pdc_obj_info get_obj_info(pdcid_t obj_id):
     cdef pdc_obj_info *private_struct = cpdc.PDCobj_get_info(obj_id)
     if private_struct == NULL:
         raise PDCError("could not get info for object")
     return private_struct[0]
 
-#TODO:caller is expected to free this struct
 cdef _pdc_obj_info get_private_obj_info(pdcid_t obj_id):
     cdef _pdc_obj_info *private_struct = cpdc.PDC_obj_get_info(obj_id)
     if private_struct == NULL:
@@ -383,7 +382,6 @@ class Object:
                 raise
             
             finalize(self, type(self)._finalize, self._id, self._global_region_id, self._local_region_id)
-            ctrace('region_transfer_start', '?', self._id)
             rtn = cpdc.PDCregion_transfer_start(self._id)
             ctrace('region_transfer_start', rtn, self._id)
             if rtn != 0:
@@ -440,6 +438,7 @@ class Object:
 
     @staticmethod
     def _finalize(id, objects_by_id):
+        ctrace('obj_close', '?', id)
         rtn = cpdc.PDCobj_close(id)
         ctrace('obj_close', rtn, id)
         if rtn != 0:
@@ -522,21 +521,21 @@ class Object:
     def tags(self) -> KVTags:
         return ObjectKVTags(self)
     
-    def get_data(self, region:'Region'=region[:]) -> TransferRequest:
+    def get_data(self, region:'Region'=None) -> TransferRequest:
         '''
         Request a region of data from an object
 
-        :param Region region: the region of data to get.  Defaults to the entire object.
+        :param Region region: the region of data to get.  If this is None, defaults to the entire object.
         :return: A transfer request representing this request
         :rtype: TransferRequest
         '''
         return type(self).TransferRequest(
-            region,
+            region if region else region_[:],
             self,
             type(self).TransferRequest.RequestType.GET
         )
     
-    def set_data(self, data:npt.ArrayLike, region:'Region'=region[:]) -> TransferRequest:
+    def set_data(self, data:npt.ArrayLike, region:'Region'=None) -> TransferRequest:
         '''
         Request a region of data from an object to be set to a new value
 
@@ -546,7 +545,7 @@ class Object:
         :rtype: TransferRequest
         '''
         return type(self).TransferRequest(
-            region,
+            region if region else region_[:],
             self,
             type(self).TransferRequest.RequestType.SET,
             data

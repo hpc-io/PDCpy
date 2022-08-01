@@ -4,7 +4,7 @@ from pdc import region
 import numpy as np
 
 def test_set_all():
-    cont = pdc.Container('set_all_cont')
+    cont = pdc.Container('set_all_cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims = (8, 6), type=pdc.Type.INT16)
     obj = pdc.Object('set_all_obj', prop, cont)
     

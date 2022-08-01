@@ -14,7 +14,7 @@ def main(obj_name:str, length:int):
     rank = comm.Get_rank()
     size = comm.Get_size()
 
-    cont = pdc.Container()
+    cont = pdc.Container(lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = Object.Properties(
         (length,),
         pdc.Type.DOUBLE,

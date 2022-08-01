@@ -8,7 +8,7 @@ import asyncio
 async def main():
     rank = MPI.COMM_WORLD.Get_rank()
 
-    cont = pdc.Container('kvtag_query_cont')
+    cont = pdc.Container('kvtag_query_cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = Object.Properties(dims=(0,))
     obj1 = Object('o1', prop, cont)
     obj2 = Object('o2', prop, cont)

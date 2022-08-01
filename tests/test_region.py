@@ -30,4 +30,25 @@ def test_region_validation():
     
     with pytest.raises(ValueError):
         region[5:5]
+
+def test_absolute():
+    assert region[:].get_absolute((3, 4)) == region[0:3, 0:4]
+    assert region[:2, 6:].get_absolute((10, 10)) == region[0:2, 6:10]
     
+    assert not region[:].is_absolute()
+    assert not region[:2, 6:].is_absolute()
+    assert not region[2:3, 4:].is_absolute()
+    assert region[2].is_absolute()
+    assert region[2:3, 4:9].is_absolute()
+    assert region[:].get_absolute((3, 4)).is_absolute()
+
+def test_hash_eq():
+    assert region[:] == region[:]
+    assert region[:] != region[:, :]
+
+    assert hash(region[3]) == hash(region[3])
+    assert hash(region[:]) != hash(region[:, :])
+
+def test_repr():
+    assert repr(region[3, 4:, :5, 6:7]) == 'region[3:4, 4:, :5, 6:7]'
+    assert str(region[3, 4:, :5, 6:7]) == 'region[3:4, 4:, :5, 6:7]'

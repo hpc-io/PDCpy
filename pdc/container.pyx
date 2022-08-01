@@ -10,12 +10,20 @@ cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Free as free
 from cpython.bytes cimport PyBytes_FromStringAndSize
 
-#TODO:caller is expected to free this struct
-cdef _pdc_cont_info get_info_struct(pdcid_t id):
-    cdef _pdc_cont_info *private_struct = cpdc.PDC_cont_get_info(id)
-    if private_struct == NULL:
+cdef _pdc_cont_info *get_info_struct(pdcid_t id):
+    cdef _pdc_cont_info *info = cpdc.PDC_cont_get_info(id)
+    if info == NULL:
         raise PDCError("Could not get info for object")
-    return private_struct[0]
+    return info
+
+cdef void free_info_struct(_pdc_cont_info *info):
+    free(<void *> <size_t> info[0].cont_pt[0].pdc[0].name)
+    cpdc.PDC_free(<void *> <size_t> info[0].cont_pt[0].pdc)
+    cpdc.PDC_free(<void *> <size_t> info[0].cont_pt)
+    #broken:
+    #free(<void *> <size_t> info[0].cont_info_pub[0].name)
+    #cpdc.PDC_free(<void *> <size_t> info[0].cont_info_pub)
+    cpdc.PDC_free(<void *> <size_t> info)
 
 class ContainerKVTags(KVTags):
     def __init__(self, cont):
@@ -83,7 +91,7 @@ class Container:
             id = _id
         else:
             checktype(name, 'name', str)
-            checktype(lifetime, 'lifetime', Container.Lifetime)
+            checktype(lifetime, 'lifetime', type(self).Lifetime)
             
             if name == '':
                 raise ValueError("Container name cannot be empty")
@@ -93,10 +101,11 @@ class Container:
             if prop_id == 0:
                 raise PDCError('Failed to create container property')
             
-            rtn = cpdc.PDCprop_set_cont_lifetime(prop_id, lifetime.value)
-            ctrace('prop_set_cont_lifetime', rtn, prop_id, lifetime)
-            if rtn != 0:
-                raise PDCError('Failed to set container lifetime')
+            if lifetime != type(self).Lifetime.PERSISTENT:
+                rtn = cpdc.PDCprop_set_cont_lifetime(prop_id, lifetime.value)
+                ctrace('prop_set_cont_lifetime', rtn, prop_id, lifetime)
+                if rtn != 0:
+                    raise PDCError('Failed to set container lifetime')
             
             id = cpdc.PDCcont_create(name.encode('utf-8'), prop_id)
             ctrace('cont_create', id, name.encode('utf-8'), prop_id)
@@ -152,14 +161,22 @@ class Container:
         '''
         The lifetime of this container. read-only.
         '''
-        return type(self).Lifetime((get_info_struct(self._id).cont_pt)[0].cont_life)
+        cdef _pdc_cont_info *info = get_info_struct(self._id)
+        try:
+            return type(self).Lifetime(info[0].cont_pt[0].cont_life)
+        finally:
+            free_info_struct(info)
     
     @property
     def name(self):
         '''
         The name of this container. read-only
         '''
-        return (get_info_struct(self._id).cont_info_pub)[0].name.decode('utf-8')
+        cdef _pdc_cont_info *info = get_info_struct(self._id)
+        try:
+            return info[0].cont_info_pub[0].name.decode('utf-8')
+        finally:
+            free_info_struct(info)
     
     @property
     def tags(self) -> KVTags:

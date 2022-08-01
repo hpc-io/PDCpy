@@ -8,9 +8,13 @@ import builtins
 
 import numpy.typing as npt
 
-from pdc.cpdc cimport pdc_query_combine_op_t, pdc_query_op_t, pdc_kvtag_t, uint64_t, pdc_query_t, int16_t, int8_t, uint64_t, int64_t
+from pdc.cpdc cimport pdc_query_combine_op_t, pdc_query_op_t, pdc_kvtag_t, uint64_t, pdc_query_t, int16_t, int8_t, uint64_t, int64_t, pdc_selection_t, pdcid_t, pdc_region_info
 cimport pdc.cpdc as cpdc
-from .main import PDCError, checktype, KVTags, Type, uint64, ctrace
+from .main import PDCError, checktype, KVTags, Type, uint64, ctrace, pdcid
+from pdc.main cimport malloc_or_memerr
+from .region import region, Region
+from .region import region as region_
+from pdc.region cimport construct_region_info, free_region_info
 
 class Query(ABC):
     class Result:
@@ -24,26 +28,44 @@ class Query(ABC):
 
         def __getitem__(self, obj: 'Object') -> npt.NDArray:
             pass
+                
+        def __init__(self, id:pdcid, query:'Query'):
+            self._id = id
+            finalize(self, type(self)._finalize, self._id)
+            self._query = query
+            self.hits = (<pdc_selection_t *> <size_t> id)[0].nhits
         
-        def __iter__(self) -> Iterable['Object']:
-            pass
+        @staticmethod
+        def _finalize(id:pdcid):
+            rtn = cpdc.PDCselection_free(<pdc_selection_t *> <size_t> id)
+            ctrace('selection_free', rtn, id)
         
-        def __len__(self) -> int:
-            pass
 
     class _CombineOp(Enum):
         NONE = pdc_query_combine_op_t.PDC_QUERY_NONE
         AND = pdc_query_combine_op_t.PDC_QUERY_AND
         OR = pdc_query_combine_op_t.PDC_QUERY_OR
     
-    def __init__(self, id:uint64, op, left_ref=None, right_ref=None):
+    def __init__(self, id:uint64, op, left=None, right=None):
         self._id = id
         finalize(self, type(self)._finalize, self._id)
         self.op = op
-        if left_ref is not None:
-            self._left_ref = left_ref
-        if right_ref is not None:
-            self._right_ref = right_ref
+        if left is not None and right is None:
+            #leaf
+            self._left = left
+            self.objects = frozenset((left,))
+            self.mindims = left.dims
+            self.all_same = True
+        else:
+            #inner
+            self._left = left
+            self._right = right
+            self.objects = left.objects | right.objects
+            self.mindims = tuple(
+                min(left.mindims[i], right.mindims[i])
+                for i in range(len(left.mindims))
+            )
+            self.all_same = left.all_same and right.all_same and left.mindims == right.mindims
     
     @classmethod
     #TODO: add more specific type for other
@@ -105,21 +127,19 @@ class Query(ABC):
 
     @staticmethod
     def _finalize(id):
-        #ctrace('query_free', None, id)
-        #cpdc.PDCquery_free(<pdc_query_t *> id)
-        #ctrace('query_free', None, id)
-        #TODO: uncomment the freeing code once Tang answers
-        pass
+        rtn = cpdc.PDCquery_free(<pdc_query_t *> <size_t> id)
+        ctrace('query_free', rtn, id)
 
     def _combine(self, other: 'Query', op:_CombineOp) -> 'Query':
         cdef pdc_query_t *query_struct
         checktype(other, 'query', Query)
+        if len(self.mindims) != len(other.mindims):
+            raise ValueError('Cannot combine queries with different number of dimensions')
+
         if op == Query._CombineOp.OR:
-            ctrace('query_or', None, self._id, other._id)
             query_struct = cpdc.PDCquery_or(<pdc_query_t *> <size_t> self._id, <pdc_query_t *> <size_t> other._id)
             ctrace('query_or', <uint64_t> query_struct, self._id, other._id)
         elif op == Query._CombineOp.AND:
-            ctrace('query_and', None, self._id, other._id)
             query_struct = cpdc.PDCquery_and(<pdc_query_t *> <size_t> self._id, <pdc_query_t *> <size_t> other._id)
             ctrace('query_and', <uint64_t> query_struct, self._id, other._id)
         else:
@@ -154,8 +174,33 @@ class Query(ABC):
         :return: the result
         :rtype: Result
         '''
-        pass
-    
+        cdef pdcid_t region_id
+        cdef pdc_region_info *region_info
+        if region is not None:
+            if not self.all_same and not region.is_absolute():
+                raise ValueError('Cannot query over a non-absolute region with objects of different dimensions')
+            
+            try:
+                region_info = construct_region_info(region, self.mindims)
+            except ValueError as e:
+                raise ValueError(f'Region {region} is out of bounds for one or more objects in this query') from e
+            
+            try:
+                rtn = cpdc.PDCquery_sel_region(<pdc_query_t *> <size_t> self._id, region_info)
+                ctrace('query_sel_region', rtn, self._id, <size_t> region_info)
+                if rtn != 0:
+                    raise PDCError(f'Failed to select region {region} for query')
+            finally:
+                free_region_info(region_info)
+        
+        cdef pdc_selection_t *selection = <pdc_selection_t *> malloc_or_memerr(sizeof(pdc_selection_t))
+        rtn = cpdc.PDCquery_get_selection(<pdc_query_t *> <size_t> self._id, selection)
+        ctrace('query_get_selection', rtn, self._id, <size_t> selection)
+        if rtn != 0:
+            raise PDCError(f'Failed to get selection for query')
+        
+        return type(self).Result(<uint64_t> selection, self)
+
 class QueryComponent:
     '''
     An object used to build a query
