@@ -484,7 +484,7 @@ This object can be awaited</p>
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pdc.object.Object.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">QueryComponent</span></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.query.QueryComponent" title="pdc.query.QueryComponent"><span class="pre">QueryComponent</span></a></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object used to build queries.
 ex. <code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">=</span> <span class="pre">my_object.data</span> <span class="pre">&gt;</span> <span class="pre">1</span></code></p>
 </dd></dl>
@@ -518,11 +518,11 @@ If there are multiple objects with the same name and time_step, the tie is broke
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.object.Object.get_data">
-<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region:</span> <span class="pre">~pdc.region.Region</span> <span class="pre">=</span> <span class="pre">&lt;pdc.region.Region</span> <span class="pre">object&gt;</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest"><span class="pre">TransferRequest</span></a></span></span><a class="headerlink" href="#pdc.object.Object.get_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest"><span class="pre">TransferRequest</span></a></span></span><a class="headerlink" href="#pdc.object.Object.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request a region of data from an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – the region of data to get.  Defaults to the entire object.</p>
+<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – the region of data to get.  If this is None, defaults to the entire object.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A transfer request representing this request</p>
@@ -546,7 +546,7 @@ If there are multiple objects with the same name and time_step, the tie is broke
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.object.Object.set_data">
-<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">data:</span> <span class="pre">~typing.Union[~numpy.typing._array_like._SupportsArray[~numpy.dtype],</span> <span class="pre">~numpy.typing._nested_sequence._NestedSequence[~numpy.typing._array_like._SupportsArray[~numpy.dtype]],</span> <span class="pre">bool,</span> <span class="pre">int,</span> <span class="pre">float,</span> <span class="pre">complex,</span> <span class="pre">str,</span> <span class="pre">bytes,</span> <span class="pre">~numpy.typing._nested_sequence._NestedSequence[~typing.Union[bool,</span> <span class="pre">int,</span> <span class="pre">float,</span> <span class="pre">complex,</span> <span class="pre">str,</span> <span class="pre">bytes]]],</span> <span class="pre">region:</span> <span class="pre">~pdc.region.Region</span> <span class="pre">=</span> <span class="pre">&lt;pdc.region.Region</span> <span class="pre">object&gt;</span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest"><span class="pre">TransferRequest</span></a></span></span><a class="headerlink" href="#pdc.object.Object.set_data" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest"><span class="pre">TransferRequest</span></a></span></span><a class="headerlink" href="#pdc.object.Object.set_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Request a region of data from an object to be set to a new value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -612,9 +612,24 @@ See <a class="reference internal" href="#pdc.region.Region" title="pdc.region.Re
 <dt class="sig sig-object py" id="pdc.region.Region">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.region.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region" title="Permalink to this definition">¶</a></dt>
 <dd><p>A region, which specifies the location of a ‘block’ of data.  
-For example, a region can represent columns 2-8 of rows 1-3 of an object with 2 dimensionsf
+For example, a region can represent columns 2-8 of rows 1-3 of an object with 2 dimensions
 Regions are created by slicing the <a class="reference internal" href="#pdc.region.region" title="pdc.region.region"><code class="xref py py-class docutils literal notranslate"><span class="pre">region</span></code></a> object.
 The previous region example can be created with <code class="docutils literal notranslate"><span class="pre">pdc.region[1:4,</span> <span class="pre">2:9]</span></code></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.region.Region.get_absolute">
+<span class="sig-name descname"><span class="pre">get_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.get_absolute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return a new absolute region, using the given dimensions to determine ommitted start and stop values.
+Ex.
+region[:].get_absolute((3, 4)) -&gt; region[0:3, 0:4]
+region[:2, 6:].get_absolute((10, 10)) -&gt; region[0:2, 6:10]</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.region.Region.is_absolute">
+<span class="sig-name descname"><span class="pre">is_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.is_absolute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns True if the region’s slices have both start and stop values.</p>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.region.Region.validate_slice">
 <em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">slice</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.validate_slice" title="Permalink to this definition">¶</a></dt>
@@ -626,6 +641,67 @@ The previous region example can be created with <code class="docutils literal no
 </section>
 <section id="module-pdc.query">
 <span id="queries"></span><h1>Queries<a class="headerlink" href="#module-pdc.query" title="Permalink to this heading">¶</a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="pdc.Query">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Query" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="py class">
+<dt class="sig sig-object py" id="pdc.Query.Query.Result">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pdcid</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">query</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.Query" title="pdc.Query"><span class="pre">Query</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Query.Query.Result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Result of a DataQuery</p>
+<p>To get results from this class, index it using objects as keys
+For example:
+<code class="docutils literal notranslate"><span class="pre">query.get_result()[object1]</span></code></p>
+<dl class="py property">
+<dt class="sig sig-object py" id="pdc.Query.Query.Result.hits">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">hits</span></span><a class="headerlink" href="#pdc.Query.Query.Result.hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Number of hits in the result.
+If you <em>only</em> want the number of hits, use <code class="xref py py-func docutils literal notranslate"><span class="pre">query.get_num_hits()</span></code></p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.Query.get_num_hits">
+<span class="sig-name descname"><span class="pre">get_num_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pdc.Query.get_num_hits" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get number of hits for this query (i.e. number of elements that match this query)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>number of hits</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.Query.get_result">
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.query.Query.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#pdc.Query.get_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the result of this query</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>the result</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.Query.Query.Result">Result</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pdc.query.QueryComponent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">QueryComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.QueryComponent" title="Permalink to this definition">¶</a></dt>
+<dd><p>An object used to build a query</p>
+</dd></dl>
+
 </section>
 <section id="indices-and-tables">
 <h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this heading">¶</a></h1>
