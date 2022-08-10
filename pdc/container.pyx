@@ -1,8 +1,10 @@
 from enum import Enum
 from typing import Iterable, Optional, Sequence, Union
 from weakref import finalize, WeakValueDictionary
+import numpy as np
+import numpy.typing as npt
 
-from .main import KVTags, checktype, _get_pdcid, PDCError, ctrace
+from .main import KVTags, checktype, _get_pdcid, PDCError, ctrace, Type
 from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t, uint64_t, obj_handle, pdc_obj_info, cont_handle, pdc_cont_info
 from pdc.main cimport malloc_or_memerr
 import pdc
@@ -65,13 +67,14 @@ def to_c_object_list(objects: Union['pdc.Object', Sequence['pdc.Object']]):
 
 class Container:
     '''
-    Containers can contain one or more objects, and objects can be part of one or more containers.
-    Containers are mainly used to allow objects to persist, and have very little other functionality at the moment.
+    | Containers can contain one or more objects, and objects can be part of one or more containers.
+    | Containers can be used to allow objects to persist, and have no other functionality at the moment.
+    | Every object must be created belonging to a container.
     '''
 
     class Lifetime(Enum):
         '''
-        An emuneration of the lifetimes of containers.
+        The possible lifetimes of containers.
         '''
         PERSISTENT = pdc_lifetime_t.PDC_PERSIST
         TRANSIENT  = pdc_lifetime_t.PDC_TRANSIENT
@@ -139,25 +142,27 @@ class Container:
     def get(cls, name:str) -> 'Container':
         '''
         Get an existing container by name.
+        If you try to get a container that does not exist, the server segfaults and the call blocks indeinitely.
 
         :param str name: the name of the container.
-        :return: the container.
-        :rtype: Container
+        :return: The container.
         '''
         cdef pdcid_t id = cpdc.PDCcont_open(name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('Container not found or failed to open container')
         return cls._fromid(id)
     
-    def persist(self):
+    def persist(self) -> None:
         '''
         Make this container persistent if it wasn't already.
         '''
-        if cpdc.PDCcont_persist(self._id) != 0:
+        rtn = cpdc.PDCcont_persist(self._id)
+        ctrace('cont_persist', rtn, self._id)
+        if rtn != 0:
             raise PDCError('Failed to make container persistent')
     
     @property
-    def lifetime(self):
+    def lifetime(self) -> Lifetime:
         '''
         The lifetime of this container. read-only.
         '''
@@ -168,7 +173,7 @@ class Container:
             free_info_struct(info)
     
     @property
-    def name(self):
+    def name(self) -> str:
         '''
         The name of this container. read-only
         '''
@@ -191,7 +196,6 @@ class Container:
         '''
         Get an iterable through all objects in this container that have been retrieved by the client, and haven't yet been garbage collected.
         Deleting an object while this iterator is in use may cause undefined behavior.
-        In particular, do not write ``container.remove_objects(container.all_local_objects())``
 
         :return: An iterable of Objects
         '''
@@ -237,6 +241,8 @@ class Container:
         finally:
             free(ids)
     
+    #TODO: when this is implemented, add back this warning:
+    #        In particular, do not write ``container.remove_objects(container.all_local_objects())``
     def _remove_objects(self, objects:Union[Sequence['pdc.Object'], 'pdc.Object']):
         '''
         Remove objects from this container
@@ -268,6 +274,51 @@ class Container:
     
     def __hash__(self):
         return hash(self._id)
+    
+    def create_object(self, name:str, properties:'Object.Properties'):
+        '''
+        Create a new object, placed in this container.  To get an existing object, use Object.get() instead
+
+        :param str name: the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.
+        :param ObjectProperties properties: An ObjectProperties describing the properties of the object.
+        '''
+        return pdc.Object(name, properties, self)
+    
+    def object_from_array(self, name:str, array:npt.ArrayLike, type:Optional[Type]=None, prop:Optional['Object.Properties']=None) -> 'Object':
+        '''
+        object_from_array(self, name:str, array, type:Optional[Type]=None, prop:Optional['Object.Properties']=None)
+        Create a new object, placed in this container, from an array-like object.
+        To get an existing object, use Object.get() instead
+
+        :param str name: the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.
+        :param array: the array to create the object from.  It must be a numpy array, or be convertible to a numpy array via numpy.array().
+        :param type: If specified, the resulting object will have this type, if all elements of the array fit in this type.
+        :param prop: If specified, the app name, time step, and user id will be copied from this properties object to the resulting object's properties.
+        '''
+        if type is None:
+            array = np.asanyarray(array)
+        else:
+            array = np.asanyarray(array, dtype=type.as_numpy_type())
+        
+        dtype = array.dtype
+        if not dtype.isnative:
+            array = array.astype(dtype.newbyteorder('='))
+        
+        if type is not None:
+            obj_type = type
+        else:
+            obj_type = pdc.Type.from_numpy_type(dtype)
+        
+        if prop is None:
+            obj_prop = pdc.Object.Properties(type=obj_type, dims=array.shape)
+        else:
+            obj_prop = prop.copy()
+            obj_prop.type = obj_type
+            obj_prop.dims = array.shape
+        
+        obj = self.create_object(name, obj_prop)
+        obj.set_data(array).wait()
+        return obj
 
 def all_local_containers() -> Iterable[Container]:
     '''

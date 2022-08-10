@@ -10,8 +10,8 @@ async def main():
 
     cont = pdc.Container('kvtag_query_cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = Object.Properties(dims=(0,))
-    obj1 = Object('o1', prop, cont)
-    obj2 = Object('o2', prop, cont)
+    obj1 = cont.create_object('o1', prop)
+    obj2 = cont.create_object('o2', prop)
 
     obj1.tags['key1'] = 'value1'
     obj1.tags['key2'] = '2'

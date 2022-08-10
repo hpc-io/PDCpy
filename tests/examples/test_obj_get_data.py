@@ -17,19 +17,19 @@ async def main():
     prop = Object.Properties(dims=128, type=pdc.Type.DOUBLE)
 
     #create object
-    obj1 = Object(f'o1_{rank}', prop, cont)
+    obj1 = cont.create_object(f'o1_{rank}', prop)
 
     #set all data to data
-    obj1.set_data(data).wait_for_result()
+    obj1.set_data(data).wait()
 
     data = np.full(128, 2.0, dtype=np.float64)
-    obj2 = Object(f'o2_{rank}', prop, cont)
-    obj2.set_data(data).wait_for_result()
+    obj2 = cont.create_object(f'o2_{rank}', prop)
+    obj2.set_data(data).wait()
 
     #test object values
-    for val in obj1.get_data().wait_for_result():
+    for val in obj1.get_data().wait():
         assert val == 1.0
-    for val in obj2.get_data().wait_for_result():
+    for val in obj2.get_data().wait():
         assert val == 2.0
 
 def test_obj_get_data():

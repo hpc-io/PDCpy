@@ -16,9 +16,9 @@ def test_transfer_color_by_number():
 
     cont = pdc.Container('test_transfer_color_by_number', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(8, 8), type=pdc.Type.INT8)
-    obj1 = pdc.Object('colorbynumobj', prop, cont)
+    obj1 = cont.create_object('colorbynumobj', prop)
 
-    obj1.set_data(np.zeros((8, 8), dtype=np.int8)).wait_for_result()
+    obj1.set_data(np.zeros((8, 8), dtype=np.int8)).wait()
     requests = []
     requests.append(obj1.set_data(np.full((2, 8), 1, dtype=np.int8), region[:2, :]))
     requests.append(obj1.set_data(np.full((6, 2), 2, dtype=np.int8), region[2:, 1:3]))
@@ -28,9 +28,9 @@ def test_transfer_color_by_number():
     requests.append(obj1.set_data(np.full(2, 6, dtype=np.int8), region[6, 5:7]))
 
     for req in requests:
-        req.wait_for_result()
+        req.wait()
     
-    all_data = obj1.get_data().wait_for_result()
+    all_data = obj1.get_data().wait()
     expected =         np.array([[1, 1, 1, 1, 1, 1, 1, 1],
                                  [1, 1, 1, 1, 1, 1, 1, 1],
                                  [3, 2, 2, 4, 4, 4, 4, 4],

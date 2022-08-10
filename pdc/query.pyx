@@ -76,7 +76,6 @@ class Query(ABC):
         cdef unsigned int uint_
         cdef float float_
         cdef double double_
-        cdef char char_
         cdef int64_t int64_
         cdef uint64_t uint64_ 
         cdef int16_t int16_
@@ -99,9 +98,6 @@ class Query(ABC):
             elif obj_type == Type.DOUBLE:
                 double_ = other
                 ptr = &double_ 
-            elif obj_type == Type.CHAR:
-                char_ = other
-                ptr = &char_ 
             elif obj_type == Type.INT64:
                 int64_ = other
                 ptr = &int64_ 
@@ -162,7 +158,6 @@ class Query(ABC):
 
         :param Region region: The region to query over.  If this is None, the entire object is queried.
         :return: number of hits
-        :rtype: int
         '''
         pass
     
@@ -171,8 +166,7 @@ class Query(ABC):
         Get the result of this query
 
         :param Region region: The region to query over.  If this is None, the entire object is queried.
-        :return: the result
-        :rtype: Result
+        :return: the Result object
         '''
         cdef pdcid_t region_id
         cdef pdc_region_info *region_info

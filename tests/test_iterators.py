@@ -5,9 +5,9 @@ def test_object_iter():
     assert list(cont.all_local_objects()) == []
 
     prop = pdc.Object.Properties(dims=(8, 6), type=pdc.Type.INT16)
-    obj = pdc.Object('test_container_iter_obj', prop, cont)
-    obj2 = pdc.Object('test_container_iter_obj2', prop, cont)
-    obj3 = pdc.Object('test_container_iter_obj3', prop, cont)
+    obj = cont.create_object('test_container_iter_obj', prop)
+    obj2 = cont.create_object('test_container_iter_obj2', prop)
+    obj3 = cont.create_object('test_container_iter_obj3', prop)
 
     obj_set = set((obj, obj2, obj3))
     count = 0

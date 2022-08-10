@@ -65,14 +65,89 @@
 </tbody>
 </table>
 <p>These bounds are checked at runtime and will result in an OverflowError if they are exceeded.</p>
-<span class="target" id="module-pdc.main"></span><dl class="py class">
-<dt class="sig sig-object py" id="pdc.main.KVTags">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">KVTags</span></span><a class="headerlink" href="#pdc.main.KVTags" title="Permalink to this definition">¶</a></dt>
+<span class="target" id="module-pdc"></span><dl class="py class">
+<dt class="sig sig-object py" id="pdc.Type">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>All of the data types that PDC objects support</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.INT">
+<span class="sig-name descname"><span class="pre">INT</span></span><a class="headerlink" href="#pdc.Type.INT" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 32-bit signed integer.  This is the default value for Type aguments</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.UINT">
+<span class="sig-name descname"><span class="pre">UINT</span></span><a class="headerlink" href="#pdc.Type.UINT" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 32-bit unsigned integer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.FLOAT">
+<span class="sig-name descname"><span class="pre">FLOAT</span></span><a class="headerlink" href="#pdc.Type.FLOAT" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 32-bit floating point number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.DOUBLE">
+<span class="sig-name descname"><span class="pre">DOUBLE</span></span><a class="headerlink" href="#pdc.Type.DOUBLE" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 64-bit floating point number.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.INT64">
+<span class="sig-name descname"><span class="pre">INT64</span></span><a class="headerlink" href="#pdc.Type.INT64" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 64-bit signed integer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.UINT64">
+<span class="sig-name descname"><span class="pre">UINT64</span></span><a class="headerlink" href="#pdc.Type.UINT64" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 64-bit unsigned integer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.INT16">
+<span class="sig-name descname"><span class="pre">INT16</span></span><a class="headerlink" href="#pdc.Type.INT16" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 16-bit signed integer.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="pdc.Type.INT8">
+<span class="sig-name descname"><span class="pre">INT8</span></span><a class="headerlink" href="#pdc.Type.INT8" title="Permalink to this definition">¶</a></dt>
+<dd><p>An 8-bit signed integer.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.Type.as_numpy_type">
+<span class="sig-name descname"><span class="pre">as_numpy_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Type.as_numpy_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the numpy type corresponding to this PDC type</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.Type.from_numpy_type">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_numpy_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Type.from_numpy_type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns the PDC type corresponding to this numpy type</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>dtype</strong> – The numpy type</p>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – If the numpy type has no corresponding PDC type</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="pdc.KVTags">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">KVTags</span></span><a class="headerlink" href="#pdc.KVTags" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object used to manipulate object and container tags.
 Supports the following operations:</p>
 <table class="docutils align-default">
 <thead>
-<tr class="row-odd"><th class="head"><p>example</p></th>
+<tr class="row-odd"><th class="head"><p>operation</p></th>
 <th class="head"><p>effect</p></th>
 </tr>
 </thead>
@@ -88,186 +163,90 @@ Supports the following operations:</p>
 </tr>
 </tbody>
 </table>
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.main.KVTags.delete">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.KVTags.delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.main.KVTags.get">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bytes</span></span></span><a class="headerlink" href="#pdc.main.KVTags.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.main.KVTags.set">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">key</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.KVTags.set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.KVTags.tag_types">
-<span class="sig-name descname"><span class="pre">tag_types</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">(&lt;class</span> <span class="pre">'tuple'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'bool'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'NoneType'&gt;)</span></em><a class="headerlink" href="#pdc.main.KVTags.tag_types" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.KVTags.tag_types_union">
-<span class="sig-name descname"><span class="pre">tag_types_union</span></span><a class="headerlink" href="#pdc.main.KVTags.tag_types_union" title="Permalink to this definition">¶</a></dt>
-<dd><p>alias of <code class="xref py py-obj docutils literal notranslate"><span class="pre">Optional</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">Union</span></code>[<code class="xref py py-class docutils literal notranslate"><span class="pre">tuple</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">str</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">bool</span></code>]]</p>
-</dd></dl>
-
 </dd></dl>
 
 <dl class="py exception">
-<dt class="sig sig-object py" id="pdc.main.PDCError">
-<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">PDCError</span></span><a class="headerlink" href="#pdc.main.PDCError" title="Permalink to this definition">¶</a></dt>
-<dd><p>A general error type for all errors in the pdc api.</p>
+<dt class="sig sig-object py" id="pdc.PDCError">
+<em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">PDCError</span></span><a class="headerlink" href="#pdc.PDCError" title="Permalink to this definition">¶</a></dt>
+<dd><p>A general error type that indicates an error from the underlying c pdc api.
+Don’t count on getting this error most of the time.  Usually, the server/client segfaults instead.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.main.ServerContext">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">ServerContext</span></span><a class="headerlink" href="#pdc.main.ServerContext" title="Permalink to this definition">¶</a></dt>
-<dd><p>A context manager that starts and stops a single PDC server instance on enter and exit
-This is intended for testing</p>
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pdc.main.Type">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.Type" title="Permalink to this definition">¶</a></dt>
-<dd><p>All of the data types that PDC objects support</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.CHAR">
-<span class="sig-name descname"><span class="pre">CHAR</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#pdc.main.Type.CHAR" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.DOUBLE">
-<span class="sig-name descname"><span class="pre">DOUBLE</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#pdc.main.Type.DOUBLE" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.FLOAT">
-<span class="sig-name descname"><span class="pre">FLOAT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pdc.main.Type.FLOAT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.INT">
-<span class="sig-name descname"><span class="pre">INT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pdc.main.Type.INT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.INT16">
-<span class="sig-name descname"><span class="pre">INT16</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">10</span></em><a class="headerlink" href="#pdc.main.Type.INT16" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.INT64">
-<span class="sig-name descname"><span class="pre">INT64</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">8</span></em><a class="headerlink" href="#pdc.main.Type.INT64" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.INT8">
-<span class="sig-name descname"><span class="pre">INT8</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">11</span></em><a class="headerlink" href="#pdc.main.Type.INT8" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.UINT">
-<span class="sig-name descname"><span class="pre">UINT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">7</span></em><a class="headerlink" href="#pdc.main.Type.UINT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.main.Type.UINT64">
-<span class="sig-name descname"><span class="pre">UINT64</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">9</span></em><a class="headerlink" href="#pdc.main.Type.UINT64" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.main.Type.as_numpy_type">
-<span class="sig-name descname"><span class="pre">as_numpy_type</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.Type.as_numpy_type" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns the numpy type corresponding to this PDC type</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.main.Type.from_numpy_type">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_numpy_type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dtype</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.Type.from_numpy_type" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py" id="pdc.ServerContext">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">ServerContext</span></span><a class="headerlink" href="#pdc.ServerContext" title="Permalink to this definition">¶</a></dt>
+<dd><p>A context manager that starts and stops a single PDC server instance on enter and exit.
+This is intended for testing.</p>
+<p>Usage:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">pdc</span><span class="o">.</span><span class="n">ServerContext</span><span class="p">():</span>
+    <span class="n">pdc</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+    <span class="o">...</span>
+</pre></div>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Raises<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>FileNotFoundError</strong> – if pdc_server.exe is not on PATH</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.checkrange">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">checkrange</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.checkrange" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.checktype">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">checktype</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.checktype" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.ctrace">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">ctrace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.ctrace" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.format_arg">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">format_arg</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.format_arg" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.format_id">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">format_id</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.format_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.init">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.init" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.init">
+<span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">init</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.init" title="Permalink to this definition">¶</a></dt>
 <dd><p>Initialize PDC.
-This call will block and eventually terminate the program if the PDC server is not running.
+This call will block and eventually terminate the program if the PDC server is not running in the same directory as the program.
 This must be called before any other PDC method.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="pdc.main.ready">
-<span class="sig-prename descclassname"><span class="pre">pdc.main.</span></span><span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.main.ready" title="Permalink to this definition">¶</a></dt>
-<dd><p>True if init() has been called, False otherwise</p>
+<dt class="sig sig-object py" id="pdc.ready">
+<span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">ready</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.ready" title="Permalink to this definition">¶</a></dt>
+<dd><p>True if <a class="reference internal" href="#pdc.init" title="pdc.init"><code class="xref py py-func docutils literal notranslate"><span class="pre">init()</span></code></a> has been called, False otherwise</p>
 </dd></dl>
 
 </section>
-<section id="module-pdc.container">
-<span id="containers"></span><h1>Containers<a class="headerlink" href="#module-pdc.container" title="Permalink to this heading">¶</a></h1>
+<section id="containers">
+<h1>Containers<a class="headerlink" href="#containers" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.container.Container">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.container.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.container.Container.Lifetime" title="pdc.container.Container.Lifetime"><span class="pre">Lifetime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Lifetime.TRANSIENT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.Container" title="Permalink to this definition">¶</a></dt>
-<dd><p>Containers can contain one or more objects, and objects can be part of one or more containers.
-Containers are mainly used to allow objects to persist, and have very little other functionality at the moment.</p>
+<dt class="sig sig-object py" id="pdc.Container">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.Container.Container.Lifetime" title="pdc.Container.Container.Lifetime"><span class="pre">Lifetime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Lifetime.TRANSIENT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container" title="Permalink to this definition">¶</a></dt>
+<dd><div class="line-block">
+<div class="line">Containers can contain one or more objects, and objects can be part of one or more containers.</div>
+<div class="line">Containers can be used to allow objects to persist, and have no other functionality at the moment.</div>
+<div class="line">Every object must be created belonging to a container.</div>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>name</strong> (<em>str</em>) – the name of the container.  Container names should be unique between all processes that use PDC.</p></li>
-<li><p><strong>lifetime</strong> (<a class="reference internal" href="#pdc.container.Container.Lifetime" title="pdc.container.Container.Lifetime"><em>Lifetime</em></a>) – the container’s lifetime.</p></li>
+<li><p><strong>lifetime</strong> (<a class="reference internal" href="#pdc.Container.Container.Lifetime" title="pdc.Container.Container.Lifetime"><em>Lifetime</em></a>) – the container’s lifetime.</p></li>
 </ul>
 </dd>
 </dl>
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.container.Container.Lifetime">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lifetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.Container.Lifetime" title="Permalink to this definition">¶</a></dt>
-<dd><p>An emuneration of the lifetimes of containers.</p>
+<dt class="sig sig-object py" id="pdc.Container.Container.Lifetime">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Lifetime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container.Container.Lifetime" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
+<p>The possible lifetimes of containers.</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.container.Container.Lifetime.PERSISTENT">
-<span class="sig-name descname"><span class="pre">PERSISTENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">0</span></em><a class="headerlink" href="#pdc.container.Container.Lifetime.PERSISTENT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pdc.Container.Container.Lifetime.Lifetime.PERSISTENT">
+<span class="sig-prename descclassname"><span class="pre">Lifetime.</span></span><span class="sig-name descname"><span class="pre">PERSISTENT</span></span><a class="headerlink" href="#pdc.Container.Container.Lifetime.Lifetime.PERSISTENT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The container and all objects in it will persist across server restarts.</p>
+</dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.container.Container.Lifetime.TRANSIENT">
-<span class="sig-name descname"><span class="pre">TRANSIENT</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pdc.container.Container.Lifetime.TRANSIENT" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dt class="sig sig-object py" id="pdc.Container.Container.Lifetime.Lifetime.TRANSIENT">
+<span class="sig-prename descclassname"><span class="pre">Lifetime.</span></span><span class="sig-name descname"><span class="pre">TRANSIENT</span></span><a class="headerlink" href="#pdc.Container.Container.Lifetime.Lifetime.TRANSIENT" title="Permalink to this definition">¶</a></dt>
+<dd><p>The container and all objects in it will be deleted when the server restarts.</p>
+</dd></dl>
 
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.Container.all_local_objects">
-<span class="sig-name descname"><span class="pre">all_local_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pdc.container.Container.all_local_objects" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.Container.all_local_objects">
+<span class="sig-name descname"><span class="pre">all_local_objects</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Iterable</span><span class="p"><span class="pre">[</span></span><span class="pre">pdc.Object</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#pdc.Container.all_local_objects" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an iterable through all objects in this container that have been retrieved by the client, and haven’t yet been garbage collected.
-Deleting an object while this iterator is in use may cause undefined behavior.
-In particular, do not write <code class="docutils literal notranslate"><span class="pre">container.remove_objects(container.all_local_objects())</span></code></p>
+Deleting an object while this iterator is in use may cause undefined behavior.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>An iterable of Objects</p>
@@ -275,78 +254,82 @@ In particular, do not write <code class="docutils literal notranslate"><span cla
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.container.Container.containers_by_id">
-<span class="sig-name descname"><span class="pre">containers_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;WeakValueDictionary&gt;</span></em><a class="headerlink" href="#pdc.container.Container.containers_by_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.Container.create_object">
+<span class="sig-name descname"><span class="pre">create_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object.Properties</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container.create_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new object, placed in this container.  To get an existing object, use Object.get() instead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.</p></li>
+<li><p><strong>properties</strong> (<em>ObjectProperties</em>) – An ObjectProperties describing the properties of the object.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.Container.get">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.container.Container" title="pdc.container.Container"><span class="pre">Container</span></a></span></span><a class="headerlink" href="#pdc.container.Container.get" title="Permalink to this definition">¶</a></dt>
-<dd><p>Get an existing container by name.</p>
+<dt class="sig sig-object py" id="pdc.Container.get">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Container" title="pdc.Container"><span class="pre">Container</span></a></span></span><a class="headerlink" href="#pdc.Container.get" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get an existing container by name.
+If you try to get a container that does not exist, the server segfaults and the call blocks indeinitely.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>name</strong> (<em>str</em>) – the name of the container.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the container.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pdc.container.Container" title="pdc.container.Container">Container</a></p>
+<dd class="field-even"><p>The container.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.container.Container.lifetime">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lifetime</span></span><a class="headerlink" href="#pdc.container.Container.lifetime" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.Container.lifetime">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lifetime</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.Container.Container.Lifetime" title="pdc.container.Container.Lifetime"><span class="pre">Lifetime</span></a></em><a class="headerlink" href="#pdc.Container.lifetime" title="Permalink to this definition">¶</a></dt>
 <dd><p>The lifetime of this container. read-only.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.container.Container.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><a class="headerlink" href="#pdc.container.Container.name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.Container.name">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pdc.Container.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of this container. read-only</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.Container.persist">
-<span class="sig-name descname"><span class="pre">persist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.Container.persist" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.Container.object_from_array">
+<span class="sig-name descname"><span class="pre">object_from_array</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.Type" title="pdc.Type"><span class="pre">Type</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="s"><span class="pre">'Object.Properties'</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container.object_from_array" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create a new object, placed in this container, from an array-like object.
+To get an existing object, use Object.get() instead</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.</p></li>
+<li><p><strong>array</strong> – the array to create the object from.  It must be a numpy array, or be convertible to a numpy array via numpy.array().</p></li>
+<li><p><strong>type</strong> – If specified, the resulting object will have this type, if all elements of the array fit in this type.</p></li>
+<li><p><strong>prop</strong> – If specified, the app name, time step, and user id will be copied from this properties object to the resulting object’s properties.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="pdc.Container.persist">
+<span class="sig-name descname"><span class="pre">persist</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#pdc.Container.persist" title="Permalink to this definition">¶</a></dt>
 <dd><p>Make this container persistent if it wasn’t already.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.container.Container.tags">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.main.KVTags" title="pdc.main.KVTags"><span class="pre">KVTags</span></a></em><a class="headerlink" href="#pdc.container.Container.tags" title="Permalink to this definition">¶</a></dt>
-<dd><p>The tags of this container. See <code class="xref py py-class docutils literal notranslate"><span class="pre">KVTags</span></code> for more information.</p>
+<dt class="sig sig-object py" id="pdc.Container.tags">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.KVTags" title="pdc.main.KVTags"><span class="pre">KVTags</span></a></em><a class="headerlink" href="#pdc.Container.tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>The tags of this container. See <a class="reference internal" href="#pdc.KVTags" title="pdc.KVTags"><code class="xref py py-class docutils literal notranslate"><span class="pre">KVTags</span></code></a> for more information.</p>
 <p>NOTE: currently, deleting tags from containers is not supported.</p>
 </dd></dl>
 
 </dd></dl>
 
-<dl class="py class">
-<dt class="sig sig-object py" id="pdc.container.ContainerKVTags">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.container.</span></span><span class="sig-name descname"><span class="pre">ContainerKVTags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cont</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.ContainerKVTags" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.ContainerKVTags.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.ContainerKVTags.delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.ContainerKVTags.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.ContainerKVTags.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.container.ContainerKVTags.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.ContainerKVTags.set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-</dd></dl>
-
 <dl class="py function">
-<dt class="sig sig-object py" id="pdc.container.all_local_containers">
-<span class="sig-prename descclassname"><span class="pre">pdc.container.</span></span><span class="sig-name descname"><span class="pre">all_local_containers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.all_local_containers" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">all_local_containers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Get an iterable of all containers that have been retrieved by the client, and haven’t yet been garbage collected.
 Deleting a container after this function is called, then using the iterator may cause undefined behavior.</p>
 <dl class="field-list simple">
@@ -356,38 +339,23 @@ Deleting a container after this function is called, then using the iterator may 
 </dl>
 </dd></dl>
 
-<dl class="py function">
-<dt class="sig sig-object py" id="pdc.container.to_c_object_list">
-<span class="sig-prename descclassname"><span class="pre">pdc.container.</span></span><span class="sig-name descname"><span class="pre">to_c_object_list</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.container.to_c_object_list" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 </section>
-<section id="module-pdc.object">
-<span id="objects"></span><h1>Objects<a class="headerlink" href="#module-pdc.object" title="Permalink to this heading">¶</a></h1>
+<section id="objects">
+<h1>Objects<a class="headerlink" href="#objects" title="Permalink to this heading">¶</a></h1>
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.object.Object">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.object.</span></span><span class="sig-name descname"><span class="pre">Object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.object.Object.Properties" title="pdc.object.Object.Properties"><span class="pre">Properties</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">container</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.container.Container" title="pdc.container.Container"><span class="pre">container.Container</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>A PDC object</p>
-<p>Create a new object.  To get an existing object, use Object.get() instead</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) – the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.</p></li>
-<li><p><strong>properties</strong> (<em>ObjectProperties</em>) – An ObjectProperties describing the properties of the object.</p></li>
-<li><p><strong>container</strong> (<a class="reference internal" href="#pdc.container.Container" title="pdc.container.Container"><em>Container</em></a>) – the container this object should be placed in.</p></li>
-</ul>
-</dd>
-</dl>
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">dims:Union[Tuple[uint32,</span> <span class="pre">...],</span> <span class="pre">uint32],</span> <span class="pre">type:Type=Type.INT,</span> <span class="pre">uint32_t</span> <span class="pre">time_step:uint32=0,</span> <span class="pre">user_id:Optional[uint32]=None,</span> <span class="pre">str</span> <span class="pre">app_name:str=''</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object.Properties" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Properties</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">self,</span> <span class="pre">dims:Union[Tuple[uint32,</span> <span class="pre">...],</span> <span class="pre">uint32],</span> <span class="pre">type,</span> <span class="pre">uint32_t</span> <span class="pre">time_step:uint32=0,</span> <span class="pre">user_id:Optional[uint32]=None,</span> <span class="pre">str</span> <span class="pre">app_name:str=''</span></em><span class="sig-paren">)</span></dt>
 <dd><p>Contains most of the metadata associated with an object.
 This is an inner class of Object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dims</strong> (<em>Tuple</em><em>[</em><em>int</em><em>]</em>) – A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 &lt;= len(dims) &lt;= 2^31-1</p></li>
-<li><p><strong>type</strong> (<a class="reference internal" href="#pdc.main.Type" title="pdc.main.Type"><em>Type</em></a>) – the data type.  Defaults to INT</p></li>
+<li><p><strong>dims</strong> (<em>Tuple</em><em>[</em><em>uint32</em><em>, </em><em>...</em><em>] or </em><em>uint32</em>) – A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 &lt;= len(dims) &lt;= 2^31-1</p></li>
+<li><p><strong>type</strong> (<a class="reference internal" href="#pdc.Type" title="pdc.Type"><em>Type</em></a>) – the data type.</p></li>
 <li><p><strong>time_step</strong> (<em>uint32</em>) – For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.</p></li>
 <li><p><strong>user_id</strong> (<em>uint32</em>) – the id of the user.  defaults to os.getuid()</p></li>
 <li><p><strong>app_name</strong> (<em>str</em>) – the name of the application.  Defaults to an empty string.</p></li>
@@ -395,117 +363,108 @@ This is an inner class of Object</p>
 </dd>
 </dl>
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties.app_name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pdc.object.Object.Properties.app_name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
 <dd><p>The name of the application</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties.copy">
-<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.Properties" title="pdc.object.Object.Properties"><span class="pre">Properties</span></a></span></span><a class="headerlink" href="#pdc.object.Object.Properties.copy" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">copy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Properties</span></span></span></dt>
 <dd><p>Copy this properties object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>A copy of this object</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="#pdc.object.Object.Properties" title="pdc.object.Object.Properties">Properties</a></p>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties.dims">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dims</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pdc.object.Object.Properties.dims" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dims</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em></dt>
 <dd><p>The dimensions of this object as a tuple.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties.time_step">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint32</span></em><a class="headerlink" href="#pdc.object.Object.Properties.time_step" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint32</span></em></dt>
 <dd><p>The time step of this object.
 For applications that involve data along a time axis, this represents the point in time of the data.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties.type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.main.Type" title="pdc.main.Type"><span class="pre">Type</span></a></em><a class="headerlink" href="#pdc.object.Object.Properties.type" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.Type" title="pdc.main.Type"><span class="pre">Type</span></a></em></dt>
 <dd><p>The data type of this object.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.Properties.user_id">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">user_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint32</span></em><a class="headerlink" href="#pdc.object.Object.Properties.user_id" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">user_id</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint32</span></em></dt>
 <dd><p>the id of the user.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TransferRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object.TransferRequest" title="Permalink to this definition">¶</a></dt>
-<dd><p>Represents a transfer request to either set a region’s data or get it
-This object can be awaited</p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TransferRequest</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>Represents a transfer request to either set a region’s data or get it.</p>
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.RequestType">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequestType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object.TransferRequest.RequestType" title="Permalink to this definition">¶</a></dt>
-<dd><p>The type of transfer request</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.RequestType.GET">
-<span class="sig-name descname"><span class="pre">GET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#pdc.object.Object.TransferRequest.RequestType.GET" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.RequestType.SET">
-<span class="sig-name descname"><span class="pre">SET</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#pdc.object.Object.TransferRequest.RequestType.SET" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">RequestType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em><span class="sig-paren">)</span></dt>
+<dd><p>The possible types of transfer request.
+Can be obtained with <code class="xref py py-attr docutils literal notranslate"><span class="pre">TransferRequest.type</span></code>
+Either GET or SET.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.done">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">done</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#pdc.object.Object.TransferRequest.done" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">done</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em></dt>
 <dd><p>True if this transfer request is completed</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.result">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">ScalarType</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pdc.object.Object.TransferRequest.result" title="Permalink to this definition">¶</a></dt>
-<dd><p>If the request is done and the request type is RequestType.GET, this is a numpy array containing the requested data.</p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">result</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">ScalarType</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em></dt>
+<dd><p>If the request is done and the request type is RequestType.GET, this is a numpy array containing the requested data.  Otherwise, it is None.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.Object.TransferRequest.wait_for_result">
-<span class="sig-name descname"><span class="pre">wait_for_result</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object.TransferRequest.wait_for_result" title="Permalink to this definition">¶</a></dt>
-<dd><p>Wait for the result of the transfer request</p>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">wait</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
+<dd><p>Block until the result of the transfer request is available, then return it. 
+If this is a GET request, the return value is the data, otherwise it is None.</p>
 </dd></dl>
 
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.data">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.query.QueryComponent" title="pdc.query.QueryComponent"><span class="pre">QueryComponent</span></a></em><a class="headerlink" href="#pdc.object.Object.data" title="Permalink to this definition">¶</a></dt>
-<dd><p>An object used to build queries.
-ex. <code class="docutils literal notranslate"><span class="pre">query</span> <span class="pre">=</span> <span class="pre">my_object.data</span> <span class="pre">&gt;</span> <span class="pre">1</span></code></p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.query.QueryComponent" title="pdc.query.QueryComponent"><span class="pre">QueryComponent</span></a></em></dt>
+<dd><div class="line-block">
+<div class="line">An object used to build queries.</div>
+<div class="line">See <a class="reference internal" href="#queries">queries</a> for more details.</div>
+</div>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.Object.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.Object.delete" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><p>Delete this Object.
-Do not access any methods or properties of this object after calling.</p>
+Do not access any methods or properties of this object after calling this.</p>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.dims">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dims</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">uint64</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#pdc.object.Object.dims" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">dims</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">uint64</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="p"><span class="pre">...</span></span><span class="p"><span class="pre">]</span></span></em></dt>
 <dd><p>The dimensions of this object.  read-only
 Equivalent to <code class="docutils literal notranslate"><span class="pre">obj.get_properties().dims</span></code></p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.Object.get">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a></span></span><a class="headerlink" href="#pdc.object.Object.get" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Object</span></span></span></dt>
 <dd><p>Get an existing object by name</p>
 <p>If you have created multiple objects with the same name, this will return the one with time_step=0
 If there are multiple objects with the same name and time_step, the tie is broken arbitrarily</p>
@@ -517,8 +476,8 @@ If there are multiple objects with the same name and time_step, the tie is broke
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.Object.get_data">
-<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest"><span class="pre">TransferRequest</span></a></span></span><a class="headerlink" href="#pdc.object.Object.get_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TransferRequest</span></span></span></dt>
 <dd><p>Request a region of data from an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -528,73 +487,42 @@ If there are multiple objects with the same name and time_step, the tie is broke
 <dd class="field-even"><p>A transfer request representing this request</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest">TransferRequest</a></p>
+<dd class="field-odd"><p>TransferRequest</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pdc.object.Object.name" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
 <dd><p>The name of this object. read-only</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.object.Object.objects_by_id">
-<span class="sig-name descname"><span class="pre">objects_by_id</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">&lt;WeakValueDictionary&gt;</span></em><a class="headerlink" href="#pdc.object.Object.objects_by_id" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.Object.set_data">
-<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">complex</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest"><span class="pre">TransferRequest</span></a></span></span><a class="headerlink" href="#pdc.object.Object.set_data" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">set_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="s"><span class="pre">'Region'</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span></dt>
 <dd><p>Request a region of data from an object to be set to a new value</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – the region of data to set. Defaults to the entire object.</p></li>
-<li><p><strong>data</strong> – The data to set the region to.</p></li>
+<li><p><strong>data</strong> – The data to set the region to.  It must be a numpy array or convertible to a numpy array with numpy.array().</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A TransferRequest representing this request</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pdc.object.Object.TransferRequest" title="pdc.object.Object.TransferRequest">TransferRequest</a></p>
+<dd class="field-odd"><p>TransferRequest</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.tags">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">tags</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.main.KVTags" title="pdc.main.KVTags"><span class="pre">KVTags</span></a></em><a class="headerlink" href="#pdc.object.Object.tags" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py" id="pdc.object.Object.type">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.main.Type" title="pdc.main.Type"><span class="pre">Type</span></a></em><a class="headerlink" href="#pdc.object.Object.type" title="Permalink to this definition">¶</a></dt>
-<dd><p>The type of this object.  read-only
-Equivalent to <code class="docutils literal notranslate"><span class="pre">obj.get_properties().type</span></code></p>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.Type" title="pdc.main.Type"><span class="pre">Type</span></a></em></dt>
+<dd><p>The type of this object.  read-only</p>
 </dd></dl>
-
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pdc.object.ObjectKVTags">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.object.</span></span><span class="sig-name descname"><span class="pre">ObjectKVTags</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.ObjectKVTags" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.ObjectKVTags.delete">
-<span class="sig-name descname"><span class="pre">delete</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.ObjectKVTags.delete" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.ObjectKVTags.get">
-<span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.ObjectKVTags.get" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.object.ObjectKVTags.set">
-<span class="sig-name descname"><span class="pre">set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bytes</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.object.ObjectKVTags.set" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 
@@ -611,37 +539,47 @@ See <a class="reference internal" href="#pdc.region.Region" title="pdc.region.Re
 <dl class="py class">
 <dt class="sig sig-object py" id="pdc.region.Region">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.region.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region" title="Permalink to this definition">¶</a></dt>
-<dd><p>A region, which specifies the location of a ‘block’ of data.  
-For example, a region can represent columns 2-8 of rows 1-3 of an object with 2 dimensions
-Regions are created by slicing the <a class="reference internal" href="#pdc.region.region" title="pdc.region.region"><code class="xref py py-class docutils literal notranslate"><span class="pre">region</span></code></a> object.
-The previous region example can be created with <code class="docutils literal notranslate"><span class="pre">pdc.region[1:4,</span> <span class="pre">2:9]</span></code></p>
+<dd><div class="line-block">
+<div class="line">A region, which specifies the location of a ‘block’ of data.  </div>
+<div class="line">Regions are created by slicing the <a class="reference internal" href="#pdc.region.region" title="pdc.region.region"><code class="xref py py-class docutils literal notranslate"><span class="pre">region</span></code></a> object.</div>
+<div class="line">Examples:</div>
+<div class="line">all data of an object: <code class="docutils literal notranslate"><span class="pre">region[:]</span></code></div>
+<div class="line">the first row of a 2 dimensional object, or the first element of a 1 dimensional object: <code class="docutils literal notranslate"><span class="pre">region[0]</span></code></div>
+<div class="line">the first 3 elements of a 1 dimensional object: <code class="docutils literal notranslate"><span class="pre">region[:3]</span></code></div>
+<div class="line">the next 3 elements of a 1 dimensional object: <code class="docutils literal notranslate"><span class="pre">region[3:6]</span></code></div>
+<div class="line">the last 6 columns of the first 2 rows of an object: <code class="docutils literal notranslate"><span class="pre">region[:2,</span> <span class="pre">6:]</span></code></div>
+<div class="line"><br /></div>
+<div class="line">The slices used to create a region object may not have step values. (<code class="docutils literal notranslate"><span class="pre">region[1:100:4]</span></code> is invalid)</div>
+</div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.region.Region.get_absolute">
 <span class="sig-name descname"><span class="pre">get_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.get_absolute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Return a new absolute region, using the given dimensions to determine ommitted start and stop values.
-Ex.
-region[:].get_absolute((3, 4)) -&gt; region[0:3, 0:4]
-region[:2, 6:].get_absolute((10, 10)) -&gt; region[0:2, 6:10]</p>
+<dd><div class="line-block">
+<div class="line">Return a new absolute region, using the given dimensions to determine ommitted start and stop values.</div>
+<div class="line">Examples:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">region[:].get_absolute((3,</span> <span class="pre">4))</span> <span class="pre">-&gt;</span> <span class="pre">region[0:3,</span> <span class="pre">0:4]</span></code></div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">region[:2,</span> <span class="pre">6:].get_absolute((10,</span> <span class="pre">10))</span> <span class="pre">-&gt;</span> <span class="pre">region[0:2,</span> <span class="pre">6:10]</span></code></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.region.Region.is_absolute">
 <span class="sig-name descname"><span class="pre">is_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.is_absolute" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns True if the region’s slices have both start and stop values.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pdc.region.Region.validate_slice">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">validate_slice</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">slice</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.validate_slice" title="Permalink to this definition">¶</a></dt>
-<dd><p>Validates a slice object.</p>
+<dd><div class="line-block">
+<div class="line">A region is absolute if the region’s slices have both start and stop values.</div>
+<div class="line">returns True if the region is absolute</div>
+<div class="line">Examples:</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">region[2:3,</span> <span class="pre">:9]</span></code> is not absolute</div>
+<div class="line"><code class="docutils literal notranslate"><span class="pre">region[2:3,</span> <span class="pre">8]</span></code> is absolute</div>
+</div>
 </dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="module-pdc.query">
-<span id="queries"></span><h1>Queries<a class="headerlink" href="#module-pdc.query" title="Permalink to this heading">¶</a></h1>
-<dl class="py class">
+<section id="queries">
+<span id="id1"></span><h1>Queries<a class="headerlink" href="#queries" title="Permalink to this heading">¶</a></h1>
+<span class="target" id="module-pdc.query"></span><dl class="py class">
 <dt class="sig sig-object py" id="pdc.Query">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Query" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py class">
@@ -662,7 +600,7 @@ If you <em>only</em> want the number of hits, use <code class="xref py py-func d
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.Query.get_num_hits">
-<span class="sig-name descname"><span class="pre">get_num_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pdc.Query.get_num_hits" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_num_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pdc.Query.get_num_hits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get number of hits for this query (i.e. number of elements that match this query)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -671,25 +609,19 @@ If you <em>only</em> want the number of hits, use <code class="xref py py-func d
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>number of hits</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int</p>
-</dd>
 </dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.Query.get_result">
-<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.query.Query.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#pdc.Query.get_result" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.query.Query.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#pdc.Query.get_result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the result of this query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the result</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.Query.Query.Result">Result</a></p>
+<dd class="field-even"><p>the Result object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -698,7 +630,7 @@ If you <em>only</em> want the number of hits, use <code class="xref py py-func d
 
 <dl class="py class">
 <dt class="sig sig-object py" id="pdc.query.QueryComponent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">QueryComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.object.Object" title="pdc.object.Object"><span class="pre">Object</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.QueryComponent" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">QueryComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.QueryComponent" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object used to build a query</p>
 </dd></dl>
 

@@ -34,7 +34,7 @@ def test_decode():
 def test_object_tags():
     cont = pdc.Container('testobjkvtags', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(3, 4, 5), type=pdc.Type.FLOAT)
-    obj = pdc.Object('testobjkvtags', prop, cont)
+    obj = cont.create_object('testobjkvtags', prop)
 
     obj.tags['merp'] = 'derp'
     obj.tags['derp'] = (1, 2, 3, None, True, False, 3.6332, ())

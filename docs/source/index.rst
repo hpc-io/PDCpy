@@ -20,23 +20,89 @@ uint64       0 to 2**64-1
 
 These bounds are checked at runtime and will result in an OverflowError if they are exceeded.
 
-.. automodule:: pdc.main
-   :members:
+.. automodule:: pdc
+   :imported-members:
+   :members: KVTags, PDCError, init, ready, ServerContext
    :undoc-members:
+   :exclude-members: tag_types, tag_types_union
+
+   .. autoclass:: Type
+      :members: as_numpy_type, from_numpy_type
+      :show-inheritance:
+
+      .. autoattribute:: INT
+         :annotation: 
+         
+         A 32-bit signed integer.  This is the default value for Type aguments
+      
+      .. autoattribute:: UINT
+         :annotation: 
+         
+         A 32-bit unsigned integer.
+      
+      .. autoattribute:: FLOAT
+         :annotation: 
+         
+         A 32-bit floating point number.
+      
+      .. autoattribute:: DOUBLE
+         :annotation: 
+         
+         A 64-bit floating point number.
+            
+      .. autoattribute:: INT64
+         :annotation: 
+         
+         A 64-bit signed integer.
+      
+      .. autoattribute:: UINT64
+         :annotation: 
+         
+         A 64-bit unsigned integer.
+      
+      .. autoattribute:: INT16
+         :annotation: 
+         
+         A 16-bit signed integer.
+      
+      .. autoattribute:: INT8
+         :annotation: 
+         
+         An 8-bit signed integer.
 
 Containers
 ==========
 
-.. automodule:: pdc.container
-   :members:
-   :undoc-members:
+.. automodule:: pdc
+   :noindex:
+   :imported-members:
+   :exclude-members: containers_by_id, Container
+   :members: all_local_containers
+
+   .. autoclass:: Container
+      :members:
+      :exclude-members: Lifetime
+      
+      .. autoclass:: pdc.Container.Lifetime
+         :show-inheritance:
+
+         .. autoattribute:: pdc.Container.Lifetime.PERSISTENT
+            :annotation:
+
+            The container and all objects in it will persist across server restarts.
+         
+         .. autoattribute:: pdc.Container.Lifetime.TRANSIENT
+            :annotation:
+
+            The container and all objects in it will be deleted when the server restarts.
 
 Objects
 =======
 
-.. automodule:: pdc.object
-   :members:
-   :undoc-members:
+.. automodule:: pdc
+   :noindex:
+   :imported-members:
+   :members: Object
 
 Regions
 =======
@@ -50,8 +116,14 @@ Regions
    	An object used to create regions.
    	See :class:`Region` for details.
 
+.. _queries:
+
 Queries
 =======
+
+Queries search for elements in an object.  They can also search for elements in multiple objects, in which case each object will be treated as a column of data, and matching rows are returned.
+
+Queries can be restricted to a specific region.
 
 .. automodule:: pdc.query
    :members:

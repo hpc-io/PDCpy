@@ -22,7 +22,7 @@ def main(obj_name:str, length:int):
         app_name = 'DataServerTest'
     )
     if rank == 0:
-        obj = Object(obj_name, prop, cont)
+        obj = cont.create_object(obj_name, prop)
     comm.Barrier()
     if rank != 0:
         obj = Object.get(obj_name)

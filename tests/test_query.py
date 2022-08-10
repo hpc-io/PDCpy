@@ -7,12 +7,12 @@ import pytest
 def test_build_query():
     cont = pdc.Container('buildquerycont', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims = 10, type = pdc.Type.INT16)
-    obj = pdc.Object('buildqueryobj', prop, cont)
+    obj = cont.create_object('buildqueryobj', prop)
     
     def objs():
         x = 0
         while True:
-            yield pdc.Object(f'buildqueryobj{x}', prop, cont)
+            yield cont.create_object(f'buildqueryobj{x}', prop)
             x += 1
     
     it = iter(objs())
@@ -40,10 +40,10 @@ def test_big_query():
         LENGTH,
         pdc.Type.INT64
     )
-    obj = pdc.Object(f'bigqueryobj{LENGTH}', prop, cont)
+    obj = cont.create_object(f'bigqueryobj{LENGTH}', prop)
     data = np.fromiter(range(0, LENGTH), dtype=np.int64)
     start = time.time()
-    obj.set_data(data).wait_for_result()
+    obj.set_data(data).wait()
 
     end = time.time()
     print(f'Set {LENGTH//1_000_000} data in {end - start} seconds')
@@ -55,9 +55,9 @@ def test_big_query():
 def test_queries():
     cont  = pdc.Container('queriescont', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims = 16, type = pdc.Type.INT16)
-    obj = pdc.Object('queriesobj', prop, cont)
+    obj = cont.create_object('queriesobj', prop)
 
-    obj.set_data(range(16)).wait_for_result()
-    #print(obj.get_data().wait_for_result())
-    #print(obj.get_data().wait_for_result())
+    obj.set_data(range(16)).wait()
+    #print(obj.get_data().wait())
+    #print(obj.get_data().wait())
     assert (obj.data >= 8).get_result().hits == 8

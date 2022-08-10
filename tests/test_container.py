@@ -49,9 +49,9 @@ def test_put_del_ids():
     cont = pdc.Container('contputdelids', lifetime=pdc.Container.Lifetime.TRANSIENT)
     cont2 = pdc.Container('contputdelids2', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = pdc.Object.Properties(dims=(8, 6), type=pdc.Type.INT16)
-    obj = pdc.Object('objputdelids', prop, cont, lifetime=pdc.Container.Lifetime.TRANSIENT)
-    obj2 = pdc.Object('objputdelids2', prop, cont, lifetime=pdc.Container.Lifetime.TRANSIENT)
-    obj3 = pdc.Object('objputdelids3', prop, cont, lifetime=pdc.Container.Lifetime.TRANSIENT)
+    obj = cont.create_object('objputdelids', prop, lifetime=pdc.Container.Lifetime.TRANSIENT)
+    obj2 = cont.create_object('objputdelids2', prop, lifetime=pdc.Container.Lifetime.TRANSIENT)
+    obj3 = cont.create_object('objputdelids3', prop, lifetime=pdc.Container.Lifetime.TRANSIENT)
 
     cont.remove_objects([obj, obj2, obj3])
     cont2.add_objects([obj, obj2, obj3])

@@ -27,10 +27,16 @@ cdef pdc_region_info *construct_region_info(region, dims):
 
 class Region:
     '''
-    A region, which specifies the location of a 'block' of data.  
-    For example, a region can represent columns 2-8 of rows 1-3 of an object with 2 dimensions
-    Regions are created by slicing the :class:`region` object.
-    The previous region example can be created with ``pdc.region[1:4, 2:9]``
+    | A region, which specifies the location of a 'block' of data.  
+    | Regions are created by slicing the :class:`region` object.
+    | Examples:
+    | all data of an object: ``region[:]``
+    | the first row of a 2 dimensional object, or the first element of a 1 dimensional object: ``region[0]``
+    | the first 3 elements of a 1 dimensional object: ``region[:3]``
+    | the next 3 elements of a 1 dimensional object: ``region[3:6]``
+    | the last 6 columns of the first 2 rows of an object: ``region[:2, 6:]``
+    |
+    | The slices used to create a region object may not have step values. (``region[1:100:4]`` is invalid)
     '''
     
     @singledispatchmethod
@@ -41,6 +47,8 @@ class Region:
     def validate_slice(slice:slice):
         '''
         Validates a slice object.
+
+        :meta private:
         '''
         checktype(slice, 'slice', builtins.slice)
         if slice.start is not None:
@@ -84,7 +92,11 @@ class Region:
     
     def is_absolute(self):
         '''
-        Returns True if the region's slices have both start and stop values.
+        | A region is absolute if the region's slices have both start and stop values.
+        | returns True if the region is absolute
+        | Examples:
+        | ``region[2:3, :9]`` is not absolute
+        | ``region[2:3, 8]`` is absolute
         '''
         for s in self.slices:
             if s.start is None or s.stop is None:
@@ -93,10 +105,10 @@ class Region:
     
     def get_absolute(self, dims):
         '''
-        Return a new absolute region, using the given dimensions to determine ommitted start and stop values.
-        Ex.
-        region[:].get_absolute((3, 4)) -> region[0:3, 0:4]
-        region[:2, 6:].get_absolute((10, 10)) -> region[0:2, 6:10]
+        | Return a new absolute region, using the given dimensions to determine ommitted start and stop values.
+        | Examples:
+        | ``region[:].get_absolute((3, 4)) -> region[0:3, 0:4]``
+        | ``region[:2, 6:].get_absolute((10, 10)) -> region[0:2, 6:10]``
         '''
         newslices = []
         

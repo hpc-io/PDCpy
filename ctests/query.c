@@ -60,7 +60,7 @@ main(int argc, char **argv)
     pdcid_t region_id2 = PDCregion_create(1, offset, size);
 
     //region_transfer_create([ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15], RequestType.SET, 180143985094819840, 216172782113783809, 216172782113783808) -> 252201579132747776
-    int16_t data[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
+    int32_t data[] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15};
     pdcid_t region_transfer_id = PDCregion_transfer_create(data, PDC_WRITE, obj_id, region_id2, region_id);
 
     //region_transfer_start(252201579132747776) -> 0
@@ -84,8 +84,8 @@ main(int argc, char **argv)
         printf("Fail to close region transfer @ line  %d!\n", __LINE__);
     
     //query_create(180143985094819840, GTE, INT16, 8) -> 28512112
-    int16_t bound = 8;
-    pdc_query_t *query_id = PDCquery_create(obj_id, PDC_GTE, PDC_INT16, &bound);
+    int32_t bound = 8;
+    pdc_query_t *query_id = PDCquery_create(obj_id, PDC_GTE, PDC_INT, &bound);
 
     //query_get_selection(28512112, 140421247985296) -> 0
     pdc_selection_t *selection = (pdc_selection_t *)malloc(sizeof(pdc_selection_t));

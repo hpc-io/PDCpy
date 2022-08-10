@@ -79,7 +79,8 @@ def ctrace(name, rtn, *args):
 
 class PDCError(Exception):
     '''
-    A general error type for all errors in the pdc api.
+    A general error type that indicates an error from the underlying c pdc api.
+    Don't count on getting this error most of the time.  Usually, the server/client segfaults instead.
     '''
     pass
 
@@ -92,7 +93,7 @@ def _get_pdcid() -> pdcid:
 def init(name:str="PDC"):
     '''
     Initialize PDC.
-    This call will block and eventually terminate the program if the PDC server is not running.
+    This call will block and eventually terminate the program if the PDC server is not running in the same directory as the program.
     This must be called before any other PDC method.
     '''
     global pdc_id, _is_open
@@ -123,7 +124,7 @@ def _get_pdcid():
 
 def ready() -> bool:
     '''
-    True if init() has been called, False otherwise
+    True if :func:`init` has been called, False otherwise
     '''
     return _is_open
 
@@ -133,56 +134,28 @@ class Type(Enum):
     '''
 
     INT      = pdc_var_type_t.PDC_INT
-    '''
-    A signed int with the system's default width.  This is the default value for Type aguments
-    '''
     FLOAT    = pdc_var_type_t.PDC_FLOAT
-    '''
-    A 32-bit float
-    '''
     DOUBLE   = pdc_var_type_t.PDC_DOUBLE
-    '''
-    A 64-bit float
-    '''
-    CHAR     = pdc_var_type_t.PDC_CHAR
-    '''
-    An 8-bit character
-    '''
+    #removed for being identical to INT8:
+    #CHAR     = pdc_var_type_t.PDC_CHAR
     UINT     = pdc_var_type_t.PDC_UINT
-    '''
-    A signed int with the system's default width.
-    '''
     INT64    = pdc_var_type_t.PDC_INT64
-    '''
-    A 64-bit signed integer
-    '''
     UINT64   = pdc_var_type_t.PDC_UINT64
-    '''
-    A 64-bit unsigned integer
-    '''
     INT16    = pdc_var_type_t.PDC_INT16
-    '''
-    A 16-bit signed integer
-    '''
     INT8     = pdc_var_type_t.PDC_INT8
-    '''
-    An 8-bit signed integer
-    '''
 
     def as_numpy_type(self):
         '''
         Returns the numpy type corresponding to this PDC type
         '''
         if self == Type.INT:
-            return np.dtype('=i')
+            return np.dtype('=i4')
         elif self == Type.UINT:
-            return np.uintc.newbyteorder('=')
+            return np.dtype('=u4')
         elif self == Type.FLOAT:
             return np.dtype('=f')
         elif self == Type.DOUBLE:
             return np.dtype('=d')
-        elif self == Type.CHAR:
-            return np.dtype('=c')
         elif self == Type.INT64:
             return np.dtype('=i8')
         elif self == Type.UINT64:
@@ -196,16 +169,22 @@ class Type(Enum):
     
     @staticmethod
     def from_numpy_type(dtype):
-        if dtype == np.dtype('=i'):
+        '''
+        Returns the PDC type corresponding to this numpy type
+
+        :param dtype: The numpy type
+        :raises ValueError: If the numpy type has no corresponding PDC type
+        '''
+        if dtype == np.dtype('=i4'):
             return Type.INT
-        elif dtype == np.uintc.newbyteorder('='):
+        elif dtype == np.dtype('=u4'):
             return Type.UINT
         elif dtype == np.dtype('=f'):
             return Type.FLOAT
         elif dtype == np.dtype('=d'):
             return Type.DOUBLE
         elif dtype == np.dtype('=c'):
-            return Type.CHAR
+            return Type.INT8
         elif dtype == np.dtype('=i8'):
             return Type.INT64
         elif dtype == np.dtype('=u8'):
@@ -264,7 +243,7 @@ class KVTags(ABC):
     Supports the following operations:
 
     =================== ==============================
-    example             effect
+    operation           effect
     =================== ==============================
     ``value = tags[x]`` get the value of the tag ``x``
     ``tags[x] = value`` set the value of the tag ``x``
@@ -306,14 +285,23 @@ class KVTags(ABC):
     
     @abstractmethod
     def set(self, key:bytes, value:bytes):
+        '''
+        :meta private:
+        '''
         pass
     
     @abstractmethod
     def get(self, key:bytes) -> bytes:
+        '''
+        :meta private:
+        '''
         pass
     
     @abstractmethod
     def delete(self, key:bytes):
+        '''
+        :meta private:
+        '''
         pass
 
     def __getitem__(self, name:str):
@@ -330,8 +318,16 @@ class KVTags(ABC):
 
 class ServerContext:
     '''
-    A context manager that starts and stops a single PDC server instance on enter and exit
-    This is intended for testing
+    A context manager that starts and stops a single PDC server instance on enter and exit.
+    This is intended for testing.
+    
+    Usage::
+    
+        with pdc.ServerContext():
+            pdc.init()
+            ...
+    
+    :raises FileNotFoundError: if pdc_server.exe is not on PATH
     '''
     def __enter__(self):
         path = shutil.which('pdc_server.exe')

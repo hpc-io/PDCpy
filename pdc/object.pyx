@@ -83,13 +83,13 @@ class Object:
 
         _dims_ptr:uint64
 
-        def __init__(self, dims:Union[Tuple[uint32, ...], uint32], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str='', *, _fromid:Optional[pdcid]=None):
+        def __init__(self, dims:Union[Tuple[uint32, ...], uint32], type, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str='', *, _fromid:Optional[pdcid]=None):
             '''
-            __init__(self, dims:Union[Tuple[uint32, ...], uint32], type:Type=Type.INT, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str='')
+            __init__(self, dims:Union[Tuple[uint32, ...], uint32], type, uint32_t time_step:uint32=0, user_id:Optional[uint32]=None, str app_name:str='')
 
             :param dims: A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
-            :type dims: Tuple[int]
-            :param Type type: the data type.  Defaults to INT
+            :type dims: Tuple[uint32, ...] or uint32
+            :param Type type: the data type.
             :param uint32 time_step: For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.
             :param uint32 user_id: the id of the user.  defaults to os.getuid()
             :param str app_name: the name of the application.  Defaults to an empty string.
@@ -238,7 +238,6 @@ class Object:
             Copy this properties object
 
             :return: A copy of this object
-            :rtype: Properties 
             '''
             return type(self)(
                 dims=self.dims,
@@ -258,25 +257,23 @@ class Object:
     
     class TransferRequest:
         '''
-        Represents a transfer request to either set a region's data or get it
-        This object can be awaited
+        Represents a transfer request to either set a region's data or get it.
         '''
 
         class RequestType(Enum):
             '''
-            The type of transfer request
+            The possible types of transfer request.
+            Can be obtained with :attr:`TransferRequest.type`
+            Either GET or SET.
             '''
             GET = pdc_access_t.PDC_READ
             SET = pdc_access_t.PDC_WRITE
 
-        def __await__(self):
-            yield None
-
-        def wait_for_result(self):
+        def wait(self):
             '''
-            Wait for the result of the transfer request
+            Block until the result of the transfer request is available, then return it. 
+            If this is a GET request, the return value is the data, otherwise it is None.
             '''
-            ctrace('region_transfer_wait', '?', self._id)
             rtn = cpdc.PDCregion_transfer_wait(self._id)
             ctrace('region_transfer_wait', rtn, self._id)
             if rtn != 0:
@@ -292,7 +289,9 @@ class Object:
             if self._done:
                 return True
             cdef pdc_transfer_status_t out_status
-            if cpdc.PDCregion_transfer_status(self._id, &out_status) != 0:
+            rtn = cpdc.PDCregion_transfer_status(self._id, &out_status)
+            ctrace('region_transfer_status', rtn, self._id, <uint64_t> &out_status)
+            if rtn != 0:
                 raise PDCError('Failed to get transfer status')
             elif out_status == pdc_transfer_status_t.PDC_TRANSFER_STATUS_NOT_FOUND:
                 raise PDCError('could not get transfer request status: transfer request not found')
@@ -315,7 +314,7 @@ class Object:
         def result(self) -> Optional[npt.NDArray]:
             '''
             result(self) -> Optional[npt.NDArray]
-            If the request is done and the request type is RequestType.GET, this is a numpy array containing the requested data.
+            If the request is done and the request type is RequestType.GET, this is a numpy array containing the requested data.  Otherwise, it is None.
             '''
             if self.type == type(self).RequestType.SET or not self.done:
                 return None
@@ -400,15 +399,11 @@ class Object:
     
     objects_by_id = WeakValueDictionary()
 
-    def __init__(self, name:str, properties:Properties, container:container.Container, *, _id:Optional[pdcid]=None):
+    def __init__(self, name:str, properties:Properties, container:container.Container, *, _id:Optional[pdcid]=None,):
         '''
-        __init__(self, name:str, properties:Properties, container:container.Container)
-        Create a new object.  To get an existing object, use Object.get() instead
+        __init__(*args)
+        '''
 
-        :param str name: the name of the object.  Object names should be unique between all processes that use PDC, however, passing in a duplicate name will create the object anyway.
-        :param ObjectProperties properties: An ObjectProperties describing the properties of the object.
-        :param Container container: the container this object should be placed in.
-        '''
         cdef pdcid_t id
         if _id is not None:
             checktype(_id, '_id', int)
@@ -476,7 +471,6 @@ class Object:
     def type(self) -> Type:
         '''
         The type of this object.  read-only
-        Equivalent to ``obj.get_properties().type``
         '''
         typenum = get_private_obj_info(self._id).obj_pt[0].obj_prop_pub[0].type
         try:
@@ -493,10 +487,9 @@ class Object:
     
     @property
     def data(self) -> 'QueryComponent':
-        #TODO: turn this into a regular property
         '''
-        An object used to build queries.
-        ex. ``query = my_object.data > 1``
+        | An object used to build queries.
+        | See queries_ for more details.
         '''
         return query.QueryComponent(self)
 
@@ -509,7 +502,7 @@ class Object:
         If there are multiple objects with the same name and time_step, the tie is broken arbitrarily
         
         :param str name: the name of the object
-        '''
+        ''' 
         checktype(name, 'name', str)
         cdef pdcid_t id = cpdc.PDCobj_open(name.encode('utf-8'), _get_pdcid())
         ctrace('obj_open', id, name.encode('utf-8'), _get_pdcid())
@@ -537,10 +530,11 @@ class Object:
     
     def set_data(self, data:npt.ArrayLike, region:'Region'=None) -> TransferRequest:
         '''
+        set_data(self, data, region:'Region'=None)
         Request a region of data from an object to be set to a new value
 
         :param Region region: the region of data to set. Defaults to the entire object.
-        :param data: The data to set the region to.
+        :param data: The data to set the region to.  It must be a numpy array or convertible to a numpy array with numpy.array().
         :return: A TransferRequest representing this request
         :rtype: TransferRequest
         '''
@@ -554,7 +548,7 @@ class Object:
     def delete(self):
         '''
         Delete this Object.
-        Do not access any methods or properties of this object after calling.
+        Do not access any methods or properties of this object after calling this.
         '''
         rtn = cpdc.PDCobj_del(self._id)
         ctrace('obj_del', rtn, self._id)
