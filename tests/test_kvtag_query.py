@@ -2,12 +2,9 @@ import pytest
 import pdc
 from pdc import Object, region
 import numpy as np
-from mpi4py import MPI
 import asyncio
 
 async def main():
-    rank = MPI.COMM_WORLD.Get_rank()
-
     cont = pdc.Container('kvtag_query_cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = Object.Properties(dims=(0,))
     obj1 = cont.create_object('o1', prop)

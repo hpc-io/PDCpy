@@ -18,20 +18,6 @@
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_malloc.h",
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/utils/include/pdc_private.h"
         ],
-        "extra_compile_args": [
-            "-Wl,-Bsymbolic-functions",
-            "-Wl,-z,relro",
-            "-I/usr/include/x86_64-linux-gnu/mpich",
-            "-L/usr/lib/x86_64-linux-gnu",
-            "-lmpich"
-        ],
-        "extra_link_args": [
-            "-Wl,-Bsymbolic-functions",
-            "-Wl,-z,relro",
-            "-I/usr/include/x86_64-linux-gnu/mpich",
-            "-L/usr/lib/x86_64-linux-gnu",
-            "-lmpich"
-        ],
         "include_dirs": [
             "/home/gerzytet/Documents/PDC/mercury/pdc/src/install/include",
             "/home/gerzytet/Documents/PDC/mercury/install/include",
@@ -1841,16 +1827,17 @@ static const char __pyx_k_Failed_to_get_selection_for_quer[] = "Failed to get se
 static PyObject *__pyx_n_s_ABC;
 static PyObject *__pyx_n_s_AND;
 static PyObject *__pyx_kp_s_An_object_used_to_build_a_query;
-static PyObject *__pyx_kp_s_Cannot_combine_queries_with_diff;
-static PyObject *__pyx_kp_s_Cannot_query_over_a_non_absolute;
+static PyObject *__pyx_kp_u_Cannot_combine_queries_with_diff;
+static PyObject *__pyx_kp_u_Cannot_query_over_a_non_absolute;
 static PyObject *__pyx_n_s_CombineOp;
 static PyObject *__pyx_n_s_CompareOp;
+static PyObject *__pyx_n_u_CompareOp;
 static PyObject *__pyx_n_s_DOUBLE;
 static PyObject *__pyx_n_s_EQ;
 static PyObject *__pyx_n_s_Enum;
 static PyObject *__pyx_n_s_FLOAT;
 static PyObject *__pyx_kp_u_Failed_to_combine_queries_with;
-static PyObject *__pyx_kp_s_Failed_to_create_query;
+static PyObject *__pyx_kp_u_Failed_to_create_query;
 static PyObject *__pyx_kp_u_Failed_to_get_selection_for_quer;
 static PyObject *__pyx_kp_u_Failed_to_select_region;
 static PyObject *__pyx_n_s_GT;
@@ -1868,12 +1855,14 @@ static PyObject *__pyx_n_s_NONE;
 static PyObject *__pyx_n_s_NotImplementedError;
 static PyObject *__pyx_n_s_OP_NONE;
 static PyObject *__pyx_n_s_OR;
-static PyObject *__pyx_n_s_Object;
+static PyObject *__pyx_n_u_Object;
 static PyObject *__pyx_n_s_OverflowError;
 static PyObject *__pyx_n_s_PDCError;
 static PyObject *__pyx_n_s_Query;
+static PyObject *__pyx_n_u_Query;
 static PyObject *__pyx_n_s_QueryComponent;
-static PyObject *__pyx_kp_s_QueryComponent__CompareOp;
+static PyObject *__pyx_n_s_QueryComponent__CompareOp;
+static PyObject *__pyx_kp_u_QueryComponent__CompareOp;
 static PyObject *__pyx_n_s_QueryComponent___eq;
 static PyObject *__pyx_n_s_QueryComponent___ge;
 static PyObject *__pyx_n_s_QueryComponent___gt;
@@ -1897,6 +1886,7 @@ static PyObject *__pyx_n_s_Query_get_num_hits;
 static PyObject *__pyx_n_s_Query_get_result;
 static PyObject *__pyx_kp_u_Region;
 static PyObject *__pyx_n_s_Region_2;
+static PyObject *__pyx_n_u_Region_2;
 static PyObject *__pyx_n_s_Result;
 static PyObject *__pyx_kp_s_Result_of_a_DataQuery_To_get_re;
 static PyObject *__pyx_n_s_Tuple;
@@ -1922,7 +1912,7 @@ static PyObject *__pyx_n_s_collections;
 static PyObject *__pyx_n_s_collections_abc;
 static PyObject *__pyx_n_s_combine;
 static PyObject *__pyx_n_s_compare;
-static PyObject *__pyx_kp_s_comparison_operator;
+static PyObject *__pyx_kp_u_comparison_operator;
 static PyObject *__pyx_n_s_ctrace;
 static PyObject *__pyx_n_s_dims;
 static PyObject *__pyx_n_s_doc;
@@ -1982,13 +1972,14 @@ static PyObject *__pyx_n_s_prepare;
 static PyObject *__pyx_n_s_ptr;
 static PyObject *__pyx_n_s_qualname;
 static PyObject *__pyx_n_s_query;
+static PyObject *__pyx_n_u_query;
 static PyObject *__pyx_n_s_query_2;
-static PyObject *__pyx_n_s_query_and;
-static PyObject *__pyx_n_s_query_create;
-static PyObject *__pyx_n_s_query_free;
-static PyObject *__pyx_n_s_query_get_selection;
-static PyObject *__pyx_n_s_query_or;
-static PyObject *__pyx_n_s_query_sel_region;
+static PyObject *__pyx_n_u_query_and;
+static PyObject *__pyx_n_u_query_create;
+static PyObject *__pyx_n_u_query_free;
+static PyObject *__pyx_n_u_query_get_selection;
+static PyObject *__pyx_n_u_query_or;
+static PyObject *__pyx_n_u_query_sel_region;
 static PyObject *__pyx_n_s_query_struct;
 static PyObject *__pyx_n_s_range;
 static PyObject *__pyx_n_s_region;
@@ -2000,7 +1991,7 @@ static PyObject *__pyx_n_s_right;
 static PyObject *__pyx_n_s_right_2;
 static PyObject *__pyx_n_s_rtn;
 static PyObject *__pyx_n_s_selection;
-static PyObject *__pyx_n_s_selection_free;
+static PyObject *__pyx_n_u_selection_free;
 static PyObject *__pyx_n_s_self;
 static PyObject *__pyx_n_s_send;
 static PyObject *__pyx_n_s_staticmethod;
@@ -2015,6 +2006,7 @@ static PyObject *__pyx_n_s_uint;
 static PyObject *__pyx_n_s_uint64;
 static PyObject *__pyx_n_s_uint64_2;
 static PyObject *__pyx_n_s_value;
+static PyObject *__pyx_n_u_value;
 static PyObject *__pyx_kp_u_value_2;
 static PyObject *__pyx_n_s_weakref;
 static PyObject *__pyx_pf_3pdc_5query_6Result___getitem__(CYTHON_UNUSED PyObject *__pyx_self, CYTHON_UNUSED PyObject *__pyx_v_self, CYTHON_UNUSED PyObject *__pyx_v_obj); /* proto */
@@ -2466,7 +2458,7 @@ static PyObject *__pyx_pf_3pdc_5query_6Result_4_finalize(CYTHON_UNUSED PyObject 
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_s_selection_free, __pyx_v_rtn, __pyx_v_id};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_u_selection_free, __pyx_v_rtn, __pyx_v_id};
     __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
@@ -2474,7 +2466,7 @@ static PyObject *__pyx_pf_3pdc_5query_6Result_4_finalize(CYTHON_UNUSED PyObject 
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_s_selection_free, __pyx_v_rtn, __pyx_v_id};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_u_selection_free, __pyx_v_rtn, __pyx_v_id};
     __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 41, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
@@ -2486,9 +2478,9 @@ static PyObject *__pyx_pf_3pdc_5query_6Result_4_finalize(CYTHON_UNUSED PyObject 
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
     }
-    __Pyx_INCREF(__pyx_n_s_selection_free);
-    __Pyx_GIVEREF(__pyx_n_s_selection_free);
-    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_n_s_selection_free);
+    __Pyx_INCREF(__pyx_n_u_selection_free);
+    __Pyx_GIVEREF(__pyx_n_u_selection_free);
+    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_n_u_selection_free);
     __Pyx_INCREF(__pyx_v_rtn);
     __Pyx_GIVEREF(__pyx_v_rtn);
     PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_rtn);
@@ -3349,7 +3341,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
-      PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_s_value, ((PyObject *)(&PyFloat_Type))};
+      PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_u_value, ((PyObject *)(&PyFloat_Type))};
       __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
@@ -3357,7 +3349,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-      PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_s_value, ((PyObject *)(&PyFloat_Type))};
+      PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_u_value, ((PyObject *)(&PyFloat_Type))};
       __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 85, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
       __Pyx_GOTREF(__pyx_t_1);
@@ -3372,9 +3364,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
       __Pyx_INCREF(__pyx_v_other);
       __Pyx_GIVEREF(__pyx_v_other);
       PyTuple_SET_ITEM(__pyx_t_7, 0+__pyx_t_6, __pyx_v_other);
-      __Pyx_INCREF(__pyx_n_s_value);
-      __Pyx_GIVEREF(__pyx_n_s_value);
-      PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_n_s_value);
+      __Pyx_INCREF(__pyx_n_u_value);
+      __Pyx_GIVEREF(__pyx_n_u_value);
+      PyTuple_SET_ITEM(__pyx_t_7, 1+__pyx_t_6, __pyx_n_u_value);
       __Pyx_INCREF(((PyObject *)(&PyFloat_Type)));
       __Pyx_GIVEREF(((PyObject *)(&PyFloat_Type)));
       PyTuple_SET_ITEM(__pyx_t_7, 2+__pyx_t_6, ((PyObject *)(&PyFloat_Type)));
@@ -3419,7 +3411,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_3)) {
-      PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_v_other, __pyx_n_s_value, ((PyObject *)(&PyInt_Type))};
+      PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_v_other, __pyx_n_u_value, ((PyObject *)(&PyInt_Type))};
       __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
@@ -3427,7 +3419,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-      PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_v_other, __pyx_n_s_value, ((PyObject *)(&PyInt_Type))};
+      PyObject *__pyx_temp[4] = {__pyx_t_7, __pyx_v_other, __pyx_n_u_value, ((PyObject *)(&PyInt_Type))};
       __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_6, 3+__pyx_t_6); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 87, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_7); __pyx_t_7 = 0;
       __Pyx_GOTREF(__pyx_t_1);
@@ -3442,9 +3434,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
       __Pyx_INCREF(__pyx_v_other);
       __Pyx_GIVEREF(__pyx_v_other);
       PyTuple_SET_ITEM(__pyx_t_4, 0+__pyx_t_6, __pyx_v_other);
-      __Pyx_INCREF(__pyx_n_s_value);
-      __Pyx_GIVEREF(__pyx_n_s_value);
-      PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_6, __pyx_n_s_value);
+      __Pyx_INCREF(__pyx_n_u_value);
+      __Pyx_GIVEREF(__pyx_n_u_value);
+      PyTuple_SET_ITEM(__pyx_t_4, 1+__pyx_t_6, __pyx_n_u_value);
       __Pyx_INCREF(((PyObject *)(&PyInt_Type)));
       __Pyx_GIVEREF(((PyObject *)(&PyInt_Type)));
       PyTuple_SET_ITEM(__pyx_t_4, 2+__pyx_t_6, ((PyObject *)(&PyInt_Type)));
@@ -4023,7 +4015,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[7] = {__pyx_t_25, __pyx_n_s_query_create, __pyx_t_3, __pyx_t_7, __pyx_t_21, __pyx_t_20, __pyx_v_other};
+    PyObject *__pyx_temp[7] = {__pyx_t_25, __pyx_n_u_query_create, __pyx_t_3, __pyx_t_7, __pyx_t_21, __pyx_t_20, __pyx_v_other};
     __pyx_t_4 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 6+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_25); __pyx_t_25 = 0;
     __Pyx_GOTREF(__pyx_t_4);
@@ -4035,7 +4027,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-    PyObject *__pyx_temp[7] = {__pyx_t_25, __pyx_n_s_query_create, __pyx_t_3, __pyx_t_7, __pyx_t_21, __pyx_t_20, __pyx_v_other};
+    PyObject *__pyx_temp[7] = {__pyx_t_25, __pyx_n_u_query_create, __pyx_t_3, __pyx_t_7, __pyx_t_21, __pyx_t_20, __pyx_v_other};
     __pyx_t_4 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_6, 6+__pyx_t_6); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 118, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_25); __pyx_t_25 = 0;
     __Pyx_GOTREF(__pyx_t_4);
@@ -4051,9 +4043,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
     if (__pyx_t_25) {
       __Pyx_GIVEREF(__pyx_t_25); PyTuple_SET_ITEM(__pyx_t_26, 0, __pyx_t_25); __pyx_t_25 = NULL;
     }
-    __Pyx_INCREF(__pyx_n_s_query_create);
-    __Pyx_GIVEREF(__pyx_n_s_query_create);
-    PyTuple_SET_ITEM(__pyx_t_26, 0+__pyx_t_6, __pyx_n_s_query_create);
+    __Pyx_INCREF(__pyx_n_u_query_create);
+    __Pyx_GIVEREF(__pyx_n_u_query_create);
+    PyTuple_SET_ITEM(__pyx_t_26, 0+__pyx_t_6, __pyx_n_u_query_create);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_26, 1+__pyx_t_6, __pyx_t_3);
     __Pyx_GIVEREF(__pyx_t_7);
@@ -4105,7 +4097,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_2_from_comparison(CYTHON_UNUSED PyO
         __Pyx_DECREF_SET(__pyx_t_1, function);
       }
     }
-    __pyx_t_4 = (__pyx_t_26) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_26, __pyx_kp_s_Failed_to_create_query) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_kp_s_Failed_to_create_query);
+    __pyx_t_4 = (__pyx_t_26) ? __Pyx_PyObject_Call2Args(__pyx_t_1, __pyx_t_26, __pyx_kp_u_Failed_to_create_query) : __Pyx_PyObject_CallOneArg(__pyx_t_1, __pyx_kp_u_Failed_to_create_query);
     __Pyx_XDECREF(__pyx_t_26); __pyx_t_26 = 0;
     if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 120, __pyx_L1_error)
     __Pyx_GOTREF(__pyx_t_4);
@@ -4288,7 +4280,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_4_finalize(CYTHON_UNUSED PyObject *
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_s_query_free, __pyx_v_rtn, __pyx_v_id};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_u_query_free, __pyx_v_rtn, __pyx_v_id};
     __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
@@ -4296,7 +4288,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_4_finalize(CYTHON_UNUSED PyObject *
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_3)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_s_query_free, __pyx_v_rtn, __pyx_v_id};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_n_u_query_free, __pyx_v_rtn, __pyx_v_id};
     __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_3, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 127, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_2);
@@ -4308,9 +4300,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_4_finalize(CYTHON_UNUSED PyObject *
     if (__pyx_t_4) {
       __Pyx_GIVEREF(__pyx_t_4); PyTuple_SET_ITEM(__pyx_t_6, 0, __pyx_t_4); __pyx_t_4 = NULL;
     }
-    __Pyx_INCREF(__pyx_n_s_query_free);
-    __Pyx_GIVEREF(__pyx_n_s_query_free);
-    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_n_s_query_free);
+    __Pyx_INCREF(__pyx_n_u_query_free);
+    __Pyx_GIVEREF(__pyx_n_u_query_free);
+    PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_n_u_query_free);
     __Pyx_INCREF(__pyx_v_rtn);
     __Pyx_GIVEREF(__pyx_v_rtn);
     PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_v_rtn);
@@ -4480,7 +4472,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_s_query, __pyx_t_3};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_u_query, __pyx_t_3};
     __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
@@ -4489,7 +4481,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_s_query, __pyx_t_3};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_other, __pyx_n_u_query, __pyx_t_3};
     __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 131, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
@@ -4505,9 +4497,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
     __Pyx_INCREF(__pyx_v_other);
     __Pyx_GIVEREF(__pyx_v_other);
     PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_v_other);
-    __Pyx_INCREF(__pyx_n_s_query);
-    __Pyx_GIVEREF(__pyx_n_s_query);
-    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_n_s_query);
+    __Pyx_INCREF(__pyx_n_u_query);
+    __Pyx_GIVEREF(__pyx_n_u_query);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_n_u_query);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_5, __pyx_t_3);
     __pyx_t_3 = 0;
@@ -4625,7 +4617,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[5] = {__pyx_t_12, __pyx_n_s_query_or, __pyx_t_6, __pyx_t_3, __pyx_t_4};
+      PyObject *__pyx_temp[5] = {__pyx_t_12, __pyx_n_u_query_or, __pyx_t_6, __pyx_t_3, __pyx_t_4};
       __pyx_t_2 = __Pyx_PyFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_GOTREF(__pyx_t_2);
@@ -4636,7 +4628,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_1)) {
-      PyObject *__pyx_temp[5] = {__pyx_t_12, __pyx_n_s_query_or, __pyx_t_6, __pyx_t_3, __pyx_t_4};
+      PyObject *__pyx_temp[5] = {__pyx_t_12, __pyx_n_u_query_or, __pyx_t_6, __pyx_t_3, __pyx_t_4};
       __pyx_t_2 = __Pyx_PyCFunction_FastCall(__pyx_t_1, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 137, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_12); __pyx_t_12 = 0;
       __Pyx_GOTREF(__pyx_t_2);
@@ -4651,9 +4643,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
       if (__pyx_t_12) {
         __Pyx_GIVEREF(__pyx_t_12); PyTuple_SET_ITEM(__pyx_t_13, 0, __pyx_t_12); __pyx_t_12 = NULL;
       }
-      __Pyx_INCREF(__pyx_n_s_query_or);
-      __Pyx_GIVEREF(__pyx_n_s_query_or);
-      PyTuple_SET_ITEM(__pyx_t_13, 0+__pyx_t_5, __pyx_n_s_query_or);
+      __Pyx_INCREF(__pyx_n_u_query_or);
+      __Pyx_GIVEREF(__pyx_n_u_query_or);
+      PyTuple_SET_ITEM(__pyx_t_13, 0+__pyx_t_5, __pyx_n_u_query_or);
       __Pyx_GIVEREF(__pyx_t_6);
       PyTuple_SET_ITEM(__pyx_t_13, 1+__pyx_t_5, __pyx_t_6);
       __Pyx_GIVEREF(__pyx_t_3);
@@ -4747,7 +4739,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
     }
     #if CYTHON_FAST_PYCALL
     if (PyFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[5] = {__pyx_t_6, __pyx_n_s_query_and, __pyx_t_13, __pyx_t_4, __pyx_t_3};
+      PyObject *__pyx_temp[5] = {__pyx_t_6, __pyx_n_u_query_and, __pyx_t_13, __pyx_t_4, __pyx_t_3};
       __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
@@ -4758,7 +4750,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
     #endif
     #if CYTHON_FAST_PYCCALL
     if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-      PyObject *__pyx_temp[5] = {__pyx_t_6, __pyx_n_s_query_and, __pyx_t_13, __pyx_t_4, __pyx_t_3};
+      PyObject *__pyx_temp[5] = {__pyx_t_6, __pyx_n_u_query_and, __pyx_t_13, __pyx_t_4, __pyx_t_3};
       __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 4+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 140, __pyx_L1_error)
       __Pyx_XDECREF(__pyx_t_6); __pyx_t_6 = 0;
       __Pyx_GOTREF(__pyx_t_1);
@@ -4773,9 +4765,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_6_combine(CYTHON_UNUSED PyObject *_
       if (__pyx_t_6) {
         __Pyx_GIVEREF(__pyx_t_6); PyTuple_SET_ITEM(__pyx_t_12, 0, __pyx_t_6); __pyx_t_6 = NULL;
       }
-      __Pyx_INCREF(__pyx_n_s_query_and);
-      __Pyx_GIVEREF(__pyx_n_s_query_and);
-      PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_5, __pyx_n_s_query_and);
+      __Pyx_INCREF(__pyx_n_u_query_and);
+      __Pyx_GIVEREF(__pyx_n_u_query_and);
+      PyTuple_SET_ITEM(__pyx_t_12, 0+__pyx_t_5, __pyx_n_u_query_and);
       __Pyx_GIVEREF(__pyx_t_13);
       PyTuple_SET_ITEM(__pyx_t_12, 1+__pyx_t_5, __pyx_t_13);
       __Pyx_GIVEREF(__pyx_t_4);
@@ -5828,7 +5820,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_14get_result(CYTHON_UNUSED PyObject
       }
       #if CYTHON_FAST_PYCALL
       if (PyFunction_Check(__pyx_t_5)) {
-        PyObject *__pyx_temp[5] = {__pyx_t_24, __pyx_n_s_query_sel_region, __pyx_t_3, __pyx_t_11, __pyx_t_14};
+        PyObject *__pyx_temp[5] = {__pyx_t_24, __pyx_n_u_query_sel_region, __pyx_t_3, __pyx_t_11, __pyx_t_14};
         __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_15, 4+__pyx_t_15); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 184, __pyx_L25_error)
         __Pyx_XDECREF(__pyx_t_24); __pyx_t_24 = 0;
         __Pyx_GOTREF(__pyx_t_6);
@@ -5839,7 +5831,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_14get_result(CYTHON_UNUSED PyObject
       #endif
       #if CYTHON_FAST_PYCCALL
       if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-        PyObject *__pyx_temp[5] = {__pyx_t_24, __pyx_n_s_query_sel_region, __pyx_t_3, __pyx_t_11, __pyx_t_14};
+        PyObject *__pyx_temp[5] = {__pyx_t_24, __pyx_n_u_query_sel_region, __pyx_t_3, __pyx_t_11, __pyx_t_14};
         __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_15, 4+__pyx_t_15); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 184, __pyx_L25_error)
         __Pyx_XDECREF(__pyx_t_24); __pyx_t_24 = 0;
         __Pyx_GOTREF(__pyx_t_6);
@@ -5854,9 +5846,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_14get_result(CYTHON_UNUSED PyObject
         if (__pyx_t_24) {
           __Pyx_GIVEREF(__pyx_t_24); PyTuple_SET_ITEM(__pyx_t_25, 0, __pyx_t_24); __pyx_t_24 = NULL;
         }
-        __Pyx_INCREF(__pyx_n_s_query_sel_region);
-        __Pyx_GIVEREF(__pyx_n_s_query_sel_region);
-        PyTuple_SET_ITEM(__pyx_t_25, 0+__pyx_t_15, __pyx_n_s_query_sel_region);
+        __Pyx_INCREF(__pyx_n_u_query_sel_region);
+        __Pyx_GIVEREF(__pyx_n_u_query_sel_region);
+        PyTuple_SET_ITEM(__pyx_t_25, 0+__pyx_t_15, __pyx_n_u_query_sel_region);
         __Pyx_GIVEREF(__pyx_t_3);
         PyTuple_SET_ITEM(__pyx_t_25, 1+__pyx_t_15, __pyx_t_3);
         __Pyx_GIVEREF(__pyx_t_11);
@@ -6057,7 +6049,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_14get_result(CYTHON_UNUSED PyObject
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_5)) {
-    PyObject *__pyx_temp[5] = {__pyx_t_3, __pyx_n_s_query_get_selection, __pyx_t_14, __pyx_t_25, __pyx_t_11};
+    PyObject *__pyx_temp[5] = {__pyx_t_3, __pyx_n_u_query_get_selection, __pyx_t_14, __pyx_t_25, __pyx_t_11};
     __pyx_t_6 = __Pyx_PyFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_10, 4+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_6);
@@ -6068,7 +6060,7 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_14get_result(CYTHON_UNUSED PyObject
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_5)) {
-    PyObject *__pyx_temp[5] = {__pyx_t_3, __pyx_n_s_query_get_selection, __pyx_t_14, __pyx_t_25, __pyx_t_11};
+    PyObject *__pyx_temp[5] = {__pyx_t_3, __pyx_n_u_query_get_selection, __pyx_t_14, __pyx_t_25, __pyx_t_11};
     __pyx_t_6 = __Pyx_PyCFunction_FastCall(__pyx_t_5, __pyx_temp+1-__pyx_t_10, 4+__pyx_t_10); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 192, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_3); __pyx_t_3 = 0;
     __Pyx_GOTREF(__pyx_t_6);
@@ -6083,9 +6075,9 @@ static PyObject *__pyx_pf_3pdc_5query_5Query_14get_result(CYTHON_UNUSED PyObject
     if (__pyx_t_3) {
       __Pyx_GIVEREF(__pyx_t_3); PyTuple_SET_ITEM(__pyx_t_24, 0, __pyx_t_3); __pyx_t_3 = NULL;
     }
-    __Pyx_INCREF(__pyx_n_s_query_get_selection);
-    __Pyx_GIVEREF(__pyx_n_s_query_get_selection);
-    PyTuple_SET_ITEM(__pyx_t_24, 0+__pyx_t_10, __pyx_n_s_query_get_selection);
+    __Pyx_INCREF(__pyx_n_u_query_get_selection);
+    __Pyx_GIVEREF(__pyx_n_u_query_get_selection);
+    PyTuple_SET_ITEM(__pyx_t_24, 0+__pyx_t_10, __pyx_n_u_query_get_selection);
     __Pyx_GIVEREF(__pyx_t_14);
     PyTuple_SET_ITEM(__pyx_t_24, 1+__pyx_t_10, __pyx_t_14);
     __Pyx_GIVEREF(__pyx_t_25);
@@ -6471,7 +6463,7 @@ static PyObject *__pyx_pf_3pdc_5query_14QueryComponent_2_compare(CYTHON_UNUSED P
   }
   #if CYTHON_FAST_PYCALL
   if (PyFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_op, __pyx_kp_s_comparison_operator, __pyx_t_3};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_op, __pyx_kp_u_comparison_operator, __pyx_t_3};
     __pyx_t_1 = __Pyx_PyFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
@@ -6480,7 +6472,7 @@ static PyObject *__pyx_pf_3pdc_5query_14QueryComponent_2_compare(CYTHON_UNUSED P
   #endif
   #if CYTHON_FAST_PYCCALL
   if (__Pyx_PyFastCFunction_Check(__pyx_t_2)) {
-    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_op, __pyx_kp_s_comparison_operator, __pyx_t_3};
+    PyObject *__pyx_temp[4] = {__pyx_t_4, __pyx_v_op, __pyx_kp_u_comparison_operator, __pyx_t_3};
     __pyx_t_1 = __Pyx_PyCFunction_FastCall(__pyx_t_2, __pyx_temp+1-__pyx_t_5, 3+__pyx_t_5); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 215, __pyx_L1_error)
     __Pyx_XDECREF(__pyx_t_4); __pyx_t_4 = 0;
     __Pyx_GOTREF(__pyx_t_1);
@@ -6496,9 +6488,9 @@ static PyObject *__pyx_pf_3pdc_5query_14QueryComponent_2_compare(CYTHON_UNUSED P
     __Pyx_INCREF(__pyx_v_op);
     __Pyx_GIVEREF(__pyx_v_op);
     PyTuple_SET_ITEM(__pyx_t_6, 0+__pyx_t_5, __pyx_v_op);
-    __Pyx_INCREF(__pyx_kp_s_comparison_operator);
-    __Pyx_GIVEREF(__pyx_kp_s_comparison_operator);
-    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_kp_s_comparison_operator);
+    __Pyx_INCREF(__pyx_kp_u_comparison_operator);
+    __Pyx_GIVEREF(__pyx_kp_u_comparison_operator);
+    PyTuple_SET_ITEM(__pyx_t_6, 1+__pyx_t_5, __pyx_kp_u_comparison_operator);
     __Pyx_GIVEREF(__pyx_t_3);
     PyTuple_SET_ITEM(__pyx_t_6, 2+__pyx_t_5, __pyx_t_3);
     __pyx_t_3 = 0;
@@ -7548,8 +7540,8 @@ static PyObject *__pyx_pw_3pdc_5query_1_tag_query(PyObject *__pyx_self, PyObject
   __Pyx_RefNannyFinishContext();
   return NULL;
   __pyx_L4_argument_unpacking_done:;
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tag_name), (&PyString_Type), 1, "tag_name", 1))) __PYX_ERR(0, 234, __pyx_L1_error)
-  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tag_value), (&PyString_Type), 1, "tag_value", 1))) __PYX_ERR(0, 234, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tag_name), (&PyUnicode_Type), 1, "tag_name", 1))) __PYX_ERR(0, 234, __pyx_L1_error)
+  if (unlikely(!__Pyx_ArgTypeTest(((PyObject *)__pyx_v_tag_value), (&PyUnicode_Type), 1, "tag_value", 1))) __PYX_ERR(0, 234, __pyx_L1_error)
   __pyx_r = __pyx_pf_3pdc_5query__tag_query(__pyx_self, __pyx_v_tag_name, __pyx_v_tag_value);
 
   /* function exit code */
@@ -7884,16 +7876,17 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ABC, __pyx_k_ABC, sizeof(__pyx_k_ABC), 0, 0, 1, 1},
   {&__pyx_n_s_AND, __pyx_k_AND, sizeof(__pyx_k_AND), 0, 0, 1, 1},
   {&__pyx_kp_s_An_object_used_to_build_a_query, __pyx_k_An_object_used_to_build_a_query, sizeof(__pyx_k_An_object_used_to_build_a_query), 0, 0, 1, 0},
-  {&__pyx_kp_s_Cannot_combine_queries_with_diff, __pyx_k_Cannot_combine_queries_with_diff, sizeof(__pyx_k_Cannot_combine_queries_with_diff), 0, 0, 1, 0},
-  {&__pyx_kp_s_Cannot_query_over_a_non_absolute, __pyx_k_Cannot_query_over_a_non_absolute, sizeof(__pyx_k_Cannot_query_over_a_non_absolute), 0, 0, 1, 0},
+  {&__pyx_kp_u_Cannot_combine_queries_with_diff, __pyx_k_Cannot_combine_queries_with_diff, sizeof(__pyx_k_Cannot_combine_queries_with_diff), 0, 1, 0, 0},
+  {&__pyx_kp_u_Cannot_query_over_a_non_absolute, __pyx_k_Cannot_query_over_a_non_absolute, sizeof(__pyx_k_Cannot_query_over_a_non_absolute), 0, 1, 0, 0},
   {&__pyx_n_s_CombineOp, __pyx_k_CombineOp, sizeof(__pyx_k_CombineOp), 0, 0, 1, 1},
   {&__pyx_n_s_CompareOp, __pyx_k_CompareOp, sizeof(__pyx_k_CompareOp), 0, 0, 1, 1},
+  {&__pyx_n_u_CompareOp, __pyx_k_CompareOp, sizeof(__pyx_k_CompareOp), 0, 1, 0, 1},
   {&__pyx_n_s_DOUBLE, __pyx_k_DOUBLE, sizeof(__pyx_k_DOUBLE), 0, 0, 1, 1},
   {&__pyx_n_s_EQ, __pyx_k_EQ, sizeof(__pyx_k_EQ), 0, 0, 1, 1},
   {&__pyx_n_s_Enum, __pyx_k_Enum, sizeof(__pyx_k_Enum), 0, 0, 1, 1},
   {&__pyx_n_s_FLOAT, __pyx_k_FLOAT, sizeof(__pyx_k_FLOAT), 0, 0, 1, 1},
   {&__pyx_kp_u_Failed_to_combine_queries_with, __pyx_k_Failed_to_combine_queries_with, sizeof(__pyx_k_Failed_to_combine_queries_with), 0, 1, 0, 0},
-  {&__pyx_kp_s_Failed_to_create_query, __pyx_k_Failed_to_create_query, sizeof(__pyx_k_Failed_to_create_query), 0, 0, 1, 0},
+  {&__pyx_kp_u_Failed_to_create_query, __pyx_k_Failed_to_create_query, sizeof(__pyx_k_Failed_to_create_query), 0, 1, 0, 0},
   {&__pyx_kp_u_Failed_to_get_selection_for_quer, __pyx_k_Failed_to_get_selection_for_quer, sizeof(__pyx_k_Failed_to_get_selection_for_quer), 0, 1, 0, 0},
   {&__pyx_kp_u_Failed_to_select_region, __pyx_k_Failed_to_select_region, sizeof(__pyx_k_Failed_to_select_region), 0, 1, 0, 0},
   {&__pyx_n_s_GT, __pyx_k_GT, sizeof(__pyx_k_GT), 0, 0, 1, 1},
@@ -7911,12 +7904,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_NotImplementedError, __pyx_k_NotImplementedError, sizeof(__pyx_k_NotImplementedError), 0, 0, 1, 1},
   {&__pyx_n_s_OP_NONE, __pyx_k_OP_NONE, sizeof(__pyx_k_OP_NONE), 0, 0, 1, 1},
   {&__pyx_n_s_OR, __pyx_k_OR, sizeof(__pyx_k_OR), 0, 0, 1, 1},
-  {&__pyx_n_s_Object, __pyx_k_Object, sizeof(__pyx_k_Object), 0, 0, 1, 1},
+  {&__pyx_n_u_Object, __pyx_k_Object, sizeof(__pyx_k_Object), 0, 1, 0, 1},
   {&__pyx_n_s_OverflowError, __pyx_k_OverflowError, sizeof(__pyx_k_OverflowError), 0, 0, 1, 1},
   {&__pyx_n_s_PDCError, __pyx_k_PDCError, sizeof(__pyx_k_PDCError), 0, 0, 1, 1},
   {&__pyx_n_s_Query, __pyx_k_Query, sizeof(__pyx_k_Query), 0, 0, 1, 1},
+  {&__pyx_n_u_Query, __pyx_k_Query, sizeof(__pyx_k_Query), 0, 1, 0, 1},
   {&__pyx_n_s_QueryComponent, __pyx_k_QueryComponent, sizeof(__pyx_k_QueryComponent), 0, 0, 1, 1},
-  {&__pyx_kp_s_QueryComponent__CompareOp, __pyx_k_QueryComponent__CompareOp, sizeof(__pyx_k_QueryComponent__CompareOp), 0, 0, 1, 0},
+  {&__pyx_n_s_QueryComponent__CompareOp, __pyx_k_QueryComponent__CompareOp, sizeof(__pyx_k_QueryComponent__CompareOp), 0, 0, 1, 1},
+  {&__pyx_kp_u_QueryComponent__CompareOp, __pyx_k_QueryComponent__CompareOp, sizeof(__pyx_k_QueryComponent__CompareOp), 0, 1, 0, 0},
   {&__pyx_n_s_QueryComponent___eq, __pyx_k_QueryComponent___eq, sizeof(__pyx_k_QueryComponent___eq), 0, 0, 1, 1},
   {&__pyx_n_s_QueryComponent___ge, __pyx_k_QueryComponent___ge, sizeof(__pyx_k_QueryComponent___ge), 0, 0, 1, 1},
   {&__pyx_n_s_QueryComponent___gt, __pyx_k_QueryComponent___gt, sizeof(__pyx_k_QueryComponent___gt), 0, 0, 1, 1},
@@ -7940,6 +7935,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Query_get_result, __pyx_k_Query_get_result, sizeof(__pyx_k_Query_get_result), 0, 0, 1, 1},
   {&__pyx_kp_u_Region, __pyx_k_Region, sizeof(__pyx_k_Region), 0, 1, 0, 0},
   {&__pyx_n_s_Region_2, __pyx_k_Region_2, sizeof(__pyx_k_Region_2), 0, 0, 1, 1},
+  {&__pyx_n_u_Region_2, __pyx_k_Region_2, sizeof(__pyx_k_Region_2), 0, 1, 0, 1},
   {&__pyx_n_s_Result, __pyx_k_Result, sizeof(__pyx_k_Result), 0, 0, 1, 1},
   {&__pyx_kp_s_Result_of_a_DataQuery_To_get_re, __pyx_k_Result_of_a_DataQuery_To_get_re, sizeof(__pyx_k_Result_of_a_DataQuery_To_get_re), 0, 0, 1, 0},
   {&__pyx_n_s_Tuple, __pyx_k_Tuple, sizeof(__pyx_k_Tuple), 0, 0, 1, 1},
@@ -7965,7 +7961,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_collections_abc, __pyx_k_collections_abc, sizeof(__pyx_k_collections_abc), 0, 0, 1, 1},
   {&__pyx_n_s_combine, __pyx_k_combine, sizeof(__pyx_k_combine), 0, 0, 1, 1},
   {&__pyx_n_s_compare, __pyx_k_compare, sizeof(__pyx_k_compare), 0, 0, 1, 1},
-  {&__pyx_kp_s_comparison_operator, __pyx_k_comparison_operator, sizeof(__pyx_k_comparison_operator), 0, 0, 1, 0},
+  {&__pyx_kp_u_comparison_operator, __pyx_k_comparison_operator, sizeof(__pyx_k_comparison_operator), 0, 1, 0, 0},
   {&__pyx_n_s_ctrace, __pyx_k_ctrace, sizeof(__pyx_k_ctrace), 0, 0, 1, 1},
   {&__pyx_n_s_dims, __pyx_k_dims, sizeof(__pyx_k_dims), 0, 0, 1, 1},
   {&__pyx_n_s_doc, __pyx_k_doc, sizeof(__pyx_k_doc), 0, 0, 1, 1},
@@ -8025,13 +8021,14 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_ptr, __pyx_k_ptr, sizeof(__pyx_k_ptr), 0, 0, 1, 1},
   {&__pyx_n_s_qualname, __pyx_k_qualname, sizeof(__pyx_k_qualname), 0, 0, 1, 1},
   {&__pyx_n_s_query, __pyx_k_query, sizeof(__pyx_k_query), 0, 0, 1, 1},
+  {&__pyx_n_u_query, __pyx_k_query, sizeof(__pyx_k_query), 0, 1, 0, 1},
   {&__pyx_n_s_query_2, __pyx_k_query_2, sizeof(__pyx_k_query_2), 0, 0, 1, 1},
-  {&__pyx_n_s_query_and, __pyx_k_query_and, sizeof(__pyx_k_query_and), 0, 0, 1, 1},
-  {&__pyx_n_s_query_create, __pyx_k_query_create, sizeof(__pyx_k_query_create), 0, 0, 1, 1},
-  {&__pyx_n_s_query_free, __pyx_k_query_free, sizeof(__pyx_k_query_free), 0, 0, 1, 1},
-  {&__pyx_n_s_query_get_selection, __pyx_k_query_get_selection, sizeof(__pyx_k_query_get_selection), 0, 0, 1, 1},
-  {&__pyx_n_s_query_or, __pyx_k_query_or, sizeof(__pyx_k_query_or), 0, 0, 1, 1},
-  {&__pyx_n_s_query_sel_region, __pyx_k_query_sel_region, sizeof(__pyx_k_query_sel_region), 0, 0, 1, 1},
+  {&__pyx_n_u_query_and, __pyx_k_query_and, sizeof(__pyx_k_query_and), 0, 1, 0, 1},
+  {&__pyx_n_u_query_create, __pyx_k_query_create, sizeof(__pyx_k_query_create), 0, 1, 0, 1},
+  {&__pyx_n_u_query_free, __pyx_k_query_free, sizeof(__pyx_k_query_free), 0, 1, 0, 1},
+  {&__pyx_n_u_query_get_selection, __pyx_k_query_get_selection, sizeof(__pyx_k_query_get_selection), 0, 1, 0, 1},
+  {&__pyx_n_u_query_or, __pyx_k_query_or, sizeof(__pyx_k_query_or), 0, 1, 0, 1},
+  {&__pyx_n_u_query_sel_region, __pyx_k_query_sel_region, sizeof(__pyx_k_query_sel_region), 0, 1, 0, 1},
   {&__pyx_n_s_query_struct, __pyx_k_query_struct, sizeof(__pyx_k_query_struct), 0, 0, 1, 1},
   {&__pyx_n_s_range, __pyx_k_range, sizeof(__pyx_k_range), 0, 0, 1, 1},
   {&__pyx_n_s_region, __pyx_k_region, sizeof(__pyx_k_region), 0, 0, 1, 1},
@@ -8043,7 +8040,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_right_2, __pyx_k_right_2, sizeof(__pyx_k_right_2), 0, 0, 1, 1},
   {&__pyx_n_s_rtn, __pyx_k_rtn, sizeof(__pyx_k_rtn), 0, 0, 1, 1},
   {&__pyx_n_s_selection, __pyx_k_selection, sizeof(__pyx_k_selection), 0, 0, 1, 1},
-  {&__pyx_n_s_selection_free, __pyx_k_selection_free, sizeof(__pyx_k_selection_free), 0, 0, 1, 1},
+  {&__pyx_n_u_selection_free, __pyx_k_selection_free, sizeof(__pyx_k_selection_free), 0, 1, 0, 1},
   {&__pyx_n_s_self, __pyx_k_self, sizeof(__pyx_k_self), 0, 0, 1, 1},
   {&__pyx_n_s_send, __pyx_k_send, sizeof(__pyx_k_send), 0, 0, 1, 1},
   {&__pyx_n_s_staticmethod, __pyx_k_staticmethod, sizeof(__pyx_k_staticmethod), 0, 0, 1, 1},
@@ -8058,6 +8055,7 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_uint64, __pyx_k_uint64, sizeof(__pyx_k_uint64), 0, 0, 1, 1},
   {&__pyx_n_s_uint64_2, __pyx_k_uint64_2, sizeof(__pyx_k_uint64_2), 0, 0, 1, 1},
   {&__pyx_n_s_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 0, 1, 1},
+  {&__pyx_n_u_value, __pyx_k_value, sizeof(__pyx_k_value), 0, 1, 0, 1},
   {&__pyx_kp_u_value_2, __pyx_k_value_2, sizeof(__pyx_k_value_2), 0, 1, 0, 0},
   {&__pyx_n_s_weakref, __pyx_k_weakref, sizeof(__pyx_k_weakref), 0, 0, 1, 1},
   {0, 0, 0, 0, 0, 0, 0}
@@ -8084,7 +8082,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *         if op == Query._CombineOp.OR:
  */
-  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_s_Cannot_combine_queries_with_diff); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 133, __pyx_L1_error)
+  __pyx_tuple_ = PyTuple_Pack(1, __pyx_kp_u_Cannot_combine_queries_with_diff); if (unlikely(!__pyx_tuple_)) __PYX_ERR(0, 133, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple_);
   __Pyx_GIVEREF(__pyx_tuple_);
 
@@ -8095,7 +8093,7 @@ static CYTHON_SMALL_CODE int __Pyx_InitCachedConstants(void) {
  * 
  *             try:
  */
-  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_s_Cannot_query_over_a_non_absolute); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 175, __pyx_L1_error)
+  __pyx_tuple__2 = PyTuple_Pack(1, __pyx_kp_u_Cannot_query_over_a_non_absolute); if (unlikely(!__pyx_tuple__2)) __PYX_ERR(0, 175, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_tuple__2);
   __Pyx_GIVEREF(__pyx_tuple__2);
 
@@ -8964,7 +8962,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_5 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
-  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_obj, __pyx_n_s_Object) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_5, __pyx_n_s_obj, __pyx_n_u_Object) < 0) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GetModuleGlobalName(__pyx_t_6, __pyx_n_s_npt); if (unlikely(!__pyx_t_6)) __PYX_ERR(0, 29, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_6);
   __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_6, __pyx_n_s_NDArray); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 29, __pyx_L1_error)
@@ -8992,7 +8990,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_5);
   if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_id, __pyx_t_5) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_query, __pyx_n_s_Query) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_query, __pyx_n_u_Query) < 0) __PYX_ERR(0, 32, __pyx_L1_error)
   __pyx_t_5 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_6Result_3__init__, 0, __pyx_n_s_Query_Result___init, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__7)); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 32, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_5, __pyx_t_7);
@@ -9144,8 +9142,8 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(4); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_obj, __pyx_n_s_Object) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_op, __pyx_kp_s_QueryComponent__CompareOp) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_obj, __pyx_n_u_Object) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_op, __pyx_kp_u_QueryComponent__CompareOp) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GetModuleGlobalName(__pyx_t_5, __pyx_n_s_builtins); if (unlikely(!__pyx_t_5)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_5);
   __pyx_t_7 = __Pyx_PyObject_GetAttrStr(__pyx_t_5, __pyx_n_s_object); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
@@ -9153,7 +9151,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_5); __pyx_t_5 = 0;
   if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_other, __pyx_t_7) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_7); __pyx_t_7 = 0;
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_n_s_Query) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_n_u_Query) < 0) __PYX_ERR(0, 72, __pyx_L1_error)
   __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_5Query_3_from_comparison, __Pyx_CYFUNCTION_CLASSMETHOD, __pyx_n_s_Query__from_comparison, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__14)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 72, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_7, __pyx_t_4);
@@ -9204,7 +9202,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(3); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_other, __pyx_n_s_Query) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_other, __pyx_n_u_Query) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_CombineOp);
   if (unlikely(!__pyx_t_4)) {
     PyErr_Clear();
@@ -9214,7 +9212,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_op, __pyx_t_4) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_return, __pyx_n_s_Query) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_return, __pyx_n_u_Query) < 0) __PYX_ERR(0, 129, __pyx_L1_error)
   __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_5Query_7_combine, 0, __pyx_n_s_Query__combine, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__18)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 129, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_7);
@@ -9231,8 +9229,8 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_other, __pyx_n_s_Query) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_n_s_Query) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_other, __pyx_n_u_Query) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_n_u_Query) < 0) __PYX_ERR(0, 149, __pyx_L1_error)
   __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_5Query_9__and__, 0, __pyx_n_s_Query___and, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__20)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 149, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_7, __pyx_t_4);
@@ -9249,8 +9247,8 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_other, __pyx_n_s_Query) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_return, __pyx_n_s_Query) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_other, __pyx_n_u_Query) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_return, __pyx_n_u_Query) < 0) __PYX_ERR(0, 152, __pyx_L1_error)
   __pyx_t_4 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_5Query_11__or__, 0, __pyx_n_s_Query___or, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__22)); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 152, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_4, __pyx_t_7);
@@ -9267,7 +9265,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_4 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
-  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_region, __pyx_n_s_Region_2) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_region, __pyx_n_u_Region_2) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
   if (PyDict_SetItem(__pyx_t_4, __pyx_n_s_return, __pyx_n_u_int_2) < 0) __PYX_ERR(0, 155, __pyx_L1_error)
   __pyx_t_7 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_5Query_13get_num_hits, 0, __pyx_n_s_Query_get_num_hits, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__24)); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 155, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
@@ -9286,7 +9284,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_7 = __Pyx_PyDict_NewPresized(2); if (unlikely(!__pyx_t_7)) __PYX_ERR(0, 164, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_7);
-  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_region, __pyx_n_s_Region_2) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_7, __pyx_n_s_region, __pyx_n_u_Region_2) < 0) __PYX_ERR(0, 164, __pyx_L1_error)
   __pyx_t_4 = PyObject_GetItem(__pyx_t_3, __pyx_n_s_Result);
   if (unlikely(!__pyx_t_4)) {
     PyErr_Clear();
@@ -9345,7 +9343,7 @@ if (!__Pyx_RefNanny) {
   __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_CalculateMetaclass(NULL, __pyx_t_3); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
-  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_3, __pyx_n_s_CompareOp, __pyx_kp_s_QueryComponent__CompareOp, (PyObject *) NULL, __pyx_n_s_pdc_query, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
+  __pyx_t_4 = __Pyx_Py3MetaclassPrepare(__pyx_t_1, __pyx_t_3, __pyx_n_s_CompareOp, __pyx_n_s_QueryComponent__CompareOp, (PyObject *) NULL, __pyx_n_s_pdc_query, (PyObject *) NULL); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 203, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
 
   /* "pdc/query.pyx":204
@@ -9444,7 +9442,7 @@ if (!__Pyx_RefNanny) {
  */
   __pyx_t_3 = __Pyx_PyDict_NewPresized(1); if (unlikely(!__pyx_t_3)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_3);
-  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_obj, __pyx_n_s_Object) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_3, __pyx_n_s_obj, __pyx_n_u_Object) < 0) __PYX_ERR(0, 211, __pyx_L1_error)
   __pyx_t_1 = __Pyx_CyFunction_New(&__pyx_mdef_3pdc_5query_14QueryComponent_1__init__, 0, __pyx_n_s_QueryComponent___init, NULL, __pyx_n_s_pdc_query, __pyx_d, ((PyObject *)__pyx_codeobj__30)); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 211, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_CyFunction_SetAnnotationsDict(__pyx_t_1, __pyx_t_3);
@@ -9468,7 +9466,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_3); __pyx_t_3 = 0;
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_other, __pyx_t_4) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_4); __pyx_t_4 = 0;
-  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_op, __pyx_n_s_CompareOp) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
+  if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_op, __pyx_n_u_CompareOp) < 0) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_GetModuleGlobalName(__pyx_t_4, __pyx_n_s_Query); if (unlikely(!__pyx_t_4)) __PYX_ERR(0, 214, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_4);
   if (PyDict_SetItem(__pyx_t_1, __pyx_n_s_return, __pyx_t_4) < 0) __PYX_ERR(0, 214, __pyx_L1_error)

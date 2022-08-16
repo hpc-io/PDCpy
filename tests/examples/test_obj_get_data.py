@@ -1,11 +1,9 @@
-import pytest
 import pdc
-from pdc import Object, region
+from pdc import Object
 import numpy as np
 from mpi4py import MPI
-import asyncio
 
-async def main():
+def test_obj_get_data():
     rank = MPI.COMM_WORLD.Get_rank()
 
     cont = pdc.Container('cont')
@@ -31,6 +29,3 @@ async def main():
         assert val == 1.0
     for val in obj2.get_data().wait():
         assert val == 2.0
-
-def test_obj_get_data():
-    asyncio.run(main())

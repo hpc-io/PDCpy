@@ -40,7 +40,7 @@ term_color_map = {
 }
 term_color_end = '\033[0m'
 last_color = None
-do_ctrace = True
+do_ctrace = False
 do_ctrace_print = False
 ctrace_file = None
 def format_id(id):
@@ -331,7 +331,6 @@ class ServerContext:
     '''
     def __enter__(self):
         path = shutil.which('pdc_server.exe')
-        print(path)
         if not path:
             raise FileNotFoundError('pdc_server.exe not on PATH')
         self.popen = Popen([path], stdout=PIPE, encoding='ascii', text=True)
