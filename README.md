@@ -8,7 +8,7 @@ This project is part of [Google Summer of Code 2022](https://summerofcode.withgo
 
 Thanks to [Houjun Tang](https://github.com/houjun) for answering my questions about PDC while developing the project.
 
-Thanks to [CROSS](https://cross.ucsc.edu/) for supporting PDC.
+Thanks to [CROSS](https://cross.ucsc.edu/) for supporting PDCpy through GSoC
 
 [More information about PDC](https://sdm.lbl.gov/pdc/about.html)
 
