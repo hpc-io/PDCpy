@@ -27,8 +27,8 @@ elif subprocess.run(['mpicc', '-compile_info']).returncode == 0:
     mpi_link_args = os.popen('mpicc -link_info').read().strip().split()[1:]
 elif subprocess.run(['mpicc', '--showme:compile']).returncode == 0:
     print("Compiling with openmpi")
-    mpi_build_args = os.popen('mpicc --showme:compile').read().strip().split()[1:]
-    mpi_link_args = os.popen('mpicc --showme:link').read().strip().split()[1:]
+    mpi_build_args = os.popen('mpicc --showme:compile').read().strip().split()
+    mpi_link_args = os.popen('mpicc --showme:link').read().strip().split()
 else:
     print("mpicc is neither openmpi or mpich. Attempting to compile without MPI support.")
     mpi_build_args = []
@@ -51,9 +51,13 @@ extension = Extension(
 
 #extension.cython_directives = {'language_level': "3"}
 
+version_file = open('version.txt', 'r')
+version = version_file.read().strip()
+version_file.close()
+
 setup(
     name='PDCpy',
-    version='0.0.8',
+    version=version,
     include_package_data=True,
     ext_modules=cythonize(extension, language_level=3),
     zip_safe=False,

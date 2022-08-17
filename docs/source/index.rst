@@ -30,12 +30,12 @@ These bounds are checked at runtime and will result in an OverflowError if they 
       :members: as_numpy_type, from_numpy_type
       :show-inheritance:
 
-      .. autoattribute:: INT
+      .. autoattribute:: INT32
          :annotation: 
          
-         A 32-bit signed integer.  This is the default value for Type aguments
-      
-      .. autoattribute:: UINT
+         A 32-bit signed integer.
+
+      .. autoattribute:: UINT32
          :annotation: 
          
          A 32-bit unsigned integer.

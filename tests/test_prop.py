@@ -1,6 +1,7 @@
 import pdc
 import pytest
 import os
+import numpy as np
 
 def test_prop_dims():
     prop = pdc.Object.Properties(dims=128, type=pdc.Type.DOUBLE)
@@ -28,11 +29,11 @@ def test_prop_type():
     prop = pdc.Object.Properties(dims=(128,), type=pdc.Type.DOUBLE)
     assert prop.type == pdc.Type.DOUBLE
 
-    prop.type = pdc.Type.UINT
-    assert prop.type == pdc.Type.UINT
+    prop.type = pdc.Type.UINT32
+    assert prop.type == pdc.Type.UINT32
     
     with pytest.raises(TypeError):
-        prop.type = int
+        prop.type = 0
 
 def test_prop_time_step():
     prop = pdc.Object.Properties(dims=(128,), type=pdc.Type.DOUBLE)
@@ -108,3 +109,10 @@ def test_equals():
 
     prop2.dims = (1, 2, 3, 4, 5)
     assert prop != prop2
+
+def test_np_type():
+    prop = pdc.Object.Properties(dims=90, type=np.int8)
+    assert prop.type == pdc.Type.INT8
+
+    prop.type = np.int32
+    assert prop.type == pdc.Type.INT32

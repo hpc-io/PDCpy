@@ -86,10 +86,10 @@ class Query(ABC):
         else:
             checktype(other, 'value', int)
         try:
-            if obj_type == Type.INT:
+            if obj_type == Type.INT32:
                 int_ = other
                 ptr = &int_
-            elif obj_type == Type.UINT:
+            elif obj_type == Type.UINT32:
                 uint_ = other
                 ptr = &uint_
             elif obj_type == Type.FLOAT:

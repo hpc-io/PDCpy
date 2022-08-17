@@ -71,14 +71,14 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>All of the data types that PDC objects support</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.Type.INT">
-<span class="sig-name descname"><span class="pre">INT</span></span><a class="headerlink" href="#pdc.Type.INT" title="Permalink to this definition">¶</a></dt>
-<dd><p>A 32-bit signed integer.  This is the default value for Type aguments</p>
+<dt class="sig sig-object py" id="pdc.Type.INT32">
+<span class="sig-name descname"><span class="pre">INT32</span></span><a class="headerlink" href="#pdc.Type.INT32" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 32-bit signed integer.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.Type.UINT">
-<span class="sig-name descname"><span class="pre">UINT</span></span><a class="headerlink" href="#pdc.Type.UINT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.Type.UINT32">
+<span class="sig-name descname"><span class="pre">UINT32</span></span><a class="headerlink" href="#pdc.Type.UINT32" title="Permalink to this definition">¶</a></dt>
 <dd><p>A 32-bit unsigned integer.</p>
 </dd></dl>
 
@@ -355,11 +355,14 @@ This is an inner class of Object</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dims</strong> (<em>Tuple</em><em>[</em><em>uint32</em><em>, </em><em>...</em><em>] or </em><em>uint32</em>) – A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 &lt;= len(dims) &lt;= 2^31-1</p></li>
-<li><p><strong>type</strong> (<a class="reference internal" href="#pdc.Type" title="pdc.Type"><em>Type</em></a>) – the data type.</p></li>
+<li><p><strong>type</strong> (<a class="reference internal" href="#pdc.Type" title="pdc.Type"><em>Type</em></a>) – the data type.  Either an instance of Type, or a numpy dtype.</p></li>
 <li><p><strong>time_step</strong> (<em>uint32</em>) – For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.</p></li>
 <li><p><strong>user_id</strong> (<em>uint32</em>) – the id of the user.  defaults to os.getuid()</p></li>
 <li><p><strong>app_name</strong> (<em>str</em>) – the name of the application.  Defaults to an empty string.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if type is an unsupported numpy dtype, if dims is empty.</p>
 </dd>
 </dl>
 <dl class="py property">
@@ -395,7 +398,8 @@ For applications that involve data along a time axis, this represents the point 
 <dl class="py property">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.Type" title="pdc.main.Type"><span class="pre">Type</span></a></em></dt>
-<dd><p>The data type of this object.</p>
+<dd><p>The data type of this object.
+Can be set to a numpy dtype, but the output value of this property will be a Type instance.</p>
 </dd></dl>
 
 <dl class="py property">

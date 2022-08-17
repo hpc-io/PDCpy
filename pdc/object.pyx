@@ -89,10 +89,12 @@ class Object:
 
             :param dims: A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
             :type dims: Tuple[uint32, ...] or uint32
-            :param Type type: the data type.
+            :param Type type: the data type.  Either an instance of Type, or a numpy dtype.
             :param uint32 time_step: For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.
             :param uint32 user_id: the id of the user.  defaults to os.getuid()
             :param str app_name: the name of the application.  Defaults to an empty string.
+
+            :raises ValueError: if type is an unsupported numpy dtype, if dims is empty.
             '''
 
             global pdc_id
@@ -166,6 +168,7 @@ class Object:
         def type(self) -> Type:
             '''
             The data type of this object.
+            Can be set to a numpy dtype, but the output value of this property will be a Type instance.
             '''
             cdef pdc_obj_prop prop_struct = prop_struct_from_prop(self._id)
             if prop_struct.type == -1:
@@ -177,7 +180,11 @@ class Object:
         
         @type.setter
         def type(self, type:Type):
-            checktype(type, 'type', Type)
+            try:
+                checktype(type, 'type', Type)
+            except TypeError:
+                type = Type.from_numpy_type(type)
+
             rtn = cpdc.PDCprop_set_obj_type(self._id, type.value)
             ctrace("prop_set_obj_type", 0, self._id, type)
             if rtn != 0:
