@@ -19,13 +19,14 @@ sys.path.insert(0, os.path.abspath('../..'))
 
 # -- Project information -----------------------------------------------------
 
-project = 'pdc python api'
+project = 'PDCpy'
 copyright = '2022, gerzytet'
 author = 'gerzytet'
 
 # The full version, including alpha/beta/rc tags
-release = '0.1'
-
+version_file = open('../../version.txt', 'r')
+release = version_file.read().strip()
+version_file.close()
 
 # -- General configuration ---------------------------------------------------
 
@@ -45,7 +46,6 @@ templates_path = ['_templates']
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
 exclude_patterns = []
-
 
 # -- Options for HTML output -------------------------------------------------
 

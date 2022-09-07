@@ -19,7 +19,7 @@ def test_container_name():
 
 def test_container_lifetime():
     cont = pdc.Container('contlifetest')
-    assert cont.lifetime == pdc.Container.Lifetime.TRANSIENT
+    assert cont.lifetime == pdc.Container.Lifetime.PERSISTENT
 
     cont.persist()
     assert cont.lifetime == pdc.Container.Lifetime.PERSISTENT

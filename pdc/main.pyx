@@ -40,7 +40,7 @@ term_color_map = {
 }
 term_color_end = '\033[0m'
 last_color = None
-do_ctrace = False
+do_ctrace = True
 do_ctrace_print = False
 ctrace_file = None
 def format_id(id):
@@ -116,6 +116,8 @@ def _close(pdc_id):
     global _is_open
     if not _is_open:
         return
+    #sraise Exception('PDC is already closed')
+    ctrace('close', '?', pdc_id)
     err = cpdc.PDCclose(pdc_id)
     ctrace('close', err, pdc_id)
     if err != 0:

@@ -1,5 +1,8 @@
-Welcome to pdc python api's documentation!
+Welcome to PDCpy's documentation!
 ==========================================
+
+Proactive Data Containers (PDC) software provides an object-centric API and a runtime system with a set of data object management services. These services allow placing data in the memory and storage hierarchy, performing data movement asynchronously, and providing scalable metadata operations to find data objects.
+More information and publications of PDC is available at https://sdm.lbl.gov/pdc
 
 .. toctree::
    :maxdepth: 2
@@ -72,6 +75,19 @@ These bounds are checked at runtime and will result in an OverflowError if they 
 
 Containers
 ==========
+Example of creating a container:
+
+.. code-block:: python
+   :linenos:
+
+   import pdc
+
+   with pdc.ServerContext() as _:
+      #make a container.  The container is persistent by default.
+      cont = pdc.Container('persistent_cont')
+
+      #make a transient container, it will be deleted when the pdc server is closed
+      cont2 = pdc.Container('transient_cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
 
 .. automodule:: pdc
    :noindex:
@@ -98,6 +114,47 @@ Containers
 
 Objects
 =======
+.. code-block:: python
+   :linenos:
+
+   import pdc
+   from pdc import Object
+   import numpy as np
+
+   with pdc.ServerContext():
+      pdc.init()
+      #create temporary container
+      cont = pdc.Container('cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
+
+      #create np data array of 128 doubles
+      data = np.full(128, 1.0, dtype=np.float64)
+
+      #Method 1: create object from array:
+      obj1 = cont.object_from_array('objectexample_obj1', data)
+
+      out_data = obj1.get_data().wait()
+      for val in out_data:
+         assert val == 1.0
+
+      #Method 2: create object from properties:
+      #create object property
+      prop = Object.Properties(dims=128, type=pdc.Type.DOUBLE)
+      #alternatively:
+      prop = Object.Properties(dims=128, type=np.double)
+
+      #property objects can be changed like so:
+      prop.app_name = 'objectexample'
+
+      #create object
+      obj2 = cont.create_object('objectexample_obj2', prop)
+
+      #set all data to data
+      obj2.set_data(data).wait()
+
+      #test data values
+      out_data = obj2.get_data().wait()
+      for val in out_data:
+         assert val == 1.0
 
 .. automodule:: pdc
    :noindex:
@@ -107,9 +164,36 @@ Objects
 Regions
 =======
 
-.. automodule:: pdc.region
-   :members:
+A region describes a piece of an object's data.
+Regions can be used to restrict the area of a tranfer request.
+Example:
+
+.. code-block:: python
+   :linenos:
+
+   import pdc
+   import numpy as np
+
+   with pdc.ServerContext():
+      pdc.init()
+      cont = pdc.Container('region_example_cont', lifetime=pdc.Container.Lifetime.TRANSIENT)
+
+      data = [
+         [2, 7, 6],
+         [9, 5, 1],
+         [4, 3, 8]
+      ]
+
+      obj = cont.object_from_array('region_example_obj', data)
+
+      data1 = obj.get_data(pdc.region[:2]).wait() # [[2, 7, 6], [9, 5, 1]]
+      data2 = obj.get_data(pdc.region[0, :2]).wait() # [[2, 7]]
+
+
+.. automodule:: pdc
+   :noindex:
    :undoc-members:
+   :members: Region
 
    .. property:: region
    
@@ -155,7 +239,8 @@ Here is a full program that performs the previous query:
    import pdc
    import numpy as np
 
-   with pdc.ServerContext() as _:
+   with pdc.ServerContext():
+      pdc.init()
       cont = pdc.Container('test')
       a = cont.object_from_array('a', [1, 3, 5, 7])
       b = cont.object_from_array('b', [2, 3, 8, 0])
@@ -165,9 +250,10 @@ Here is a full program that performs the previous query:
       a_data = result[a] #5 7
       b_data = result[b] #8 0
 
-.. automodule:: pdc.query
-   :members:
+.. automodule:: pdc
    :undoc-members:
+   :members: Query
+   :noindex:
    :exclude-members: Query
 
    .. autoclass:: pdc.Query
