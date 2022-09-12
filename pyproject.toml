@@ -1,0 +1,17 @@
+[build-system]
+requires = [ "setuptools", "wheel", "Cython", "numpy",]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "PDCpy"
+version = "0.0.14"
+description = "Python api for Proactive Data Containers (PDC)"
+readme = "README.md"
+requires-python = ">=3.7"
+classifiers = [ "Programming Language :: Python :: 3", "Operating System :: Unix",]
+[[project.authors]]
+name = "Craig White"
+email = "gerzytet@gmail.com"
+
+[tool.setuptools.packages.find]
+where = [ "pdc",]

@@ -8,3 +8,7 @@ docs/build/html/.buildinfo
 ctests/*.out
 cython_debug/**
 **/ctrace.txt
+.pypirc
+dist/**
+.pytest_cache/**
+**/*.egg-info/**

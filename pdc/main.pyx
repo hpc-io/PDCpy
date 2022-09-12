@@ -77,6 +77,10 @@ def ctrace(name, rtn, *args):
     
     print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
 
+def enable_ctrace():
+    global do_ctrace
+    do_ctrace = True
+
 class PDCError(Exception):
     '''
     A general error type that indicates an error from the underlying c pdc api.
@@ -112,6 +116,8 @@ def _close(pdc_id):
     global _is_open
     if not _is_open:
         return
+    #sraise Exception('PDC is already closed')
+    ctrace('close', '?', pdc_id)
     err = cpdc.PDCclose(pdc_id)
     ctrace('close', err, pdc_id)
     if err != 0:
@@ -133,12 +139,12 @@ class Type(Enum):
     All of the data types that PDC objects support
     '''
 
-    INT      = pdc_var_type_t.PDC_INT
+    INT32    = pdc_var_type_t.PDC_INT
     FLOAT    = pdc_var_type_t.PDC_FLOAT
     DOUBLE   = pdc_var_type_t.PDC_DOUBLE
     #removed for being identical to INT8:
     #CHAR     = pdc_var_type_t.PDC_CHAR
-    UINT     = pdc_var_type_t.PDC_UINT
+    UINT32   = pdc_var_type_t.PDC_UINT
     INT64    = pdc_var_type_t.PDC_INT64
     UINT64   = pdc_var_type_t.PDC_UINT64
     INT16    = pdc_var_type_t.PDC_INT16
@@ -148,9 +154,9 @@ class Type(Enum):
         '''
         Returns the numpy type corresponding to this PDC type
         '''
-        if self == Type.INT:
+        if self == Type.INT32:
             return np.dtype('=i4')
-        elif self == Type.UINT:
+        elif self == Type.UINT32:
             return np.dtype('=u4')
         elif self == Type.FLOAT:
             return np.dtype('=f')
@@ -175,10 +181,12 @@ class Type(Enum):
         :param dtype: The numpy type
         :raises ValueError: If the numpy type has no corresponding PDC type
         '''
+        old_dtype = dtype
+        dtype = np.dtype(dtype)
         if dtype == np.dtype('=i4'):
-            return Type.INT
+            return Type.INT32
         elif dtype == np.dtype('=u4'):
-            return Type.UINT
+            return Type.UINT32
         elif dtype == np.dtype('=f'):
             return Type.FLOAT
         elif dtype == np.dtype('=d'):
@@ -194,7 +202,7 @@ class Type(Enum):
         elif dtype == np.dtype('=b'):
             return Type.INT8
         else:
-            raise ValueError(f'Unsupported numpy type: {dtype}')
+            raise ValueError(f'Unsupported numpy type: {old_dtype}')
     
     '''
     currently unused
@@ -331,7 +339,6 @@ class ServerContext:
     '''
     def __enter__(self):
         path = shutil.which('pdc_server.exe')
-        print(path)
         if not path:
             raise FileNotFoundError('pdc_server.exe not on PATH')
         self.popen = Popen([path], stdout=PIPE, encoding='ascii', text=True)

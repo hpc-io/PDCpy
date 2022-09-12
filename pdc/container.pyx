@@ -13,7 +13,9 @@ from cpython.mem cimport PyMem_Free as free
 from cpython.bytes cimport PyBytes_FromStringAndSize
 
 cdef _pdc_cont_info *get_info_struct(pdcid_t id):
+    ctrace("_cont_get_info", '?', id)
     cdef _pdc_cont_info *info = cpdc.PDC_cont_get_info(id)
+    ctrace("_cont_get_info", <uint64_t> info, id)
     if info == NULL:
         raise PDCError("Could not get info for object")
     return info
@@ -70,6 +72,8 @@ class Container:
     | Containers can contain one or more objects, and objects can be part of one or more containers.
     | Containers can be used to allow objects to persist, and have no other functionality at the moment.
     | Every object must be created belonging to a container.
+    |
+    | Containers are not namespaces for objects!  Objects in different containers must have different names.
     '''
 
     class Lifetime(Enum):
@@ -81,9 +85,9 @@ class Container:
     
     containers_by_id = WeakValueDictionary()
     
-    def __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT, *, _id:Optional[int]=None):
+    def __init__(self, name:str, lifetime:Lifetime=Lifetime.PERSISTENT, *, _id:Optional[int]=None):
         '''
-        __init__(self, name:str, lifetime:Lifetime=Lifetime.TRANSIENT)
+        __init__(self, name:str, lifetime:Lifetime=Lifetime.PERSISTENT)
         :param str name: the name of the container.  Container names should be unique between all processes that use PDC.
         :param Lifetime lifetime: the container's lifetime.
         '''

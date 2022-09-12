@@ -1164,21 +1164,23 @@ static const char __pyx_k_main[] = "__main__";
 static const char __pyx_k_name[] = "__name__";
 static const char __pyx_k_test[] = "__test__";
 static const char __pyx_k_Query[] = "Query";
-static const char __pyx_k_query[] = "query";
 static const char __pyx_k_ready[] = "ready";
 static const char __pyx_k_KVTags[] = "KVTags";
 static const char __pyx_k_Object[] = "Object";
 static const char __pyx_k_Region[] = "Region";
 static const char __pyx_k_import[] = "__import__";
-static const char __pyx_k_main_2[] = "main";
-static const char __pyx_k_object[] = "object";
 static const char __pyx_k_region[] = "region";
 static const char __pyx_k_uint32[] = "uint32";
 static const char __pyx_k_uint64[] = "uint64";
 static const char __pyx_k_PDCError[] = "PDCError";
+static const char __pyx_k_pdc_main[] = "pdc.main";
 static const char __pyx_k_Container[] = "Container";
-static const char __pyx_k_container[] = "container";
+static const char __pyx_k_pdc_query[] = "pdc.query";
+static const char __pyx_k_pdc_object[] = "pdc.object";
+static const char __pyx_k_pdc_region[] = "pdc.region";
 static const char __pyx_k_ServerContext[] = "ServerContext";
+static const char __pyx_k_enable_ctrace[] = "enable_ctrace";
+static const char __pyx_k_pdc_container[] = "pdc.container";
 static const char __pyx_k_QueryComponent[] = "QueryComponent";
 static const char __pyx_k_cline_in_traceback[] = "cline_in_traceback";
 static const char __pyx_k_all_local_containers[] = "all_local_containers";
@@ -1193,15 +1195,17 @@ static PyObject *__pyx_n_s_ServerContext;
 static PyObject *__pyx_n_s_Type;
 static PyObject *__pyx_n_s_all_local_containers;
 static PyObject *__pyx_n_s_cline_in_traceback;
-static PyObject *__pyx_n_s_container;
+static PyObject *__pyx_n_s_enable_ctrace;
 static PyObject *__pyx_n_s_import;
 static PyObject *__pyx_n_s_init;
 static PyObject *__pyx_n_s_main;
-static PyObject *__pyx_n_s_main_2;
 static PyObject *__pyx_n_s_name;
-static PyObject *__pyx_n_s_object;
 static PyObject *__pyx_n_u_pdc;
-static PyObject *__pyx_n_s_query;
+static PyObject *__pyx_n_s_pdc_container;
+static PyObject *__pyx_n_s_pdc_main;
+static PyObject *__pyx_n_s_pdc_object;
+static PyObject *__pyx_n_s_pdc_query;
+static PyObject *__pyx_n_s_pdc_region;
 static PyObject *__pyx_n_s_ready;
 static PyObject *__pyx_n_s_region;
 static PyObject *__pyx_n_s_test;
@@ -1266,15 +1270,17 @@ static __Pyx_StringTabEntry __pyx_string_tab[] = {
   {&__pyx_n_s_Type, __pyx_k_Type, sizeof(__pyx_k_Type), 0, 0, 1, 1},
   {&__pyx_n_s_all_local_containers, __pyx_k_all_local_containers, sizeof(__pyx_k_all_local_containers), 0, 0, 1, 1},
   {&__pyx_n_s_cline_in_traceback, __pyx_k_cline_in_traceback, sizeof(__pyx_k_cline_in_traceback), 0, 0, 1, 1},
-  {&__pyx_n_s_container, __pyx_k_container, sizeof(__pyx_k_container), 0, 0, 1, 1},
+  {&__pyx_n_s_enable_ctrace, __pyx_k_enable_ctrace, sizeof(__pyx_k_enable_ctrace), 0, 0, 1, 1},
   {&__pyx_n_s_import, __pyx_k_import, sizeof(__pyx_k_import), 0, 0, 1, 1},
   {&__pyx_n_s_init, __pyx_k_init, sizeof(__pyx_k_init), 0, 0, 1, 1},
   {&__pyx_n_s_main, __pyx_k_main, sizeof(__pyx_k_main), 0, 0, 1, 1},
-  {&__pyx_n_s_main_2, __pyx_k_main_2, sizeof(__pyx_k_main_2), 0, 0, 1, 1},
   {&__pyx_n_s_name, __pyx_k_name, sizeof(__pyx_k_name), 0, 0, 1, 1},
-  {&__pyx_n_s_object, __pyx_k_object, sizeof(__pyx_k_object), 0, 0, 1, 1},
   {&__pyx_n_u_pdc, __pyx_k_pdc, sizeof(__pyx_k_pdc), 0, 1, 0, 1},
-  {&__pyx_n_s_query, __pyx_k_query, sizeof(__pyx_k_query), 0, 0, 1, 1},
+  {&__pyx_n_s_pdc_container, __pyx_k_pdc_container, sizeof(__pyx_k_pdc_container), 0, 0, 1, 1},
+  {&__pyx_n_s_pdc_main, __pyx_k_pdc_main, sizeof(__pyx_k_pdc_main), 0, 0, 1, 1},
+  {&__pyx_n_s_pdc_object, __pyx_k_pdc_object, sizeof(__pyx_k_pdc_object), 0, 0, 1, 1},
+  {&__pyx_n_s_pdc_query, __pyx_k_pdc_query, sizeof(__pyx_k_pdc_query), 0, 0, 1, 1},
+  {&__pyx_n_s_pdc_region, __pyx_k_pdc_region, sizeof(__pyx_k_pdc_region), 0, 0, 1, 1},
   {&__pyx_n_s_ready, __pyx_k_ready, sizeof(__pyx_k_ready), 0, 0, 1, 1},
   {&__pyx_n_s_region, __pyx_k_region, sizeof(__pyx_k_region), 0, 0, 1, 1},
   {&__pyx_n_s_test, __pyx_k_test, sizeof(__pyx_k_test), 0, 0, 1, 1},
@@ -1569,11 +1575,11 @@ if (!__Pyx_RefNanny) {
   #endif
 
   /* "pdc/__init__.pyx":1
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext             # <<<<<<<<<<<<<<
- * from .object import Object
- * from .container import Container, all_local_containers
+ * from pdc.main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, enable_ctrace             # <<<<<<<<<<<<<<
+ * from pdc.object import Object
+ * from pdc.container import Container, all_local_containers
  */
-  __pyx_t_1 = PyList_New(8); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __pyx_t_1 = PyList_New(9); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_INCREF(__pyx_n_s_uint32);
   __Pyx_GIVEREF(__pyx_n_s_uint32);
@@ -1599,7 +1605,10 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_ServerContext);
   __Pyx_GIVEREF(__pyx_n_s_ServerContext);
   PyList_SET_ITEM(__pyx_t_1, 7, __pyx_n_s_ServerContext);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_main_2, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_INCREF(__pyx_n_s_enable_ctrace);
+  __Pyx_GIVEREF(__pyx_n_s_enable_ctrace);
+  PyList_SET_ITEM(__pyx_t_1, 8, __pyx_n_s_enable_ctrace);
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_pdc_main, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_uint32); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
@@ -1634,20 +1643,24 @@ if (!__Pyx_RefNanny) {
   __Pyx_GOTREF(__pyx_t_1);
   if (PyDict_SetItem(__pyx_d, __pyx_n_s_ServerContext, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
+  __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_enable_ctrace); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_GOTREF(__pyx_t_1);
+  if (PyDict_SetItem(__pyx_d, __pyx_n_s_enable_ctrace, __pyx_t_1) < 0) __PYX_ERR(0, 1, __pyx_L1_error)
+  __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":2
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext
- * from .object import Object             # <<<<<<<<<<<<<<
- * from .container import Container, all_local_containers
- * from .region import region, Region
+ * from pdc.main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, enable_ctrace
+ * from pdc.object import Object             # <<<<<<<<<<<<<<
+ * from pdc.container import Container, all_local_containers
+ * from pdc.region import region, Region
  */
   __pyx_t_2 = PyList_New(1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_INCREF(__pyx_n_s_Object);
   __Pyx_GIVEREF(__pyx_n_s_Object);
   PyList_SET_ITEM(__pyx_t_2, 0, __pyx_n_s_Object);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_object, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_pdc_object, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 2, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_Object); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 2, __pyx_L1_error)
@@ -1657,11 +1670,11 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pdc/__init__.pyx":3
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext
- * from .object import Object
- * from .container import Container, all_local_containers             # <<<<<<<<<<<<<<
- * from .region import region, Region
- * from .query import Query, QueryComponent
+ * from pdc.main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, enable_ctrace
+ * from pdc.object import Object
+ * from pdc.container import Container, all_local_containers             # <<<<<<<<<<<<<<
+ * from pdc.region import region, Region
+ * from pdc.query import Query, QueryComponent
  */
   __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1671,7 +1684,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_all_local_containers);
   __Pyx_GIVEREF(__pyx_n_s_all_local_containers);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_all_local_containers);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_container, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_pdc_container, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 3, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Container); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 3, __pyx_L1_error)
@@ -1685,10 +1698,10 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":4
- * from .object import Object
- * from .container import Container, all_local_containers
- * from .region import region, Region             # <<<<<<<<<<<<<<
- * from .query import Query, QueryComponent
+ * from pdc.object import Object
+ * from pdc.container import Container, all_local_containers
+ * from pdc.region import region, Region             # <<<<<<<<<<<<<<
+ * from pdc.query import Query, QueryComponent
  */
   __pyx_t_2 = PyList_New(2); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
@@ -1698,7 +1711,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_Region);
   __Pyx_GIVEREF(__pyx_n_s_Region);
   PyList_SET_ITEM(__pyx_t_2, 1, __pyx_n_s_Region);
-  __pyx_t_1 = __Pyx_Import(__pyx_n_s_region, __pyx_t_2, 1); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
+  __pyx_t_1 = __Pyx_Import(__pyx_n_s_pdc_region, __pyx_t_2, 0); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 4, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
   __pyx_t_2 = __Pyx_ImportFrom(__pyx_t_1, __pyx_n_s_region); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 4, __pyx_L1_error)
@@ -1712,9 +1725,9 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
 
   /* "pdc/__init__.pyx":5
- * from .container import Container, all_local_containers
- * from .region import region, Region
- * from .query import Query, QueryComponent             # <<<<<<<<<<<<<<
+ * from pdc.container import Container, all_local_containers
+ * from pdc.region import region, Region
+ * from pdc.query import Query, QueryComponent             # <<<<<<<<<<<<<<
  */
   __pyx_t_1 = PyList_New(2); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_1);
@@ -1724,7 +1737,7 @@ if (!__Pyx_RefNanny) {
   __Pyx_INCREF(__pyx_n_s_QueryComponent);
   __Pyx_GIVEREF(__pyx_n_s_QueryComponent);
   PyList_SET_ITEM(__pyx_t_1, 1, __pyx_n_s_QueryComponent);
-  __pyx_t_2 = __Pyx_Import(__pyx_n_s_query, __pyx_t_1, 1); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
+  __pyx_t_2 = __Pyx_Import(__pyx_n_s_pdc_query, __pyx_t_1, 0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 5, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);
   __Pyx_DECREF(__pyx_t_1); __pyx_t_1 = 0;
   __pyx_t_1 = __Pyx_ImportFrom(__pyx_t_2, __pyx_n_s_Query); if (unlikely(!__pyx_t_1)) __PYX_ERR(0, 5, __pyx_L1_error)
@@ -1738,9 +1751,9 @@ if (!__Pyx_RefNanny) {
   __Pyx_DECREF(__pyx_t_2); __pyx_t_2 = 0;
 
   /* "pdc/__init__.pyx":1
- * from .main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext             # <<<<<<<<<<<<<<
- * from .object import Object
- * from .container import Container, all_local_containers
+ * from pdc.main import uint32, uint64, Type, KVTags, PDCError, init, ready, ServerContext, enable_ctrace             # <<<<<<<<<<<<<<
+ * from pdc.object import Object
+ * from pdc.container import Container, all_local_containers
  */
   __pyx_t_2 = __Pyx_PyDict_NewPresized(0); if (unlikely(!__pyx_t_2)) __PYX_ERR(0, 1, __pyx_L1_error)
   __Pyx_GOTREF(__pyx_t_2);

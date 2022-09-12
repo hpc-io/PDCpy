@@ -260,9 +260,6 @@ cdef extern from "pdc_query.h":
     void PDCquery_free_all(pdc_query_t *query) #?
     void PDCquery_print(pdc_query_t *query)
 
-#cdef extern from "pdc_mpi.h":
-#    pdcid_t PDCobj_create_mpi(pdcid_t cont_id, const char *obj_name, pdcid_t obj_create_prop, int rank_id, MPI_Comm comm)
-
 cdef extern from "pdc_prop_pkg.h":
     ctypedef struct pdc_kvtag_t:
         char *   name

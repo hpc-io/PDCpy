@@ -39,5 +39,4 @@ def test_transfer_color_by_number():
                                  [0, 2, 2, 0, 5, 0, 0, 0],
                                  [0, 2, 2, 0, 0, 6, 6, 0],
                                  [0, 2, 2, 0, 0, 0, 0, 0]])
-    print(all_data)
     assert np.array_equal(all_data, expected)

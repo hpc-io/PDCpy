@@ -25,18 +25,21 @@ from cpython.bytes cimport PyBytes_FromStringAndSize
 #TODO:these 3 function may cause memory leaks.... but it's not possible to mitigate them all.  I will wait for a public replacement
 cdef pdc_obj_prop prop_struct_from_prop(pdcid_t prop_id):
     cdef _pdc_obj_prop *private_struct = cpdc.PDC_obj_prop_get_info(prop_id)
+    ctrace("_obj_prop_get_info", <uint64_t> private_struct, prop_id)
     if private_struct == NULL:
         raise PDCError("could not get info for property")
     return (private_struct[0].obj_prop_pub)[0]
 
 cdef pdc_obj_info get_obj_info(pdcid_t obj_id):
     cdef pdc_obj_info *private_struct = cpdc.PDCobj_get_info(obj_id)
+    ctrace("obj_get_info", <uint64_t> private_struct, obj_id)
     if private_struct == NULL:
         raise PDCError("could not get info for object")
     return private_struct[0]
 
 cdef _pdc_obj_info get_private_obj_info(pdcid_t obj_id):
     cdef _pdc_obj_info *private_struct = cpdc.PDC_obj_get_info(obj_id)
+    ctrace("_obj_get_info", <uint64_t> private_struct, obj_id)
     if private_struct == NULL:
         raise PDCError("could not get info for object")
     return private_struct[0]
@@ -89,10 +92,12 @@ class Object:
 
             :param dims: A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 <= len(dims) <= 2^31-1 
             :type dims: Tuple[uint32, ...] or uint32
-            :param Type type: the data type.
+            :param Type type: the data type.  Either an instance of Type, or a numpy dtype.
             :param uint32 time_step: For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.
             :param uint32 user_id: the id of the user.  defaults to os.getuid()
             :param str app_name: the name of the application.  Defaults to an empty string.
+
+            :raises ValueError: if type is an unsupported numpy dtype, if dims is empty.
             '''
 
             global pdc_id
@@ -166,6 +171,7 @@ class Object:
         def type(self) -> Type:
             '''
             The data type of this object.
+            Can be set to a numpy dtype, but the output value of this property will be a Type instance.
             '''
             cdef pdc_obj_prop prop_struct = prop_struct_from_prop(self._id)
             if prop_struct.type == -1:
@@ -177,7 +183,11 @@ class Object:
         
         @type.setter
         def type(self, type:Type):
-            checktype(type, 'type', Type)
+            try:
+                checktype(type, 'type', Type)
+            except TypeError:
+                type = Type.from_numpy_type(type)
+
             rtn = cpdc.PDCprop_set_obj_type(self._id, type.value)
             ctrace("prop_set_obj_type", 0, self._id, type)
             if rtn != 0:
@@ -185,11 +195,14 @@ class Object:
         
         @property
         def time_step(self) -> uint32:
+            print(5)
             '''
             The time step of this object.
             For applications that involve data along a time axis, this represents the point in time of the data.
             '''
-            cdef _pdc_obj_prop prop_struct = (cpdc.PDC_obj_prop_get_info(self._id))[0]
+            cdef _pdc_obj_prop *prop_struct_ptr = cpdc.PDC_obj_prop_get_info(self._id)
+            ctrace("PDC_obj_prop_get_info", <uint64_t> prop_struct_ptr, self._id)
+            cdef _pdc_obj_prop prop_struct = (prop_struct_ptr)[0]
             return prop_struct.time_step
         
         @time_step.setter
@@ -205,7 +218,9 @@ class Object:
             '''
             the id of the user.
             '''
-            cdef _pdc_obj_prop prop_struct = (cpdc.PDC_obj_prop_get_info(self._id))[0]
+            cdef _pdc_obj_prop *prop_struct_ptr = cpdc.PDC_obj_prop_get_info(self._id)
+            ctrace("PDC_obj_prop_get_info", <uint64_t> prop_struct_ptr, self._id)
+            cdef _pdc_obj_prop prop_struct = (prop_struct_ptr)[0]
             return prop_struct.user_id
         
         @user_id.setter
@@ -222,7 +237,9 @@ class Object:
             '''
             The name of the application
             '''
-            cdef _pdc_obj_prop prop_struct = (cpdc.PDC_obj_prop_get_info(self._id))[0]
+            cdef _pdc_obj_prop *prop_struct_ptr = cpdc.PDC_obj_prop_get_info(self._id)
+            ctrace("PDC_obj_prop_get_info", <uint64_t> prop_struct_ptr, self._id)
+            cdef _pdc_obj_prop prop_struct = (prop_struct_ptr)[0]
             return prop_struct.app_name.decode('utf-8')
         
         @app_name.setter

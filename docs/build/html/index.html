@@ -6,7 +6,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
-    <title>Welcome to pdc python api’s documentation! &#8212; pdc python api 0.1 documentation</title>
+    <title>Welcome to pdc python api’s documentation! &#8212; PDCpy 0.0.14 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/agogo.css" />
     <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -20,7 +20,7 @@
     <div class="header-wrapper" role="banner">
       <div class="header">
         <div class="headertitle"><a
-          href="#">pdc python api 0.1 documentation</a></div>
+          href="#">PDCpy 0.0.14 documentation</a></div>
         <div class="rel" role="navigation" aria-label="related navigation">
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |
@@ -71,14 +71,14 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></p>
 <p>All of the data types that PDC objects support</p>
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.Type.INT">
-<span class="sig-name descname"><span class="pre">INT</span></span><a class="headerlink" href="#pdc.Type.INT" title="Permalink to this definition">¶</a></dt>
-<dd><p>A 32-bit signed integer.  This is the default value for Type aguments</p>
+<dt class="sig sig-object py" id="pdc.Type.INT32">
+<span class="sig-name descname"><span class="pre">INT32</span></span><a class="headerlink" href="#pdc.Type.INT32" title="Permalink to this definition">¶</a></dt>
+<dd><p>A 32-bit signed integer.</p>
 </dd></dl>
 
 <dl class="py attribute">
-<dt class="sig sig-object py" id="pdc.Type.UINT">
-<span class="sig-name descname"><span class="pre">UINT</span></span><a class="headerlink" href="#pdc.Type.UINT" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.Type.UINT32">
+<span class="sig-name descname"><span class="pre">UINT32</span></span><a class="headerlink" href="#pdc.Type.UINT32" title="Permalink to this definition">¶</a></dt>
 <dd><p>A 32-bit unsigned integer.</p>
 </dd></dl>
 
@@ -207,13 +207,26 @@ This must be called before any other PDC method.</p>
 </section>
 <section id="containers">
 <h1>Containers<a class="headerlink" href="#containers" title="Permalink to this heading">¶</a></h1>
+<p>Example of creating a container:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos">1</span><span class="kn">import</span> <span class="nn">pdc</span>
+<span class="linenos">2</span>
+<span class="linenos">3</span><span class="k">with</span> <span class="n">pdc</span><span class="o">.</span><span class="n">ServerContext</span><span class="p">()</span> <span class="k">as</span> <span class="n">_</span><span class="p">:</span>
+<span class="linenos">4</span>   <span class="c1">#make a container.  The container is persistent by default.</span>
+<span class="linenos">5</span>   <span class="n">cont</span> <span class="o">=</span> <span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="s1">&#39;persistent_cont&#39;</span><span class="p">)</span>
+<span class="linenos">6</span>
+<span class="linenos">7</span>   <span class="c1">#make a transient container, it will be deleted when the pdc server is closed</span>
+<span class="linenos">8</span>   <span class="n">cont2</span> <span class="o">=</span> <span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="s1">&#39;transient_cont&#39;</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">Lifetime</span><span class="o">.</span><span class="n">TRANSIENT</span><span class="p">)</span>
+</pre></div>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py" id="pdc.Container">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.Container.Container.Lifetime" title="pdc.Container.Container.Lifetime"><span class="pre">Lifetime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Lifetime.TRANSIENT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Container</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lifetime</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.Container.Container.Lifetime" title="pdc.Container.Container.Lifetime"><span class="pre">Lifetime</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">Lifetime.PERSISTENT</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container" title="Permalink to this definition">¶</a></dt>
 <dd><div class="line-block">
 <div class="line">Containers can contain one or more objects, and objects can be part of one or more containers.</div>
 <div class="line">Containers can be used to allow objects to persist, and have no other functionality at the moment.</div>
 <div class="line">Every object must be created belonging to a container.</div>
+<div class="line"><br /></div>
+<div class="line">Containers are not namespaces for objects!  Objects in different containers must have different names.</div>
 </div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -256,7 +269,7 @@ Deleting an object while this iterator is in use may cause undefined behavior.</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.Container.create_object">
-<span class="sig-name descname"><span class="pre">create_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object.Properties</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container.create_object" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">create_object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">unicode</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">properties</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object.Properties</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Container.create_object" title="Permalink to this definition">¶</a></dt>
 <dd><p>Create a new object, placed in this container.  To get an existing object, use Object.get() instead</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -270,7 +283,7 @@ Deleting an object while this iterator is in use may cause undefined behavior.</
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.Container.get">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Container" title="pdc.Container"><span class="pre">Container</span></a></span></span><a class="headerlink" href="#pdc.Container.get" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">unicode</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Container" title="pdc.Container"><span class="pre">Container</span></a></span></span><a class="headerlink" href="#pdc.Container.get" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get an existing container by name.
 If you try to get a container that does not exist, the server segfaults and the call blocks indeinitely.</p>
 <dl class="field-list simple">
@@ -291,7 +304,7 @@ If you try to get a container that does not exist, the server segfaults and the 
 
 <dl class="py property">
 <dt class="sig sig-object py" id="pdc.Container.name">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em><a class="headerlink" href="#pdc.Container.name" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">unicode</span></em><a class="headerlink" href="#pdc.Container.name" title="Permalink to this definition">¶</a></dt>
 <dd><p>The name of this container. read-only</p>
 </dd></dl>
 
@@ -342,6 +355,46 @@ Deleting a container after this function is called, then using the iterator may 
 </section>
 <section id="objects">
 <h1>Objects<a class="headerlink" href="#objects" title="Permalink to this heading">¶</a></h1>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pdc</span>
+<span class="linenos"> 2</span><span class="kn">from</span> <span class="nn">pdc</span> <span class="kn">import</span> <span class="n">Object</span>
+<span class="linenos"> 3</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 4</span>
+<span class="linenos"> 5</span><span class="k">with</span> <span class="n">pdc</span><span class="o">.</span><span class="n">ServerContext</span><span class="p">():</span>
+<span class="linenos"> 6</span>   <span class="n">pdc</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="linenos"> 7</span>   <span class="c1">#create temporary container</span>
+<span class="linenos"> 8</span>   <span class="n">cont</span> <span class="o">=</span> <span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="s1">&#39;cont&#39;</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">Lifetime</span><span class="o">.</span><span class="n">TRANSIENT</span><span class="p">)</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>   <span class="c1">#create np data array of 128 doubles</span>
+<span class="linenos">11</span>   <span class="n">data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="mi">128</span><span class="p">,</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">float64</span><span class="p">)</span>
+<span class="linenos">12</span>
+<span class="linenos">13</span>   <span class="c1">#Method 1: create object from array:</span>
+<span class="linenos">14</span>   <span class="n">obj1</span> <span class="o">=</span> <span class="n">cont</span><span class="o">.</span><span class="n">object_from_array</span><span class="p">(</span><span class="s1">&#39;objectexample_obj1&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>   <span class="n">out_data</span> <span class="o">=</span> <span class="n">obj1</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="linenos">17</span>   <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">out_data</span><span class="p">:</span>
+<span class="linenos">18</span>      <span class="k">assert</span> <span class="n">val</span> <span class="o">==</span> <span class="mf">1.0</span>
+<span class="linenos">19</span>
+<span class="linenos">20</span>   <span class="c1">#Method 2: create object from properties:</span>
+<span class="linenos">21</span>   <span class="c1">#create object property</span>
+<span class="linenos">22</span>   <span class="n">prop</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">Properties</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">pdc</span><span class="o">.</span><span class="n">Type</span><span class="o">.</span><span class="n">DOUBLE</span><span class="p">)</span>
+<span class="linenos">23</span>   <span class="c1">#alternatively:</span>
+<span class="linenos">24</span>   <span class="n">prop</span> <span class="o">=</span> <span class="n">Object</span><span class="o">.</span><span class="n">Properties</span><span class="p">(</span><span class="n">dims</span><span class="o">=</span><span class="mi">128</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">double</span><span class="p">)</span>
+<span class="linenos">25</span>
+<span class="linenos">26</span>   <span class="c1">#property objects can be changed like so:</span>
+<span class="linenos">27</span>   <span class="n">prop</span><span class="o">.</span><span class="n">app_name</span> <span class="o">=</span> <span class="s1">&#39;objectexample&#39;</span>
+<span class="linenos">28</span>
+<span class="linenos">29</span>   <span class="c1">#create object</span>
+<span class="linenos">30</span>   <span class="n">obj2</span> <span class="o">=</span> <span class="n">cont</span><span class="o">.</span><span class="n">create_object</span><span class="p">(</span><span class="s1">&#39;objectexample_obj2&#39;</span><span class="p">,</span> <span class="n">prop</span><span class="p">)</span>
+<span class="linenos">31</span>
+<span class="linenos">32</span>   <span class="c1">#set all data to data</span>
+<span class="linenos">33</span>   <span class="n">obj2</span><span class="o">.</span><span class="n">set_data</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="linenos">34</span>
+<span class="linenos">35</span>   <span class="c1">#test data values</span>
+<span class="linenos">36</span>   <span class="n">out_data</span> <span class="o">=</span> <span class="n">obj2</span><span class="o">.</span><span class="n">get_data</span><span class="p">()</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span>
+<span class="linenos">37</span>   <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">out_data</span><span class="p">:</span>
+<span class="linenos">38</span>      <span class="k">assert</span> <span class="n">val</span> <span class="o">==</span> <span class="mf">1.0</span>
+</pre></div>
+</div>
 <dl class="py class">
 <dt class="sig sig-object py">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Object</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em><span class="sig-paren">)</span></dt>
@@ -355,16 +408,19 @@ This is an inner class of Object</p>
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dims</strong> (<em>Tuple</em><em>[</em><em>uint32</em><em>, </em><em>...</em><em>] or </em><em>uint32</em>) – A tuple containing dimensions of the object, or a single integer for 1-D objects.  For example, (10, 3) means 10 rows and 3 columns.  1 &lt;= len(dims) &lt;= 2^31-1</p></li>
-<li><p><strong>type</strong> (<a class="reference internal" href="#pdc.Type" title="pdc.Type"><em>Type</em></a>) – the data type.</p></li>
+<li><p><strong>type</strong> (<a class="reference internal" href="#pdc.Type" title="pdc.Type"><em>Type</em></a>) – the data type.  Either an instance of Type, or a numpy dtype.</p></li>
 <li><p><strong>time_step</strong> (<em>uint32</em>) – For applications that involve data along a time axis, this represents the point in time of the data.  Defaults to 0.</p></li>
 <li><p><strong>user_id</strong> (<em>uint32</em>) – the id of the user.  defaults to os.getuid()</p></li>
 <li><p><strong>app_name</strong> (<em>str</em>) – the name of the application.  Defaults to an empty string.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Raises<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – if type is an unsupported numpy dtype, if dims is empty.</p>
+</dd>
 </dl>
 <dl class="py property">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">app_name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">unicode</span></em></dt>
 <dd><p>The name of the application</p>
 </dd></dl>
 
@@ -387,15 +443,9 @@ This is an inner class of Object</p>
 
 <dl class="py property">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">time_step</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">uint32</span></em></dt>
-<dd><p>The time step of this object.
-For applications that involve data along a time axis, this represents the point in time of the data.</p>
-</dd></dl>
-
-<dl class="py property">
-<dt class="sig sig-object py">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.Type" title="pdc.main.Type"><span class="pre">Type</span></a></em></dt>
-<dd><p>The data type of this object.</p>
+<dd><p>The data type of this object.
+Can be set to a numpy dtype, but the output value of this property will be a Type instance.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -441,7 +491,7 @@ If this is a GET request, the return value is the data, otherwise it is None.</p
 
 <dl class="py property">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#pdc.query.QueryComponent" title="pdc.query.QueryComponent"><span class="pre">QueryComponent</span></a></em></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">data</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">QueryComponent</span></em></dt>
 <dd><div class="line-block">
 <div class="line">An object used to build queries.</div>
 <div class="line">See <a class="reference internal" href="#queries">queries</a> for more details.</div>
@@ -464,7 +514,7 @@ Equivalent to <code class="docutils literal notranslate"><span class="pre">obj.g
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Object</span></span></span></dt>
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">unicode</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Object</span></span></span></dt>
 <dd><p>Get an existing object by name</p>
 <p>If you have created multiple objects with the same name, this will return the one with time_step=0
 If there are multiple objects with the same name and time_step, the tie is broken arbitrarily</p>
@@ -477,11 +527,11 @@ If there are multiple objects with the same name and time_step, the tie is broke
 
 <dl class="py method">
 <dt class="sig sig-object py">
-<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TransferRequest</span></span></span></dt>
+<span class="sig-name descname"><span class="pre">get_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Region</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">TransferRequest</span></span></span></dt>
 <dd><p>Request a region of data from an object</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – the region of data to get.  If this is None, defaults to the entire object.</p>
+<dd class="field-odd"><p><strong>region</strong> (<em>Region</em>) – the region of data to get.  If this is None, defaults to the entire object.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>A transfer request representing this request</p>
@@ -494,7 +544,7 @@ If there are multiple objects with the same name and time_step, the tie is broke
 
 <dl class="py property">
 <dt class="sig sig-object py">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">str</span></em></dt>
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">unicode</span></em></dt>
 <dd><p>The name of this object. read-only</p>
 </dd></dl>
 
@@ -505,7 +555,7 @@ If there are multiple objects with the same name and time_step, the tie is broke
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – the region of data to set. Defaults to the entire object.</p></li>
+<li><p><strong>region</strong> (<em>Region</em>) – the region of data to set. Defaults to the entire object.</p></li>
 <li><p><strong>data</strong> – The data to set the region to.  It must be a numpy array or convertible to a numpy array with numpy.array().</p></li>
 </ul>
 </dd>
@@ -527,21 +577,43 @@ If there are multiple objects with the same name and time_step, the tie is broke
 </dd></dl>
 
 </section>
-<section id="module-pdc.region">
-<span id="regions"></span><h1>Regions<a class="headerlink" href="#module-pdc.region" title="Permalink to this heading">¶</a></h1>
+<section id="regions">
+<h1>Regions<a class="headerlink" href="#regions" title="Permalink to this heading">¶</a></h1>
+<p>A region describes a piece of an object’s data.
+Regions can be used to restrict the area of a tranfer request.
+Example:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pdc</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">with</span> <span class="n">pdc</span><span class="o">.</span><span class="n">ServerContext</span><span class="p">():</span>
+<span class="linenos"> 5</span>   <span class="n">pdc</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="linenos"> 6</span>   <span class="n">cont</span> <span class="o">=</span> <span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="s1">&#39;region_example_cont&#39;</span><span class="p">,</span> <span class="n">lifetime</span><span class="o">=</span><span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="o">.</span><span class="n">Lifetime</span><span class="o">.</span><span class="n">TRANSIENT</span><span class="p">)</span>
+<span class="linenos"> 7</span>
+<span class="linenos"> 8</span>   <span class="n">data</span> <span class="o">=</span> <span class="p">[</span>
+<span class="linenos"> 9</span>      <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">6</span><span class="p">],</span>
+<span class="linenos">10</span>      <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
+<span class="linenos">11</span>      <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">]</span>
+<span class="linenos">12</span>   <span class="p">]</span>
+<span class="linenos">13</span>
+<span class="linenos">14</span>   <span class="n">obj</span> <span class="o">=</span> <span class="n">cont</span><span class="o">.</span><span class="n">object_from_array</span><span class="p">(</span><span class="s1">&#39;region_example_obj&#39;</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span>
+<span class="linenos">15</span>
+<span class="linenos">16</span>   <span class="n">data1</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">pdc</span><span class="o">.</span><span class="n">region</span><span class="p">[:</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span> <span class="c1"># [[2, 7, 6], [9, 5, 1]]</span>
+<span class="linenos">17</span>   <span class="n">data2</span> <span class="o">=</span> <span class="n">obj</span><span class="o">.</span><span class="n">get_data</span><span class="p">(</span><span class="n">pdc</span><span class="o">.</span><span class="n">region</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:</span><span class="mi">2</span><span class="p">])</span><span class="o">.</span><span class="n">wait</span><span class="p">()</span> <span class="c1"># [[2, 7]]</span>
+</pre></div>
+</div>
 <dl class="py property">
-<dt class="sig sig-object py" id="pdc.region.region">
-<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.region.</span></span><span class="sig-name descname"><span class="pre">region</span></span><a class="headerlink" href="#pdc.region.region" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pdc.region">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">region</span></span><a class="headerlink" href="#pdc.region" title="Permalink to this definition">¶</a></dt>
 <dd><p>An object used to create regions.
-See <a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><code class="xref py py-class docutils literal notranslate"><span class="pre">Region</span></code></a> for details.</p>
+See <code class="xref py py-class docutils literal notranslate"><span class="pre">Region</span></code> for details.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pdc.region.Region">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.region.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Region</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slice</span></span></em><span class="sig-paren">)</span></dt>
 <dd><div class="line-block">
 <div class="line">A region, which specifies the location of a ‘block’ of data.  </div>
-<div class="line">Regions are created by slicing the <a class="reference internal" href="#pdc.region.region" title="pdc.region.region"><code class="xref py py-class docutils literal notranslate"><span class="pre">region</span></code></a> object.</div>
+<div class="line">Regions are created by slicing the <a class="reference internal" href="#pdc.region" title="pdc.region"><code class="xref py py-class docutils literal notranslate"><span class="pre">region</span></code></a> object.</div>
 <div class="line">Examples:</div>
 <div class="line">all data of an object: <code class="docutils literal notranslate"><span class="pre">region[:]</span></code></div>
 <div class="line">the first row of a 2 dimensional object, or the first element of a 1 dimensional object: <code class="docutils literal notranslate"><span class="pre">region[0]</span></code></div>
@@ -552,8 +624,8 @@ See <a class="reference internal" href="#pdc.region.Region" title="pdc.region.Re
 <div class="line">The slices used to create a region object may not have step values. (<code class="docutils literal notranslate"><span class="pre">region[1:100:4]</span></code> is invalid)</div>
 </div>
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.region.Region.get_absolute">
-<span class="sig-name descname"><span class="pre">get_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.get_absolute" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">get_absolute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dims</span></span></em><span class="sig-paren">)</span></dt>
 <dd><div class="line-block">
 <div class="line">Return a new absolute region, using the given dimensions to determine ommitted start and stop values.</div>
 <div class="line">Examples:</div>
@@ -563,8 +635,8 @@ See <a class="reference internal" href="#pdc.region.Region" title="pdc.region.Re
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pdc.region.Region.is_absolute">
-<span class="sig-name descname"><span class="pre">is_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pdc.region.Region.is_absolute" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">is_absolute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span></dt>
 <dd><div class="line-block">
 <div class="line">A region is absolute if the region’s slices have both start and stop values.</div>
 <div class="line">returns True if the region is absolute</div>
@@ -579,7 +651,64 @@ See <a class="reference internal" href="#pdc.region.Region" title="pdc.region.Re
 </section>
 <section id="queries">
 <span id="id1"></span><h1>Queries<a class="headerlink" href="#queries" title="Permalink to this heading">¶</a></h1>
-<span class="target" id="module-pdc.query"></span><dl class="py class">
+<p>Queries search for elements in an object.  They can also search for elements in multiple objects, in which case each object will be treated as a column of data, and matching rows are returned.</p>
+<p>A query consists of one or more clauses where one object’s data is compared, combined with AND (&amp;) or OR (|)</p>
+<p>For example, with 2 objects with these contents:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>1</p></td>
+<td><p>2</p></td>
+</tr>
+<tr class="row-odd"><td><p>3</p></td>
+<td><p>3</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>The query <code class="docutils literal notranslate"><span class="pre">a.data</span> <span class="pre">&gt;</span> <span class="pre">3</span> <span class="pre">|</span> <span class="pre">b.data</span> <span class="pre">&gt;</span> <span class="pre">4</span></code> would return:</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>a</p></th>
+<th class="head"><p>b</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>8</p></td>
+</tr>
+<tr class="row-odd"><td><p>7</p></td>
+<td><p>0</p></td>
+</tr>
+</tbody>
+</table>
+<p>Queries can also be restricted to a specific region.</p>
+<p>Here is a full program that performs the previous query:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="linenos"> 1</span><span class="kn">import</span> <span class="nn">pdc</span>
+<span class="linenos"> 2</span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="linenos"> 3</span>
+<span class="linenos"> 4</span><span class="k">with</span> <span class="n">pdc</span><span class="o">.</span><span class="n">ServerContext</span><span class="p">():</span>
+<span class="linenos"> 5</span>   <span class="n">pdc</span><span class="o">.</span><span class="n">init</span><span class="p">()</span>
+<span class="linenos"> 6</span>   <span class="n">cont</span> <span class="o">=</span> <span class="n">pdc</span><span class="o">.</span><span class="n">Container</span><span class="p">(</span><span class="s1">&#39;test&#39;</span><span class="p">)</span>
+<span class="linenos"> 7</span>   <span class="n">a</span> <span class="o">=</span> <span class="n">cont</span><span class="o">.</span><span class="n">object_from_array</span><span class="p">(</span><span class="s1">&#39;a&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">])</span>
+<span class="linenos"> 8</span>   <span class="n">b</span> <span class="o">=</span> <span class="n">cont</span><span class="o">.</span><span class="n">object_from_array</span><span class="p">(</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>   <span class="n">query</span> <span class="o">=</span> <span class="p">(</span><span class="n">a</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">3</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">b</span><span class="o">.</span><span class="n">data</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">)</span>
+<span class="linenos">11</span>   <span class="n">result</span> <span class="o">=</span> <span class="n">query</span><span class="o">.</span><span class="n">get_result</span><span class="p">()</span>
+<span class="linenos">12</span>   <span class="n">a_data</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="c1">#5 7</span>
+<span class="linenos">13</span>   <span class="n">b_data</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="n">b</span><span class="p">]</span> <span class="c1">#8 0</span>
+</pre></div>
+</div>
+<dl class="py class">
 <dt class="sig sig-object py" id="pdc.Query">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.</span></span><span class="sig-name descname"><span class="pre">Query</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">uint64</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">op</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">left</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">right</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.Query" title="Permalink to this definition">¶</a></dt>
 <dd><dl class="py class">
@@ -600,11 +729,11 @@ If you <em>only</em> want the number of hits, use <code class="xref py py-func d
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.Query.get_num_hits">
-<span class="sig-name descname"><span class="pre">get_num_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pdc.Query.get_num_hits" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_num_hits</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Region</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#pdc.Query.get_num_hits" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get number of hits for this query (i.e. number of elements that match this query)</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
+<dd class="field-odd"><p><strong>region</strong> (<em>Region</em>) – The region to query over.  If this is None, the entire object is queried.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>number of hits</p>
@@ -614,11 +743,11 @@ If you <em>only</em> want the number of hits, use <code class="xref py py-func d
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pdc.Query.get_result">
-<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><span class="pre">Region</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.query.Query.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#pdc.Query.get_result" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">get_result</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">region</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Region</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#pdc.Query.Query.Result" title="pdc.query.Query.Result"><span class="pre">Result</span></a></span></span><a class="headerlink" href="#pdc.Query.get_result" title="Permalink to this definition">¶</a></dt>
 <dd><p>Get the result of this query</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>region</strong> (<a class="reference internal" href="#pdc.region.Region" title="pdc.region.Region"><em>Region</em></a>) – The region to query over.  If this is None, the entire object is queried.</p>
+<dd class="field-odd"><p><strong>region</strong> (<em>Region</em>) – The region to query over.  If this is None, the entire object is queried.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p>the Result object</p>
@@ -626,12 +755,6 @@ If you <em>only</em> want the number of hits, use <code class="xref py py-func d
 </dl>
 </dd></dl>
 
-</dd></dl>
-
-<dl class="py class">
-<dt class="sig sig-object py" id="pdc.query.QueryComponent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">pdc.query.</span></span><span class="sig-name descname"><span class="pre">QueryComponent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obj</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Object</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pdc.query.QueryComponent" title="Permalink to this definition">¶</a></dt>
-<dd><p>An object used to build a query</p>
 </dd></dl>
 
 </section>

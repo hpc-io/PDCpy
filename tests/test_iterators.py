@@ -18,8 +18,6 @@ def test_object_iter():
     assert count == 3
 
 def test_container_iter():
-    assert list(pdc.all_local_containers()) == []
-
     cont = pdc.Container('test_container_iter', lifetime=pdc.Container.Lifetime.TRANSIENT)
     cont2 = pdc.Container('test_container_iter2', lifetime=pdc.Container.Lifetime.TRANSIENT)
     cont3 = pdc.Container('test_container_iter3', lifetime=pdc.Container.Lifetime.TRANSIENT)
@@ -27,7 +25,7 @@ def test_container_iter():
     cont_set = set((cont, cont2, cont3))
     count = 0
     for cont in pdc.all_local_containers():
-        assert cont in cont_set
-        count += 1
+        if cont in cont_set:
+            count += 1
     
     assert count == 3

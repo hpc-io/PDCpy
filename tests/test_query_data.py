@@ -3,17 +3,12 @@ import sys
 import pdc
 from pdc import Object, region
 import numpy as np
-from mpi4py import MPI
 import asyncio
 import pytest
 
 #size is in number of floating point numbers, not bytes, unlike the original
 
 def main(obj_name:str, length:int):
-    comm = MPI.COMM_WORLD
-    rank = comm.Get_rank()
-    size = comm.Get_size()
-
     cont = pdc.Container(lifetime=pdc.Container.Lifetime.TRANSIENT)
     prop = Object.Properties(
         (length,),
@@ -21,27 +16,16 @@ def main(obj_name:str, length:int):
         time_step = 0,
         app_name = 'DataServerTest'
     )
-    if rank == 0:
-        obj = cont.create_object(obj_name, prop)
-    comm.Barrier()
-    if rank != 0:
-        obj = Object.get(obj_name)
-    
-    my_data_length = length // size
-    my_region = region[rank * my_data_length : (rank + 1) * my_data_length]
-    data = np.fromiter(range(rank*1000, rank*1000+my_data_length), dtype=np.int32)
-
-    comm.Barrier()
+    obj = cont.create_object(obj_name, prop)
+    data = np.fromiter(range(1000), dtype=np.int32)
     start = time.time()
-    
-    obj.set_data(data, my_region)
+    obj.set_data(data)
 
-    comm.Barrier()
     end = time.time()
-    print(f'Rank {rank} set data in {end - start} seconds')
+    print(f'Set data in {end - start} seconds')
 
     query = ((obj.data < 1000) | (obj.data >= 2000 & obj.data < 3000) | (obj.data >= 5000 & obj.data < 7000))
-    print(query.get_result(my_region)[obj])
+    print(query.get_result()[obj])
 
 @pytest.mark.skip
 def test_query():

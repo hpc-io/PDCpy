@@ -1,0 +1,4 @@
+include pdc/*.pxd
+include pdc/*.pyx
+exclude pdc/*.c
+include version.txt
