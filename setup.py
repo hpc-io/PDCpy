@@ -13,7 +13,8 @@ def get_env_or_exit(name):
         sys.exit('Environment variable %s not set. Aborting' % name)
     return value
 
-PDC_DIR = os.path.join(*os.path.split(get_env_or_exit("PDC_DIR"))[:-1])
+# Removed [-1] from the end
+PDC_DIR = os.path.join(*os.path.split(get_env_or_exit("PDC_DIR")))
 MERCURY_DIR = get_env_or_exit("MERCURY_DIR")
 
 path = shutil.which('mpicc')
@@ -34,16 +35,15 @@ else:
     mpi_build_args = []
     mpi_link_args = []
 
+# Removed "install"
 extension = Extension(
     "*",
     ["pdc/*.pyx"],
     libraries=["pdc"],
-    library_dirs=[os.path.join(PDC_DIR, "install", "lib")],
+    library_dirs=[os.path.join(PDC_DIR, "lib")],
     include_dirs=[
-        os.path.join(PDC_DIR, "install", "include"),
+        os.path.join(PDC_DIR, "include"),
         os.path.join(MERCURY_DIR, "include"),
-        os.path.join(PDC_DIR, "utils", "include"), #for pdc_id_pkg.h
-        os.path.join(PDC_DIR, "api", "pdc_obj", "include") #for pdc_(obj/cont/prop)_pkg.h
     ],
     extra_compile_args=mpi_build_args,
     extra_link_args=mpi_link_args
