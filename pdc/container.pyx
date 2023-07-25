@@ -5,7 +5,7 @@ import numpy as np
 import numpy.typing as npt
 
 from .main import KVTags, checktype, _get_pdcid, PDCError, ctrace, Type
-from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t, uint64_t, obj_handle, pdc_obj_info, cont_handle, pdc_cont_info
+from pdc.cpdc cimport pdc_lifetime_t, pdc_prop_type_t, pdcid_t, _pdc_cont_info, psize_t, uint64_t, obj_handle, pdc_obj_info, cont_handle, pdc_cont_info, pdc_var_type_t
 from pdc.main cimport malloc_or_memerr
 import pdc
 cimport pdc.cpdc as cpdc
@@ -41,13 +41,14 @@ class ContainerKVTags(KVTags):
     def get(self, name:bytes):
         cdef void* value_out
         cdef psize_t size_out
-        if cpdc.PDCcont_get_tag(self.cont._id, name, &value_out, &size_out) != 0:
+        cdef pdc_var_type_t var_type
+        if cpdc.PDCcont_get_tag(self.cont._id, name, &value_out, &var_type, &size_out) != 0:
             raise PDCError("tag does not exist or could not get tag")
         rtn = PyBytes_FromStringAndSize(<char *> value_out, size_out)
         return rtn
     
     def set(self, name:bytes, value:bytes):
-        if cpdc.PDCcont_put_tag(self.cont._id, name, <char *> value, len(value)) != 0:
+        if cpdc.PDCcont_put_tag(self.cont._id, name, <char *> value, Type.CHAR, len(value)) != 0:
             raise PDCError("could not set tag")
 
 def to_c_object_list(objects: Union['pdc.Object', Sequence['pdc.Object']]):

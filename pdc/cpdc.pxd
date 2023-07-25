@@ -15,20 +15,27 @@ cdef extern from "pdc_public.h":
         SUCCEED = 0
         FAIL = -1
     ctypedef enum pdc_var_type_t:
-        PDC_UNKNOWN  = -1
-        PDC_INT      = 0
-        PDC_FLOAT    = 1
-        PDC_DOUBLE   = 2
-        PDC_CHAR     = 3
-        PDC_COMPOUND = 4
-        PDC_ENUM     = 5
-        PDC_ARRAY    = 6
-        PDC_UINT     = 7
-        PDC_INT64    = 8
-        PDC_UINT64   = 9
-        PDC_INT16    = 10
-        PDC_INT8     = 11
-        NCLASSES     = 12
+        PDC_UNKNOWN    = -1 
+        PDC_INT        = 0  
+        PDC_FLOAT      = 1  
+        PDC_DOUBLE     = 2  
+        PDC_CHAR       = 3  
+        PDC_STRING     = 4  
+        PDC_BOOLEAN    = 5 
+        PDC_SHORT      = 6  
+        PDC_UINT       = 7
+        PDC_INT64      = 8  
+        PDC_UINT64     = 9
+        PDC_INT16      = 10
+        PDC_INT8       = 11 
+        PDC_UINT8      = 12
+        PDC_UINT16     = 13
+        PDC_INT32      = 14
+        PDC_UINT32     = 15
+        PDC_LONG       = 16
+        PDC_VOID_PTR   = 17
+        PDC_SIZE_T     = 18
+        PDC_TYPE_COUNT = 19 
     
     ctypedef struct pdc_histogram_t:
         pdc_var_type_t dtype
@@ -71,8 +78,10 @@ cdef extern from "pdc_cont.h":
     perr_t PDCcont_del(pdcid_t cont_id)
     perr_t PDCcont_put_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids)
     perr_t PDCcont_del_objids(pdcid_t cont_id, int nobj, pdcid_t *obj_ids)
-    perr_t PDCcont_put_tag(pdcid_t cont_id, char *tag_name, void *tag_value, psize_t value_size)
-    perr_t PDCcont_get_tag(pdcid_t cont_id, char *tag_name, void **tag_value, psize_t *value_size)
+#    perr_t PDCcont_put_tag(pdcid_t cont_id, char *tag_name, void *tag_value, psize_t value_size)
+    perr_t PDCcont_put_tag(pdcid_t cont_id, char *tag_name, void *tag_value, pdc_var_type_t value_type, psize_t value_size);
+#    perr_t PDCcont_get_tag(pdcid_t cont_id, char *tag_name, void **tag_value, psize_t *value_size)
+    perr_t PDCcont_get_tag(pdcid_t cont_id, char *tag_name, void **tag_value, pdc_var_type_t *value_type, psize_t *value_size);
     perr_t PDCcont_del_tag(pdcid_t cont_id, char *tag_name)
 
 cdef extern from "pdc_cont_pkg.h":
@@ -116,8 +125,10 @@ cdef extern from "pdc_obj.h":
     pdcid_t PDCobj_put_data(const char *obj_name, void *data, uint64_t size, pdcid_t cont_id)
     perr_t PDCobj_get_data(pdcid_t obj_id, void *data, uint64_t size)
     perr_t PDCobj_del_data(pdcid_t obj_id)
-    perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, psize_t value_size)
-    perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)
+#    perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, psize_t value_size)
+    perr_t PDCobj_put_tag(pdcid_t obj_id, char *tag_name, void *tag_value, pdc_var_type_t value_type, psize_t value_size);
+#    perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, psize_t *value_size)
+    perr_t PDCobj_get_tag(pdcid_t obj_id, char *tag_name, void **tag_value, pdc_var_type_t *value_type, psize_t *value_size);
     perr_t PDCobj_del_tag(pdcid_t obj_id, char *tag_name)
 
 cdef extern from "pdc_obj_pkg.h":
