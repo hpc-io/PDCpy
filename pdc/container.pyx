@@ -48,7 +48,7 @@ class ContainerKVTags(KVTags):
         return rtn
     
     def set(self, name:bytes, value:bytes):
-        if cpdc.PDCcont_put_tag(self.cont._id, name, <char *> value, Type.CHAR, len(value)) != 0:
+        if cpdc.PDCcont_put_tag(self.cont._id, name, <char *> value, pdc_var_type_t.PDC_CHAR, len(value)) != 0:
             raise PDCError("could not set tag")
 
 def to_c_object_list(objects: Union['pdc.Object', Sequence['pdc.Object']]):

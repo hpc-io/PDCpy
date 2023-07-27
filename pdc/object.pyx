@@ -68,7 +68,7 @@ class ObjectKVTags(KVTags):
     def set(self, name:bytes, value:bytes):
         ctrace('here', None)
         ctrace("obj_put_tag", '?', self.obj._id, name, value, len(value))
-        rtn = cpdc.PDCobj_put_tag(self.obj._id, name, <char *> value, Type.CHAR, len(value))
+        rtn = cpdc.PDCobj_put_tag(self.obj._id, name, <char *> value, pdc_var_type_t.PDC_CHAR, len(value))
         ctrace('here', None)
         if rtn != 0:
             raise PDCError("could not set tag")
