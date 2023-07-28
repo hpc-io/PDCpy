@@ -10,7 +10,7 @@ import ctypes
 from pdc.main import uint32, uint64, Type, KVTags, _free_from_int, _get_pdcid, PDCError, PDCError, pdcid, checktype, ctrace
 cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
-from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t, pdcid_t, pdc_obj_prop, _pdc_obj_prop, pdc_obj_info, pdc_transfer_status_t, psize_t, _pdc_obj_info
+from pdc.cpdc cimport uint32_t, uint64_t, pdc_access_t, pdcid_t, pdc_obj_prop, _pdc_obj_prop, pdc_obj_info, pdc_transfer_status_t, psize_t, _pdc_obj_info, pdc_var_type_t
 from pdc.main cimport malloc_or_memerr
 from . import container
 from . import container as container_
@@ -57,7 +57,8 @@ class ObjectKVTags(KVTags):
     def get(self, name:bytes):
         cdef void* value_out
         cdef psize_t size_out
-        rtn = cpdc.PDCobj_get_tag(self.obj._id, name, &value_out, &size_out)
+        cdef pdc_var_type_t var_type
+        rtn = cpdc.PDCobj_get_tag(self.obj._id, name, &value_out, &var_type, &size_out)
         ctrace("obj_get_tag", rtn, self.obj._id, name, <size_t> value_out, size_out)
         if rtn != 0:
             raise PDCError("tag does not exist or could not get tag")
@@ -67,7 +68,7 @@ class ObjectKVTags(KVTags):
     def set(self, name:bytes, value:bytes):
         ctrace('here', None)
         ctrace("obj_put_tag", '?', self.obj._id, name, value, len(value))
-        rtn = cpdc.PDCobj_put_tag(self.obj._id, name, <char *> value, len(value))
+        rtn = cpdc.PDCobj_put_tag(self.obj._id, name, <char *> value, pdc_var_type_t.PDC_CHAR, len(value))
         ctrace('here', None)
         if rtn != 0:
             raise PDCError("could not set tag")
