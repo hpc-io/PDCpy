@@ -280,7 +280,7 @@ cdef extern from "pdc_prop_pkg.h":
 cdef extern from "pdc_malloc.h":
     void *PDC_free(void *mem)
 
-cdef extern from "pdc_private.h":
+cdef extern from "pdc_id_pkg.h":
     cdef struct _pdc_class:
         char *  name
         pdcid_t local_id
