@@ -11,6 +11,7 @@ import shutil
 from subprocess import Popen, PIPE
 import ast
 import numpy.typing as npt
+from mpi4py import MPI
 
 int32 = NewType('int32', int)
 uint32 = NewType('uint32', int)
@@ -69,11 +70,15 @@ def ctrace(name, rtn, *args):
     if do_ctrace_print:
         print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}')
     
+    comm = MPI.COMM_WORLD
+    rank = comm.Get_rank()
+    
     #delete old ctrace file
     if ctrace_file is None:
-        if os.path.exists('./ctrace.txt'):
-            os.remove('./ctrace.txt')
-        ctrace_file = open('./ctrace.txt', 'w')
+        filename = f'./ctrace_{rank}.txt'
+        if os.path.exists(filename):
+            os.remove(filename)
+        ctrace_file = open(filename, 'w')
     
     print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
 
