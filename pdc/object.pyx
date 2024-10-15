@@ -417,7 +417,7 @@ class Object:
     
     objects_by_id = WeakValueDictionary()
 
-    def __init__(self, name:str, properties:Properties, container:container.Container, *, _id:Optional[pdcid]=None,):
+    def __init__(self, name:Optional(str), properties:Optional(Properties), container:Optional(container.Container), *, _id:Optional[pdcid]=None,):
         '''
         __init__(*args)
         '''
@@ -435,7 +435,6 @@ class Object:
             ctrace('obj_create', id, container._id, name.encode('utf-8'), properties._id)
             if id == 0:
                 raise PDCError('failed to create object')
-            
         self._id = id
         finalize(self, type(self)._finalize, id, type(self).objects_by_id)
         type(self).objects_by_id[id] = self
