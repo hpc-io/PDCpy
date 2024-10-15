@@ -421,15 +421,12 @@ class Object:
         '''
         __init__(*args)
         '''
-        print("line 424 id={}".format(_id))
 
         cdef pdcid_t id
         if _id is not None:
-            print("line 427 id={}".format(_id))
             checktype(_id, '_id', int)
             id = _id
         else:
-            print("line430 _id={}".format(_id))
             checktype(name, 'name', str)
             checktype(properties, 'properties', type(self).Properties)
             checktype(container, 'container', container_.Container)
@@ -438,7 +435,6 @@ class Object:
             ctrace('obj_create', id, container._id, name.encode('utf-8'), properties._id)
             if id == 0:
                 raise PDCError('failed to create object')
-        print("line440") 
         self._id = id
         finalize(self, type(self)._finalize, id, type(self).objects_by_id)
         type(self).objects_by_id[id] = self
@@ -469,7 +465,6 @@ class Object:
             print(f'Returning existing object: {id}')
             return cls.objects_by_id[id]
         else:
-            print("cls(NONE)")
             return cls(None, None, None, _id=id)
     
     @property
@@ -525,13 +520,11 @@ class Object:
         
         :param str name: the name of the object
         ''' 
-        #checktype(name, 'name', str)
-        print("name : {}, {}, {}".format(name, type(name), _get_pdcid()))
+        checktype(name, 'name', str)
         cdef pdcid_t id = cpdc.PDCobj_open(name.encode('utf-8'), _get_pdcid())
         ctrace('obj_open', id, name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('object not found or failed to open object')
-        print("id={}".format(id))
         return cls._fromid(id)
     
     @property
