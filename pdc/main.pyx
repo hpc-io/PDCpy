@@ -85,8 +85,8 @@ def ctrace(name, rtn, *args):
         if ctrace_file is None:
             filename = f'./ctrace_{rank}.txt'
             if os.path.exists(filename):
-            os.remove(filename)
-            ctrace_file = open(filename, 'w')
+                os.remove(filename)
+                ctrace_file = open(filename, 'w')
         print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
     except Exception as e:
         print(f'Error opening ctrace file: {e}')
