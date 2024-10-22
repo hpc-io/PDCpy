@@ -81,13 +81,16 @@ def ctrace(name, rtn, *args):
         rank = comm.Get_rank()
     
     #delete old ctrace file
-    if ctrace_file is None:
-        filename = f'./ctrace_{rank}.txt'
-        if os.path.exists(filename):
+    try:
+        if ctrace_file is None:
+            filename = f'./ctrace_{rank}.txt'
+            if os.path.exists(filename):
             os.remove(filename)
-        ctrace_file = open(filename, 'w')
+            ctrace_file = open(filename, 'w')
+        print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
+    except Exception as e:
+        print(f'Error opening ctrace file: {e}')
     
-    print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
 
 def enable_ctrace():
     global do_ctrace
