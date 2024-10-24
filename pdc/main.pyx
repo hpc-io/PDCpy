@@ -45,7 +45,7 @@ term_color_map = {
 }
 term_color_end = '\033[0m'
 last_color = None
-do_ctrace = True
+do_ctrace = False
 do_ctrace_print = False
 ctrace_file = None
 def format_id(id):
@@ -95,6 +95,10 @@ def ctrace(name, rtn, *args):
 def enable_ctrace():
     global do_ctrace
     do_ctrace = True
+
+def disable_ctrace():
+    global do_ctrace
+    do_ctrace = False
 
 class PDCError(Exception):
     '''
