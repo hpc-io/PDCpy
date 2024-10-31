@@ -96,7 +96,7 @@ def enable_ctrace():
     global do_ctrace
     do_ctrace = True
 
-def disable_ctrace():
+cpdef disable_ctrace():
     global do_ctrace
     do_ctrace = False
 
