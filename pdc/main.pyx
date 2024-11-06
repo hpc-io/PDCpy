@@ -398,9 +398,11 @@ class ServerContext:
         self.popen.wait()
         return False
 
-def checktype(value, name, expected):
-    if not isinstance(value, expected):
-        raise TypeError(f'invalid type of {name}: {type(value)}, expected {expected.__name__}')
+def checktype(value, name, *expected):
+    for et in expected:
+        if isinstance(value, et):
+            return
+    raise TypeError(f'invalid type of {name}: {type(value)}, expected : one of {[x.__name__ for x in expected]}')
 
 def checkrange(value, name, expected:str):
     if expected == 'uint32':
