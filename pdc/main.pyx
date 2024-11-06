@@ -278,21 +278,38 @@ class KVTags(ABC):
     =================== ==============================
     '''
 
-    tag_types = (tuple, str, int, float, bool, type(None))
-    tag_types_union = Union[tuple, str, int, float, bool, type(None)]
+    tag_types = (tuple, list, dict, bytes, str, int, float, bool, type(None))
+    tag_types_union = Union[tuple, list, dict, bytes, str, int, float, bool, type(None)]
 
     @classmethod
     def _encode(cls, obj:tag_types_union) -> bytes:
         if isinstance(obj, tuple):
             for i in obj:
                 if not isinstance(i, cls.tag_types):
-                    raise ValueError('tuples must contain only strings, ints, floats, and tuples')
+                    raise ValueError('tuples must contain only strings, ints, floats, lists, bytes,and tuples, please use pickle.dumps() -> bytes')
             if len(obj) == 0:
                 return b'()'
             elif len(obj) == 1:
                 return b'(' + cls._encode(obj[0]) + b',)'
             else:
                 return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
+        elif isinstance(obj, list):
+            for i in obj:
+                if not isinstance(i, cls.tag_types):
+                    raise ValueError('lists must contain only strings, ints, floats, lists, bytes,and tuples, please use pickle.dumps() -> bytes')
+            if len(obj) == 0:
+                return b'[]'
+            elif len(obj) == 1:
+                return b'[' + cls._encode(obj[0]) + b']'
+            else:
+                return b'[' + b','.join([cls._encode(i) for i in obj]) + b']'
+        elif isinstance(obj, dict):
+            for k, v in obj.items():
+                if not isinstance(k, str):
+                    raise ValueError('dict keys must be strings')
+                if not isinstance(v, cls.tag_types):
+                    raise ValueError('dict values must be strings, ints, floats, lists, bytes,and tuples, please use pickle.dumps() -> bytes')
+            return b'{' + b','.join([cls._encode(k) + b': ' + cls._encode(v) for k, v in obj.items()]) + b'}'
         elif isinstance(obj, str):
             return repr(obj).encode('utf-8')
         elif isinstance(obj, int):
@@ -304,7 +321,7 @@ class KVTags(ABC):
         elif obj is None:
             return b'None'
         else:
-            raise TypeError(f'Unsupported type of tag: {type(obj)}')
+            raise TypeError(f'Unsupported type of tag: {type(obj)}, please use pickle.dumps() -> bytes')
     
     @staticmethod
     def _decode(data:bytes) -> tag_types_union:
