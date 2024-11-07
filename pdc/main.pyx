@@ -312,6 +312,8 @@ class KVTags(ABC):
                     if not isinstance(v, cls.primitive_types):
                         raise ValueError('dict values must be strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
                 return b'{' + b','.join([cls._encode(k) + b': ' + cls._encode(v) for k, v in obj.items()]) + b'}'
+            elif isinstance(obj, bytes):
+                return obj
             elif isinstance(obj, str):
                 return repr(obj).encode('utf-8')
             elif isinstance(obj, int):
