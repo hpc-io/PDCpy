@@ -346,6 +346,7 @@ class Object:
             checktype(object, 'object', Object)
             checktype(request_type, 'request type', type(self).RequestType)
             region_id, sizes = remoteRegion._construct_with(object.dims)
+            
             cdef pdcid_t local_region_id = 0
             self.obj = object
             self.type = request_type
@@ -358,6 +359,7 @@ class Object:
                 local_region_id = _id
 
                 if request_type == type(self).RequestType.SET:
+                    
                     np_data = np.require(data, requirements=['C', 'A'], dtype=object.type.as_numpy_type())
 
                     if np_data.ndim > len(sizes):
@@ -378,12 +380,15 @@ class Object:
                     self._local_region_id = local_region_id
                     self._global_region_id = region_id
                 else:
+                    # sizes, offsets = remoteRegion._get_sizes_offsets(object.dims)
+                    # region_id, sizes = remoteRegion._construct_with(sizes)
                     out = np.empty(sizes, dtype=object.type.as_numpy_type())
                     transfer_id = cpdc.PDCregion_transfer_create(<void *> <size_t> out.ctypes.data, type(self).RequestType.GET.value, object._id, local_region_id, region_id)
                     ctrace('region_transfer_create', transfer_id, out, type(self).RequestType.GET, object._id, local_region_id, region_id)
                     if transfer_id == 0:
                         raise PDCError('failed to create transfer')
                     self._id = transfer_id
+                    print(f"shape of out: {out.shape}")
                     self._out = out
                     self._local_region_id = local_region_id
                     self._global_region_id = region_id
