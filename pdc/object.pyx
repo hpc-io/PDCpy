@@ -346,6 +346,7 @@ class Object:
             checktype(object, 'object', Object)
             checktype(request_type, 'request type', type(self).RequestType)
             region_id, sizes = remoteRegion._construct_with(object.dims)
+            print(f"sizes: {sizes}, object.dims: {object.dims}")
             
             cdef pdcid_t local_region_id = 0
             self.obj = object
