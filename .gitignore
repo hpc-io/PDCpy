@@ -12,3 +12,4 @@ cython_debug/**
 dist/**
 .pytest_cache/**
 **/*.egg-info/**
+.vscode/
