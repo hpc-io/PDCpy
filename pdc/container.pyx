@@ -137,11 +137,11 @@ class Container:
             raise PDCError('Failed to close container')
     
     @classmethod
-    def _fromid(cls, pdcid_t id):
+    def _fromid(cls, pdcid_t id, **kwargs):
         if id in cls.containers_by_id:
             return cls.containers_by_id[id]
         else:
-            return cls(None, None, _id=id)
+            return cls(kwargs.get('name', None), None, _id=id)
 
     @classmethod
     def get(cls, name:str) -> 'Container':
@@ -155,7 +155,7 @@ class Container:
         cdef pdcid_t id = cpdc.PDCcont_open(name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('Container not found or failed to open container')
-        return cls._fromid(id)
+        return cls._fromid(id, name=name)
     
     def persist(self) -> None:
         '''

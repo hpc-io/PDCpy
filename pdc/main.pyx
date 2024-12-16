@@ -11,6 +11,7 @@ import shutil
 from subprocess import Popen, PIPE
 import ast
 import numpy.typing as npt
+import pickle # this is available in python 3.8+, otherwise you need to pip install pickle
 
 try:
     from mpi4py import MPI
@@ -45,7 +46,7 @@ term_color_map = {
 }
 term_color_end = '\033[0m'
 last_color = None
-do_ctrace = True
+do_ctrace = False
 do_ctrace_print = False
 ctrace_file = None
 def format_id(id):
@@ -81,17 +82,24 @@ def ctrace(name, rtn, *args):
         rank = comm.Get_rank()
     
     #delete old ctrace file
-    if ctrace_file is None:
-        filename = f'./ctrace_{rank}.txt'
-        if os.path.exists(filename):
-            os.remove(filename)
-        ctrace_file = open(filename, 'w')
+    try:
+        if ctrace_file is None:
+            filename = f'./ctrace_{rank}.txt'
+            if os.path.exists(filename):
+                os.remove(filename)
+                ctrace_file = open(filename, 'w')
+        print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
+    except Exception as e:
+        print(f'Error opening ctrace file: {e}')
     
-    print(f'{name}({", ".join([format_arg(i) for i in args])}) -> {format_arg(rtn)}', file=ctrace_file, flush=True)
 
 def enable_ctrace():
     global do_ctrace
     do_ctrace = True
+
+def disable_ctrace():
+    global do_ctrace
+    do_ctrace = False
 
 class PDCError(Exception):
     '''
@@ -270,37 +278,63 @@ class KVTags(ABC):
     ``del tags[x]``     delete the tag ``x``
     =================== ==============================
     '''
-
-    tag_types = (tuple, str, int, float, bool, type(None))
-    tag_types_union = Union[tuple, str, int, float, bool, type(None)]
+    primitive_types = (bytes, str, int, float, bool, type(None))
+    tag_types = (tuple, list, dict, bytes, str, int, float, bool, type(None))
+    tag_types_union = Union[tuple, list, dict, bytes, str, int, float, bool, type(None)]
 
     @classmethod
     def _encode(cls, obj:tag_types_union) -> bytes:
-        if isinstance(obj, tuple):
-            for i in obj:
-                if not isinstance(i, cls.tag_types):
-                    raise ValueError('tuples must contain only strings, ints, floats, and tuples')
-            if len(obj) == 0:
-                return b'()'
-            elif len(obj) == 1:
-                return b'(' + cls._encode(obj[0]) + b',)'
+        try:
+            if isinstance(obj, tuple):
+                for i in obj:
+                    if not isinstance(i, cls.primitive_types):
+                        raise ValueError('tuples must contain only strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
+                    if len(obj) == 0:
+                        return b'()'
+                    elif len(obj) == 1:
+                        return b'(' + cls._encode(obj[0]) + b',)'
+                    else:
+                        return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
+            elif isinstance(obj, list):
+                for i in obj:
+                    if not isinstance(i, cls.primitive_types):
+                        raise ValueError('lists must contain only strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
+                if len(obj) == 0:
+                    return b'[]'
+                elif len(obj) == 1:
+                    return b'[' + cls._encode(obj[0]) + b']'
+                else:
+                    return b'[' + b','.join([cls._encode(i) for i in obj]) + b']'
+            elif isinstance(obj, dict):
+                for k, v in obj.items():
+                    if not isinstance(k, str):
+                        raise ValueError('dict keys must be strings')
+                    if not isinstance(v, cls.primitive_types):
+                        raise ValueError('dict values must be strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
+                return b'{' + b','.join([cls._encode(k) + b': ' + cls._encode(v) for k, v in obj.items()]) + b'}'
+            elif isinstance(obj, bytes):
+                return obj
+            elif isinstance(obj, str):
+                return repr(obj).encode('utf-8')
+            elif isinstance(obj, int):
+                return str(obj).encode('utf-8')
+            elif isinstance(obj, float):
+                return str(obj).encode('utf-8')
+            elif isinstance(obj, bool):
+                return str(obj).encode('utf-8')
+            elif obj is None:
+                return b'None'
             else:
-                return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
-        elif isinstance(obj, str):
-            return repr(obj).encode('utf-8')
-        elif isinstance(obj, int):
-            return str(obj).encode('utf-8')
-        elif isinstance(obj, float):
-            return str(obj).encode('utf-8')
-        elif isinstance(obj, bool):
-            return str(obj).encode('utf-8')
-        elif obj is None:
-            return b'None'
-        else:
-            raise TypeError(f'Unsupported type of tag: {type(obj)}')
+                raise ValueError(f'Unsupported type of tag: {type(obj)}, fallback to pickle.dumps() -> bytes')
+        except ValueError as e:
+            return pickle.dumps(obj)
     
     @staticmethod
     def _decode(data:bytes) -> tag_types_union:
+        # if the data is a pickle, use pickle.loads()
+        if data.startswith(b'\x80'):
+            return pickle.loads(data)
+        # otherwise, try to eval the string
         return ast.literal_eval(data.decode('utf-8'))
     
     @abstractmethod
@@ -366,9 +400,11 @@ class ServerContext:
         self.popen.wait()
         return False
 
-def checktype(value, name, expected):
-    if not isinstance(value, expected):
-        raise TypeError(f'invalid type of {name}: {type(value)}, expected {expected.__name__}')
+def checktype(value, name, *expected):
+    for et in expected:
+        if isinstance(value, et):
+            return
+    raise TypeError(f'invalid type of {name}: {type(value)}, expected : one of {[x.__name__ for x in expected]}')
 
 def checkrange(value, name, expected:str):
     if expected == 'uint32':

@@ -8,6 +8,8 @@ from cpython.mem cimport PyMem_Free as free
 from typing import Tuple
 import copy
 
+import numpy as np
+
 #free region info created by _construct_region_info
 cdef void free_region_info(pdc_region_info *region_info):
     free(region_info[0].size)
@@ -52,10 +54,10 @@ class Region:
         '''
         checktype(slice, 'slice', builtins.slice)
         if slice.start is not None:
-            checktype(slice.start, 'start value', int)
+            checktype(slice.start, 'start value', int, np.integer)
             checkrange(slice.start, 'start value', 'uint64')
         if slice.stop is not None:
-            checktype(slice.stop, 'stop value', int)
+            checktype(slice.stop, 'stop value', int, np.integer)
             checkrange(slice.stop, 'stop value', 'uint64')
         if slice.step is not None and slice.step != 1:
             raise ValueError('slice step values are not supported')
