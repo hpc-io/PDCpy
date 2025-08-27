@@ -169,6 +169,7 @@ class Type(Enum):
     UINT64   = pdc_var_type_t.PDC_UINT64
     INT16    = pdc_var_type_t.PDC_INT16
     INT8     = pdc_var_type_t.PDC_INT8
+    UINT8    = pdc_var_type_t.PDC_UINT8
 
     def as_numpy_type(self):
         '''
@@ -190,6 +191,8 @@ class Type(Enum):
             return np.dtype('=h')
         elif self == Type.INT8:
             return np.dtype('=b')
+        elif self == Type.UINT8:
+            return np.dtype('=B')
         else:
             raise ValueError('Unknown PDC type')
     
@@ -221,6 +224,8 @@ class Type(Enum):
             return Type.INT16
         elif dtype == np.dtype('=b'):
             return Type.INT8
+        elif dtype == np.dtype('=B'):
+            return Type.UINT8
         else:
             raise ValueError(f'Unsupported numpy type: {old_dtype}')
     
@@ -284,24 +289,26 @@ class KVTags(ABC):
 
     @classmethod
     def _encode(cls, obj:tag_types_union) -> bytes:
+        if isinstance(obj, tuple) and not obj:
+            return b'()'
         try:
             if isinstance(obj, tuple):
+                if not obj:
+                    return b'()'
                 for i in obj:
                     if not isinstance(i, cls.primitive_types):
                         raise ValueError('tuples must contain only strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
-                    if len(obj) == 0:
-                        return b'()'
-                    elif len(obj) == 1:
-                        return b'(' + cls._encode(obj[0]) + b',)'
-                    else:
-                        return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
+                if len(obj) == 1:
+                    return b'(' + cls._encode(obj[0]) + b',)'
+                else:
+                    return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
             elif isinstance(obj, list):
+                if not obj:
+                    return b'[]'
                 for i in obj:
                     if not isinstance(i, cls.primitive_types):
                         raise ValueError('lists must contain only strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
-                if len(obj) == 0:
-                    return b'[]'
-                elif len(obj) == 1:
+                if len(obj) == 1:
                     return b'[' + cls._encode(obj[0]) + b']'
                 else:
                     return b'[' + b','.join([cls._encode(i) for i in obj]) + b']'
@@ -381,10 +388,10 @@ class ServerContext:
             pdc.init()
             ...
     
-    :raises FileNotFoundError: if pdc_server.exe is not on PATH
+    :raises FileNotFoundError: if pdc_server is not on PATH
     '''
     def __enter__(self):
-        path = shutil.which('pdc_server.exe')
+        path = shutil.which('pdc_server')
         if not path:
             raise FileNotFoundError('pdc_server.exe not on PATH')
         self.popen = Popen([path], stdout=PIPE, encoding='ascii', text=True)

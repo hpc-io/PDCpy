@@ -116,3 +116,7 @@ def test_np_type():
 
     prop.type = np.int32
     assert prop.type == pdc.Type.INT32
+
+def test_prop_unsupported_type():
+    with pytest.raises(TypeError):
+        prop = pdc.Object.Properties(dims=(128,), type="invalid_type")
