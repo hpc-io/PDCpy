@@ -13,8 +13,8 @@ def test_region_validation():
     r7 = region[:, 3, 1:9:1, 7]
 
     #Actually IndexError:
-    #with pytest.raises(ValueError):
-    #    Region()
+    with pytest.raises(IndexError):
+        Region()
     
     with pytest.raises(OverflowError):
         region[-1]

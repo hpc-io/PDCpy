@@ -284,24 +284,26 @@ class KVTags(ABC):
 
     @classmethod
     def _encode(cls, obj:tag_types_union) -> bytes:
+        if isinstance(obj, tuple) and not obj:
+            return b'()'
         try:
             if isinstance(obj, tuple):
+                if not obj:
+                    return b'()'
                 for i in obj:
                     if not isinstance(i, cls.primitive_types):
                         raise ValueError('tuples must contain only strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
-                    if len(obj) == 0:
-                        return b'()'
-                    elif len(obj) == 1:
-                        return b'(' + cls._encode(obj[0]) + b',)'
-                    else:
-                        return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
+                if len(obj) == 1:
+                    return b'(' + cls._encode(obj[0]) + b',)'
+                else:
+                    return b'(' + b','.join([cls._encode(i) for i in obj]) + b')'
             elif isinstance(obj, list):
+                if not obj:
+                    return b'[]'
                 for i in obj:
                     if not isinstance(i, cls.primitive_types):
                         raise ValueError('lists must contain only strings, ints, floats, bools, bytes, fallback to pickle.dumps() -> bytes')
-                if len(obj) == 0:
-                    return b'[]'
-                elif len(obj) == 1:
+                if len(obj) == 1:
                     return b'[' + cls._encode(obj[0]) + b']'
                 else:
                     return b'[' + b','.join([cls._encode(i) for i in obj]) + b']'
@@ -381,10 +383,10 @@ class ServerContext:
             pdc.init()
             ...
     
-    :raises FileNotFoundError: if pdc_server.exe is not on PATH
+    :raises FileNotFoundError: if pdc_server is not on PATH
     '''
     def __enter__(self):
-        path = shutil.which('pdc_server.exe')
+        path = shutil.which('pdc_server')
         if not path:
             raise FileNotFoundError('pdc_server.exe not on PATH')
         self.popen = Popen([path], stdout=PIPE, encoding='ascii', text=True)
