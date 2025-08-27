@@ -17,6 +17,10 @@ def test_container_name():
     with pytest.raises(TypeError):
         cont3 = pdc.Container(1)
 
+def test_container_empty_name():
+    with pytest.raises(ValueError):
+        cont = pdc.Container('')
+
 def test_container_lifetime():
     cont = pdc.Container('contlifetest')
     assert cont.lifetime == pdc.Container.Lifetime.PERSISTENT
@@ -65,3 +69,7 @@ def test_put_del_ids():
     
     with pytest.raises(TypeError):
         cont2.add_objects(1)
+
+def test_container_get_non_existent():
+    with pytest.raises(PDCError):
+        cont = pdc.Container.get('non_existent_container')

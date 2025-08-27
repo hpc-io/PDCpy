@@ -6,6 +6,7 @@ docs/build/html/.buildinfo
 **/__pycache__/**
 **/pdc_data/**
 ctests/*.out
+docs/build/
 cython_debug/**
 **/ctrace.txt
 .pypirc

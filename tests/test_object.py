@@ -1,6 +1,7 @@
 import pdc
 import pytest
 import numpy as np
+from pdc.main import PDCError
 
 def test_object_attrs():
     cont = pdc.Container('testobject', lifetime=pdc.Container.Lifetime.TRANSIENT)
@@ -50,3 +51,7 @@ def test_uint8():
     obj.set_data(data).wait()
     retrieved_data = obj.get_data().wait()
     assert np.array_equal(data, retrieved_data)
+
+def test_object_get_non_existent():
+    with pytest.raises(PDCError):
+        obj = pdc.Object.get('non_existent_object')
