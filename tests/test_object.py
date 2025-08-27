@@ -38,3 +38,15 @@ def test_from_np():
 
     obj = cont.object_from_array('testnp_c', [[2.4, 3.7]])
     assert obj.type in (pdc.Type.FLOAT, pdc.Type.DOUBLE)
+
+def test_uint8():
+    cont = pdc.Container('testuint8')
+    prop = pdc.Object.Properties(dims=(3, 4, 5), type=pdc.Type.UINT8)
+    obj = cont.create_object('testuint8obj', prop)
+
+    assert obj.type == pdc.Type.UINT8
+
+    data = np.array([[[x for x in range(5)] for _ in range(4)] for _ in range(3)], dtype=np.uint8)
+    obj.set_data(data).wait()
+    retrieved_data = obj.get_data().wait()
+    assert np.array_equal(data, retrieved_data)
