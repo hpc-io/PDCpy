@@ -36,8 +36,8 @@ else:
             compile_output = subprocess.check_output(['mpicc', '-compile_info'], stderr=subprocess.PIPE, text=True)
             link_output = subprocess.check_output(['mpicc', '-link_info'], stderr=subprocess.PIPE, text=True)
             print("Compiling with mpich")
-            mpi_build_args = [arg for arg in compile_output.strip().split() if arg != '-compile_info']
-            mpi_link_args = [arg for arg in link_output.strip().split() if arg != '-link_info']
+            mpi_build_args = [arg for arg in compile_output.strip().split() if arg not in ('-compile_info', 'gcc')]
+            mpi_link_args = [arg for arg in link_output.strip().split() if arg not in ('-link_info', 'gcc')]
         except (subprocess.CalledProcessError, FileNotFoundError):
             print("mpicc is neither openmpi or mpich. Attempting to compile without MPI support.")
             mpi_build_args = []

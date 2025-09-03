@@ -73,3 +73,10 @@ def test_put_del_ids():
 def test_container_get_non_existent():
     with pytest.raises(PDCError):
         cont = pdc.Container.get('non_existent_container')
+
+def test_get_container_multiple_times():
+    cont = pdc.Container('multiget_cont')
+    cont1 = pdc.Container.get('multiget_cont')
+    cont2 = pdc.Container.get('multiget_cont')
+    assert cont1 is cont2
+    assert cont1._id == cont2._id
