@@ -55,3 +55,13 @@ def test_uint8():
 def test_object_get_non_existent():
     with pytest.raises(PDCError):
         obj = pdc.Object.get('non_existent_object')
+
+def test_get_object_multiple_times():
+    cont = pdc.Container('multiget_obj_cont')
+    prop = pdc.Object.Properties(dims=(1,), type=pdc.Type.INT32)
+    obj = cont.create_object('multiget_obj', prop)
+    
+    obj1 = pdc.Object.get('multiget_obj')
+    obj2 = pdc.Object.get('multiget_obj')
+    assert obj1 is obj2
+    assert obj1._id == obj2._id

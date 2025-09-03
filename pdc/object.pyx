@@ -6,7 +6,6 @@ from enum import Enum
 import numpy.typing as npt
 from weakref import finalize, WeakValueDictionary
 import ctypes
-
 from pdc.main import uint32, uint64, Type, KVTags, _free_from_int, _get_pdcid, PDCError, PDCError, pdcid, checktype, ctrace
 cimport pdc.cpdc as cpdc
 from cpython.mem cimport PyMem_Malloc as malloc, PyMem_Free as free
@@ -422,6 +421,7 @@ class Object:
                 raise PDCError('Failed to close region or transfer request')
     
     objects_by_id = WeakValueDictionary()
+    objects_by_name = WeakValueDictionary()
 
     def __init__(self, name:Optional(str), properties:Optional(Properties), container:Optional(container.Container), *, _id:Optional[pdcid]=None,):
         '''
@@ -527,11 +527,15 @@ class Object:
         :param str name: the name of the object
         ''' 
         checktype(name, 'name', str)
+        if name in cls.objects_by_name:
+            return cls.objects_by_name[name]
         cdef pdcid_t id = cpdc.PDCobj_open(name.encode('utf-8'), _get_pdcid())
         ctrace('obj_open', id, name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('object not found or failed to open object')
-        return cls._fromid(id)
+        obj = cls._fromid(id)
+        cls.objects_by_name[name] = obj
+        return obj
     
     @property
     def tags(self) -> KVTags:

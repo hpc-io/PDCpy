@@ -85,6 +85,7 @@ class Container:
         TRANSIENT  = pdc_lifetime_t.PDC_TRANSIENT
     
     containers_by_id = WeakValueDictionary()
+    containers_by_name = WeakValueDictionary()
     
     def __init__(self, name:str, lifetime:Lifetime=Lifetime.PERSISTENT, *, _id:Optional[int]=None):
         '''
@@ -152,10 +153,14 @@ class Container:
         :param str name: the name of the container.
         :return: The container.
         '''
+        if name in cls.containers_by_name:
+            return cls.containers_by_name[name]
         cdef pdcid_t id = cpdc.PDCcont_open(name.encode('utf-8'), _get_pdcid())
         if id == 0:
             raise PDCError('Container not found or failed to open container')
-        return cls._fromid(id, name=name)
+        cont = cls._fromid(id, name=name)
+        cls.containers_by_name[name] = cont
+        return cont
     
     def persist(self) -> None:
         '''
