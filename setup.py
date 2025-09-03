@@ -22,18 +22,26 @@ if not path:
     print("mpicc not found on PATH. Attempting to compile without MPI support.")
     mpi_build_args = []
     mpi_link_args = []
-elif subprocess.run(['mpicc', '-compile_info']).returncode == 0:
-    print("Compiling with mpich")
-    mpi_build_args = os.popen('mpicc -compile_info').read().strip().split()[1:]
-    mpi_link_args = os.popen('mpicc -link_info').read().strip().split()[1:]
-elif subprocess.run(['mpicc', '--showme:compile']).returncode == 0:
-    print("Compiling with openmpi")
-    mpi_build_args = os.popen('mpicc --showme:compile').read().strip().split()
-    mpi_link_args = os.popen('mpicc --showme:link').read().strip().split()
 else:
-    print("mpicc is neither openmpi or mpich. Attempting to compile without MPI support.")
-    mpi_build_args = []
-    mpi_link_args = []
+    # Try OpenMPI style first
+    try:
+        compile_output = subprocess.check_output(['mpicc', '--showme:compile'], stderr=subprocess.PIPE, text=True)
+        link_output = subprocess.check_output(['mpicc', '--showme:link'], stderr=subprocess.PIPE, text=True)
+        print("Compiling with openmpi")
+        mpi_build_args = compile_output.strip().split()
+        mpi_link_args = link_output.strip().split()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # Try MPICH style
+        try:
+            compile_output = subprocess.check_output(['mpicc', '-compile_info'], stderr=subprocess.PIPE, text=True)
+            link_output = subprocess.check_output(['mpicc', '-link_info'], stderr=subprocess.PIPE, text=True)
+            print("Compiling with mpich")
+            mpi_build_args = [arg for arg in compile_output.strip().split() if arg != '-compile_info']
+            mpi_link_args = [arg for arg in link_output.strip().split() if arg != '-link_info']
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            print("mpicc is neither openmpi or mpich. Attempting to compile without MPI support.")
+            mpi_build_args = []
+            mpi_link_args = []
 
 # Removed "install"
 extension = Extension(
@@ -58,7 +66,6 @@ version_file.close()
 setup(
     name='PDCpy',
     version=version,
-    include_package_data=True,
     ext_modules=cythonize(extension, language_level=3),
     zip_safe=False,
 )

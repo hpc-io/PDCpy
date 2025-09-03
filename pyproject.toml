@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "PDCpy"
-version = "0.0.15"
-description = "PDCpy is the official Python interface for Proactive Data Containers (PDC), a software-defined data management system designed for HPC environments. This Python API makes PDC's C-based data management capabilities accessible to scientific computing applications, providing tools for container and object management, data manipulation, and querying."
+version = "0.0.16"
+description = "PDCpy is the official Python interface for PDC."
 readme = "README.md"
 requires-python = ">=3.7"
 classifiers = [ "Programming Language :: Python :: 3", "Operating System :: Unix",]
